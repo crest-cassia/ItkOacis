@@ -43,8 +43,8 @@ module ItkOacis
     #++
     ## ID
     attr_reader :id ;
-    ## parameter in a Hash.
-    attr_reader :param ;
+    ## seed parameter in a Hash.
+    attr_reader :seedParam ;
     ## parameter set in OACIS
     attr_reader :entity ;
     ## list of run
@@ -55,25 +55,25 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## initialize
-    ## _param_:: parameters in a Hash.
+    ## _seedParam_:: seed of parameters in a Hash.
     ## _factory_:: a ParamSetFactory.
     ## _nRun_:: a number of runs.
-    def initialize(_param, _factory, _nRun)
+    def initialize(_seedParam, _factory, _nRun)
       @id = @@maxId ;
       @@maxId += 1 ;
       
-      createAndRun(_param, _factory, _nRun) ;
+      createAndRun(_seedParam, _factory, _nRun) ;
     end
 
     #--------------------------------------------------------------
     #++
     ## create PS and Run
-    ## _param_:: parameters in a Hash.
+    ## _seedParam_:: parameters in a Hash.
     ## _factory_:: a ParamSetFactory.
     ## _nRun_:: a number of runs.
-    def createAndRun(_param, _factory, _nRun)
-      @param = _param ;
-      @entity = _factory.createPs(@param) ;
+    def createAndRun(_seedParam, _factory, _nRun)
+      @seedParam = _seedParam ;
+      @entity = _factory.createPs(@seedParam) ;
       _factory.runParamSet(self, _nRun) ;
       
       @runList = [] ;
@@ -144,6 +144,22 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
+    ## get input table in hash.
+    ## *return*:: input hash.
+    def getInputTable()
+      return @entity.v ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## get input value by name in hash.
+    ## *return*:: result value
+    def getInput(_name)
+      return getInputTable()[_name] ;
+    end
+
+    #--------------------------------------------------------------
+    #++
     ## get result table in hash.
     ## *return*:: result hash.
     def getResultTable()
@@ -179,12 +195,17 @@ module ItkOacis
       case(_mode)
       when(:whole)
         _json = { :id => @id,
-                  :param => @param,
+                  :seedParam => @seedParam,
+                  :input => getInputTable(),
                   :result => getResultTable(),
                 } ;
       when(:result)
         _json = { :id => @id,
                   :result => getResultTable(),
+                } ;
+      when(:input)
+        _json = { :id => @id,
+                  :input => getInputTable(),
                 } ;
       else
         raise "unknown conversion mode:" + _mode.inspect ;
