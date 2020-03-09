@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#! /usr/bin/env ../../oacis/bin/oacis_ruby
 # coding: utf-8
 ## -*- mode: ruby -*-
 ## = Itk Oacis Simulator stub
@@ -115,17 +115,38 @@ module ItkOacis
     
     #--------------------------------------------------------------
     #++
+    ## to generate default ParamSet Hash.
+    ## _param_ :: a partial Hash of ParamSet.
+    ## *return*:: a Hash of ParamSet.
+    def genParamSetHash(_param = {})
+      _paramSetHash = {} ;
+      getParamDefList().each{|_paramDef|
+        _paramSetHash[_paramDef.key] = (_param.key?(_paramDef.key) ?
+                                          _param[_paramDef.key] :
+                                          _paramDef.default) ;
+      }
+      return _paramSetHash ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## generate param. set (Ps).
+    ## _param_:: parameter set. Should be a Hash. Can be partial.
+    ## *return*:: parameter set (Ps)
+    def createPs(_param)
+      return @entity.find_or_create_parameter_set(genParamSetHash(_param)) ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
     ## generate param. set and run.
-    ## _param_:: parameter set. should be instance of Hash.
-    ## _worker_:: worker host to run.
-    ## _hostParam_:: parameter for the worker host (xsub params)
+    ## _param_:: parameter set. should be a Hash.
+    ## _host_:: a HostStub to run.
     ## _numRan_:: the number of runs.
     ## *return*:: parameter set (Ps)
-    def _createPsAndRun(_param,  _worker, _hostParam = nil, _numRun = 1)
-      _ps = @entity.find_or_create_parameter_set(_param) ;
-      _ps.find_or_create_runs_upto(1,
-                                   submitted_to: _worker,
-                                   host_param: _hostParam) ;
+    def createPsAndRun(_param,  _host, _numRun = 1)
+      _ps = createPs(_param) ;
+      _host.createRuns(_ps, _numRun) ;
       return _ps ;
     end
 
@@ -195,5 +216,116 @@ end # module ItkOacis
 ########################################################################
 ########################################################################
 ########################################################################
+if($0 ==  __FILE__) then
+
+  #--============================================================
+  #++
+  ## unit test for this file.
+  class ItkTest
+
+    #--::::::::::::::::::::::::::::::::::::::::::::::::::
+    #++
+    ## Singleton of this Class.
+    Singleton = self.new() ;
+    ## test data
+    TestData = nil ;
+
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## list-up test methods.
+    def self.listTestMethods()
+      _r = [] ;
+      Singleton.methods(true).each{|_method|
+        _r.push(_method.to_s) if(_method.to_s =~ /^test_/) ;
+      }
+      return _r ;
+    end
+
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## run
+    def self.run(_argv = [])
+      _methodList = ((_argv.size == 0) ?
+                       self.listTestMethods() :
+                       _argv) ;
+      _methodList.each{|_method|
+        self.callTest(_method) ;
+      }
+    end
+    
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## call method of Singleton.
+    def self.callTest(_method)
+      if(self.listTestMethods.member?(_method)) then
+        pp [:call, _method] ;
+        Singleton.send(_method) ;
+      else
+        puts "Warning!!" ;
+        pp [:no_test_method, _method] ;
+      end
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## simulator name list.
+    def test_a()
+      pp [:test_a, ItkOacis::SimulatorStub.getSimulatorNameList()] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## get simulator by name.
+    def test_b()
+      _sim = ItkOacis::SimulatorStub.getSimulatorByName("foo00") ;
+      pp [:foo00, _sim] ;
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## new
+    def test_c()
+      _sim = ItkOacis::SimulatorStub.new("foo00") ;
+      pp [:foo00, _sim] ;
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## param def list.
+    def test_d()
+      _sim = ItkOacis::SimulatorStub.new("foo00") ;
+      pp [:paramDef, _sim.getParamDefList()] ;
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## param def by name.
+    def test_e()
+      _sim = ItkOacis::SimulatorStub.new("foo00") ;
+      pp [:paramDef, _sim.getParamDef("y")] ;
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## gen param set hash.
+    def test_f()
+      _sim = ItkOacis::SimulatorStub.new("foo00") ;
+      pp [:defaultParamSet, _sim.genParamSetHash({"y" => 2.0}) ]
+    end
+    
+
+  end # class ItkTest
+
+  ##########################################
+  ##########################################
+  ##########################################
+  
+  ItkTest.run($*) ;
+  
+end
+
 
 

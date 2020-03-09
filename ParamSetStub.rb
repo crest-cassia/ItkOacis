@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#! /usr/bin/env ../../oacis/bin/oacis_ruby
 ## -*- mode: ruby -*-
 ## = Multi-Objection Genetic Algorithm
 ## Author:: Itsuki Noda
@@ -21,9 +21,10 @@ require 'pp' ;
 require 'json' ;
 
 require 'WithConfParam.rb' ;
-require 'SimulatorStub.rb' ;
 require 'Stat/Random.rb' ;
-require 'Conductor.rb' ;
+
+# require 'SimulatorStub.rb' ;
+# require 'Conductor.rb' ;
 
 #--======================================================================
 #++
@@ -32,7 +33,6 @@ module ItkOacis
   #--======================================================================
   #++
   ## Stub of ParameterSet
-
   class ParamSetStub
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
@@ -43,8 +43,6 @@ module ItkOacis
     #++
     ## ID
     attr_reader :id ;
-    ## ItkOacis::Conductor
-    attr_reader :conductor ;
     ## parameter in a Hash.
     attr_reader :param ;
     ## parameter set in OACIS
@@ -57,69 +55,91 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## initialize
-    ## _conductor_:: a Conductor
     ## _param_:: parameters in a Hash.
-    ## _runP_:: if true, submit run.
-    def initialize(_conductor, _param, _runP = true)
+    ## _factory_:: a ParamSetFactory.
+    ## _nRun_:: a number of runs.
+    def initialize(_param, _factory, _nRun)
       @id = @@maxId ;
       @@maxId += 1 ;
       
-      @conductor = _conductor ;
-      @param = _param ;
-      createPsAndRun() if(_runP) ;
+      createAndRun(_param, _factory, _nRun) ;
     end
 
     #--------------------------------------------------------------
     #++
     ## create PS and Run
-    ## _nRun_:: number of run
-    ## *return*:: about return value
-    def createPsAndRun(_nRun = 1)
-      @entity = @conductor.simStub.createPsAndRun(@param, @conductor.worker,
-                                            @conductor.getWorkerHostParam(),
-                                            _nRun) ;
+    ## _param_:: parameters in a Hash.
+    ## _factory_:: a ParamSetFactory.
+    ## _nRun_:: a number of runs.
+    def createAndRun(_param, _factory, _nRun)
+      @param = _param ;
+      @entity = _factory.createPs(@param) ;
+      _factory.runParamSet(self, _nRun) ;
+      
       @runList = [] ;
       @entity.runs.each{|_run|
         @runList.push(_run) ;
       }
       @run = @runList.last ;
-      return self ;
     end
 
     #--------------------------------------------------------------
     #++
+    ## call block for each run.
+    ## _&block_:: a block to call.
+    def eachRun(&_block)
+      @runList.each{|_run|
+        _block.call(_run) ;
+      }
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## sync status.
+    def sync()
+      eachRun(){|_run|
+        _run.reload() ;
+      }
+    end
+    
+    #--------------------------------------------------------------
+    #++
     ## check run status
+    ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: run status 
-    def checkRunStatus()
-      @run.reload() ;
+    def checkRunStatus(_syncP = false)
+      sync() if(_syncP) ;
       return @run.status ;
     end
     
     #--------------------------------------------------------------
     #++
     ## check run status
+    ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: run status 
-    def done?()
-      _status = checkRunStatus() ;
-      return (_status == :finished || _status == :failed) ;
+    def finished?(_syncP = false)
+      sync() if(_syncP) ;
+      return (checkRunStatus() == :finished) ;
     end
 
     #--------------------------------------------------------------
     #++
     ## check run status
+    ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: run status 
-    def finished?()
-      _status = checkRunStatus() ;
-      return (_status == :finished) ;
+    def failed?(_syncP = false)
+      sync() if(_syncP) ;
+      return (checkRunStatus() == :failed) ;
     end
 
     #--------------------------------------------------------------
     #++
     ## check run status
+    ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: run status 
-    def failed?()
-      _status = checkRunStatus() ;
-      return (_status == :failed) ;
+    def done?(_syncP = false)
+      sync() if(_syncP) ;
+      return (finished?(false) || failed?(false)) ;
     end
 
     #--------------------------------------------------------------
@@ -184,4 +204,73 @@ end # module ItkOacis
 ######################################################################
 ######################################################################
 ######################################################################
+if($0 == __FILE__) then
 
+  #--============================================================
+  #++
+  ## unit test for this file.
+  class ItkTest
+
+    #--::::::::::::::::::::::::::::::::::::::::::::::::::
+    #++
+    ## Singleton of this Class.
+    Singleton = self.new() ;
+    ## test data
+    TestData = nil ;
+
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## list-up test methods.
+    def self.listTestMethods()
+      _r = [] ;
+      Singleton.methods(true).each{|_method|
+        _r.push(_method.to_s) if(_method.to_s =~ /^test_/) ;
+      }
+      return _r ;
+    end
+
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## run
+    def self.run(_argv = [])
+      _methodList = ((_argv.size == 0) ?
+                       self.listTestMethods() :
+                       _argv) ;
+      _methodList.each{|_method|
+        self.callTest(_method) ;
+      }
+    end
+    
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## call method of Singleton.
+    def self.callTest(_method)
+      if(self.listTestMethods.member?(_method)) then
+        pp [:call, _method] ;
+        Singleton.send(_method) ;
+      else
+        puts "Warning!!" ;
+        pp [:no_test_method, _method] ;
+      end
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## host name list.
+    def test_a()
+      pp [:test_a] ;
+    end
+
+  end # class ItkTest
+
+  ##########################################
+  ##########################################
+  ##########################################
+  
+  ItkTest.run($*) ;
+  
+end # if($0 == __FILE__)
+  

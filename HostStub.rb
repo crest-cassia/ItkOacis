@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#! /usr/bin/env ../../oacis/bin/oacis_ruby
 # coding: utf-8
 ## -*- mode: ruby -*-
 ## = Itk Oacis Host stub
@@ -88,6 +88,41 @@ module ItkOacis
     #--============================================================
     #--------------------------------------------------------------
     #++
+    ## to get Host list in HostGroup by name.
+    ## _name_:: the name of HostGroup in String.
+    ## _safeP_:: If false, it raises an exception when the named HostGroup
+    ##           does not found.  If true, it just return nil when not found.
+    ## *return*:: an Array of Host object.
+    def self.getHostListInGroup(_name, _safeP = false)
+      _group = self.getHostGroupByName(_name, _safeP) ;
+      if(_group) then
+        return _group.host_ids.map{|_objId|
+          ::Host.where(id: _objId.to_s).first ;
+        }
+      else
+        return nil ;
+      end
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to get Host name list in HostGroup by name.
+    ## _name_:: the name of HostGroup in String.
+    ## _safeP_:: If false, it raises an exception when the named HostGroup
+    ##           does not found.  If true, it just return nil when not found.
+    ## *return*:: an Array of Host object.
+    def self.getHostNameListInGroup(_name, _safeP = false)
+      _hostList = self.getHostListInGroup(_name, _safeP) ;
+      if(_hostList) then
+        return _hostList.map{|_host| _host.name} ;
+      else
+        return nil ;
+      end
+    end
+
+    #--============================================================
+    #--------------------------------------------------------------
+    #++
     ## to get Host and HostGroup name list.
     ## *return*:: an Array of names of registered Host and HostGroup in String.
     def self.getHostAndGroupNameList()
@@ -133,6 +168,8 @@ module ItkOacis
     attr_reader :name ;
     ## the entity of Host or HostGroup in Oacis.
     attr_reader :entity ;
+    ## the entity of Host or HostGroup in Oacis.
+    attr_reader :hostParam ;
 
     #--------------------------------------------------------------
     #++
@@ -152,6 +189,7 @@ module ItkOacis
     def setEntityByName(_name = @name, _safeP = false)
       @name = _name ;
       @entity = self.class.getHostAndGroupByName(_name, _safeP) ;
+      @hostParam = getConf(:hostParam) ;
     end
 
     #--------------------------------------------------------------
@@ -218,6 +256,26 @@ module ItkOacis
       return _jobN ;
     end
 
+    #--------------------------------------------------------------
+    #++
+    ## to (find or) create runs with param.
+    ## _paramSet_ :: a Ps or ParamSetStub.
+    ## _nRun_ :: total number of runs.
+    def createRuns(_paramSet, _nRun = 1)
+      if(_paramSet.is_a?(ParamSetStub)) then
+        createRuns(_paramSet.entity, _nRun) ;
+      else
+        if(isHost()) then
+          _paramSet.find_or_create_runs_upto(_nRun,
+                                             submitted_to: @entity,
+                                             host_param: @hostParam) ;
+        else
+          _paramSet.find_or_create_runs_upto(_nRun,
+                                             host_group: @entity) ;
+        end
+      end
+    end
+      
     #--////////////////////////////////////////////////////////////
     #--============================================================
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -229,5 +287,136 @@ end # module ItkOacis
 ########################################################################
 ########################################################################
 ########################################################################
+if($0 ==  __FILE__) then
+
+  #--============================================================
+  #++
+  ## unit test for this file.
+  class ItkTest
+
+    #--::::::::::::::::::::::::::::::::::::::::::::::::::
+    #++
+    ## Singleton of this Class.
+    Singleton = self.new() ;
+    ## test data
+    TestData = nil ;
+
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## list-up test methods.
+    def self.listTestMethods()
+      _r = [] ;
+      Singleton.methods(true).each{|_method|
+        _r.push(_method.to_s) if(_method.to_s =~ /^test_/) ;
+      }
+      return _r ;
+    end
+
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## run
+    def self.run(_argv = [])
+      _methodList = ((_argv.size == 0) ?
+                       self.listTestMethods() :
+                       _argv) ;
+      _methodList.each{|_method|
+        self.callTest(_method) ;
+      }
+    end
+    
+    #--==================================================
+    #----------------------------------------------------
+    #++
+    ## call method of Singleton.
+    def self.callTest(_method)
+      if(self.listTestMethods.member?(_method)) then
+        pp [:call, _method] ;
+        Singleton.send(_method) ;
+      else
+        puts "Warning!!" ;
+        pp [:no_test_method, _method] ;
+      end
+    end
+    
+    #----------------------------------------------------
+    #++
+    ## host name list.
+    def test_a()
+      pp [:test_a, ItkOacis::HostStub.getHostNameList()] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## host by name.
+    def test_b()
+      pp [:test_b, ItkOacis::HostStub.getHostByName("calamus")] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## host group name list.
+    def test_c()
+      pp [:test_c, ItkOacis::HostStub.getHostGroupNameList()] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## host group by name.
+    def test_d()
+      pp [:test_d, ItkOacis::HostStub.getHostGroupByName("local_group")] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## host list in group.
+    def test_e()
+      pp [:test_e, ItkOacis::HostStub.getHostListInGroup("local_group")] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## host name list group.
+    def test_f()
+      pp [:test_f, ItkOacis::HostStub.getHostNameListInGroup("local_group")] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## host and group name.
+    def test_g()
+      pp [:test_g, ItkOacis::HostStub.getHostAndGroupNameList()] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## new
+    def test_h()
+      pp [:test_h, ItkOacis::HostStub.new("localhost")] ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## new group
+    def test_h2()
+      _host = ItkOacis::HostStub.new("local_group") ;
+      pp [:test_h2, _host] ;
+      _host.eachHost(){|_h| pp _h} ;
+    end
+
+
+  end # class ItkTest
+
+  ##########################################
+  ##########################################
+  ##########################################
+  
+  ItkTest.run($*) ;
+  
+end
+
+
+
 
 
