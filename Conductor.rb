@@ -289,6 +289,17 @@ module ItkOacis
       }
       return _list ;
     end
+
+    #--------------------------------------------------------------
+    #++
+    ## to spawn multiple ParamSetStub to fill a running list.
+    ## _paramSeed_:: a Hash of paramter set. Can be partial.
+    ## _block_:: a procedure to generate paramSeed.
+    ## *return*:: an Array of ParamSetStub to be generated.
+    def fillRunningParamSetList(_paramSeed = nil, &_block)
+      _n = @nPooledParamSet - nRunning() ;
+      spawnParamSetN(_n, _paramSeed, &_block)
+    end
       
     #--////////////////////////////////////////////////////////////
     #--============================================================
@@ -319,7 +330,7 @@ if($0 == __FILE__) then
     #++
     ## override runInit().
     def runInit()
-      spawnParamSetN(10){|_seed, _i|
+      fillRunningParamSetList(){|_seed, _i|
         _x = rand() ;
         _z = rand() ;
         { "x" => _x,
@@ -332,7 +343,7 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      p [:count, @cycleCount] ;
+      p [:cycle, @cycleCount, nRunning(), nFinished()] ;
       eachFinishedParamSet(){|_psStub|
         pp [:finished, _psStub.toJson()] ;
       }
