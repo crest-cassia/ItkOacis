@@ -27,8 +27,6 @@ require 'Stat/Random.rb' ;
 # require 'Conductor.rb' ;
 
 #--======================================================================
-#++
-## package module of Interactive Toolkit for Oacis.
 module ItkOacis
   #--======================================================================
   #++
@@ -86,7 +84,7 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## call block for each run.
-    ## _&block_:: a block to call.
+    ## _block_:: a block to call.
     def eachRun(&_block)
       @runList.each{|_run|
         _block.call(_run) ;

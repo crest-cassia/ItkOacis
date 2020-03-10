@@ -27,8 +27,6 @@ require 'HostStub.rb' ;
 require 'ParamSetFactory.rb' ;
 
 #--======================================================================
-#++
-## package module of Interactive Toolkit for Oacis.
 module ItkOacis
   #--======================================================================
   #++
@@ -42,9 +40,9 @@ module ItkOacis
       :hostName => "localhost",
       :hostParam => nil,
       :paramSetFactoryClass => ItkOacis::ParamSetFactory,
-      :nPooledParamSet => nil,
       :paramSetFactoryConf => {},
       :interval => 1,  # sleep interval in run in sec.
+      :nPooledParamSet => nil,
       nil => nil } ;
 
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -61,8 +59,8 @@ module ItkOacis
     attr_reader :nPooledParamSet ;
     ## list of running ParamSet.
     attr_reader :runningParamSetList ;
-    ## list of finished ParamSet.
-    attr_reader :finishedParamSetList ;
+    ## list of finished or failed ParamSet.
+    attr_reader :doneParamSetList ;
     ## duration of sleep in run cycle in sec.
     attr_reader :interval ;
 
@@ -73,7 +71,14 @@ module ItkOacis
     ## _conf_:: configulation for the initialization.
     def initialize(_conf = {})
       super(_conf) ;
-      
+
+      setup() ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to setup configulations.
+    def setup()
       setSimulator(getConf(:simulatorName)) ;
       setHost(getConf(:hostName), getConf(:hostParam)) ;
 
@@ -87,10 +92,8 @@ module ItkOacis
 
       @nPooledParamSet = (getConf(:nPooledParamSet) ||
                           2 * @host.maxJobN()) ;
-      
     end
 
-    #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
     ## set SimulatorStub by name.
@@ -162,16 +165,16 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## to update all status.
-    ## If some ParamSets are finished,
-    ## they move from @runningParamSetList to @finishedParamSetList.
+    ## If some ParamSets are done,
+    ## they move from @runningParamSetList to @doneParamSetList.
     def checkRunning() 
       syncAll() ;
       
-      @finishedParamSetList = [] ;
+      @doneParamSetList = [] ;
       eachRunningParamSet(){|_psStub|
-        @finishedParamSetList.push(_psStub) if(_psStub.finished?()) ;
+        @doneParamSetList.push(_psStub) if(_psStub.done?()) ;
       }
-      eachFinishedParamSet(){|_psStub|
+      eachDoneParamSet(){|_psStub|
         @runningParamSetList.delete(_psStub) ;
       }
       
@@ -226,17 +229,17 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## to get number of finished ParamSet.
-    ## *return*:: the number of ParamSet in @finishedParamSetList.
-    def nFinished()
-      return @finishedParamSetList.size ;
+    ## to get number of done ParamSet.
+    ## *return*:: the number of ParamSet in @doneParamSetList.
+    def nDone()
+      return @doneParamSetList.size ;
     end
     
     #--------------------------------------------------------------
     #++
     ## to call block for each running ParamSet.
-    ## _&block_:: a procedure to call with each running ParamSet.
-    def eachRunningParamSet(&_block)
+    ## _block_:: a procedure to call with each running ParamSet.
+    def eachRunningParamSet(&_block) # :yield: _psStub
       @runningParamSetList.each{|_psStub|
         _block.call(_psStub) ;
       }
@@ -244,10 +247,10 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## to call block for each finished ParamSet.
-    ## _&block_:: a procedure to call with each finished ParamSet.
-    def eachFinishedParamSet(&_block)
-      @finishedParamSetList.each{|_psStub|
+    ## to call block for each done ParamSet.
+    ## _block_:: a procedure to call with each done ParamSet.
+    def eachDoneParamSet(&_block) # :yield: _psStub
+      @doneParamSetList.each{|_psStub|
         _block.call(_psStub) ;
       }
     end
@@ -343,14 +346,15 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      p [:cycle, @cycleCount, nRunning(), nFinished()] ;
-      eachFinishedParamSet(){|_psStub|
-        pp [:finished, _psStub.toJson()] ;
+      p [:cycle, @cycleCount, nRunning(), nDone()] ;
+      eachDoneParamSet(){|_psStub|
+        pp [:done, _psStub.toJson()] ;
       }
     end
+    
     #----------------------------------------------------
     #++
-    ## override isFinished().
+    ## override terminate?().
     def terminate?()
       return nRunning() == 0 ;
     end

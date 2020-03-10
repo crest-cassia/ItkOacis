@@ -27,12 +27,10 @@ require 'HostStub.rb' ;
 require 'ParamSetStub.rb' ;
 
 #--======================================================================
-#++
-## package module of Interactive Toolkit for Oacis.
 module ItkOacis
   #--======================================================================
   #++
-  ## to control functionarities of OACIS via Oacis Watcher facility.
+  ## to manage to create new ParamSetStub.
   class ParamSetFactory < WithConfParam
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
@@ -146,45 +144,6 @@ if($0 == __FILE__) then
 
   #--============================================================
   #++
-  ## test conductor
-  class FooConductor < ItkOacis::Conductor
-    #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    #++
-    ## default configulation for initialization.
-    DefaultConf = {
-      :simulatorName => "foo00",
-      :hostName => "localhost",
-    } ;
-    
-    #----------------------------------------------------
-    #++
-    ## override runInit().
-    def runInit()
-      (0...10).each{|i|
-        _x = rand() ;
-        _param = { "x" => _x } ;
-        spawnParamSet(_param) ;
-      }
-    end
-    
-    #--------------------------------------------------------------
-    #++
-    ## override cycleCheck().
-    def cycleCheck()
-      super() ;
-      p [:count, @cycleCount] ;
-    end
-    #----------------------------------------------------
-    #++
-    ## override isFinished().
-    def isFinished()
-      return @cycleCount >= 10 ;
-    end
-    
-  end # class FooConductor
-  
-  #--============================================================
-  #++
   ## unit test for this file.
   class ItkTest
 
@@ -238,17 +197,7 @@ if($0 == __FILE__) then
     #++
     ## host name list.
     def test_a()
-      _conductor = ItkOacis::Conductor.new() ;
-      pp [:test_a, _conductor] ;
-    end
-
-    #----------------------------------------------------
-    #++
-    ## my conductor.
-    def test_b()
-      _conductor = FooConductor.new() ;
-      pp [:test_b, _conductor] ;
-      _conductor.run() ;
+      pp [:test_a] ;
     end
 
   end # class ItkTest

@@ -20,8 +20,6 @@ $LOAD_PATH.addIfNeed(File.dirname(__FILE__) + "/itkLib");
 require "WithConfParam.rb" ;
 
 #--======================================================================
-#++
-## package module of Interactive Toolkit for Oacis.
 module ItkOacis
   #--======================================================================
   #++

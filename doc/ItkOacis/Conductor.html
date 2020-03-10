@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class ItkOacis::Conductor - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
+</script>
+
+<script src="../js/navigation.js" defer></script>
+<script src="../js/search.js" defer></script>
+<script src="../js/search_index.js" defer></script>
+<script src="../js/searcher.js" defer></script>
+<script src="../js/darkfish.js" defer></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">WithConfParam
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-checkRunning">#checkRunning</a>
+    
+    <li ><a href="#method-i-cycle">#cycle</a>
+    
+    <li ><a href="#method-i-cycleBody">#cycleBody</a>
+    
+    <li ><a href="#method-i-eachFinishedParamSet">#eachFinishedParamSet</a>
+    
+    <li ><a href="#method-i-eachRunningParamSet">#eachRunningParamSet</a>
+    
+    <li ><a href="#method-i-fillRunningParamSetList">#fillRunningParamSetList</a>
+    
+    <li ><a href="#method-i-nFinished">#nFinished</a>
+    
+    <li ><a href="#method-i-nRunning">#nRunning</a>
+    
+    <li ><a href="#method-i-nRunningParamSet">#nRunningParamSet</a>
+    
+    <li ><a href="#method-i-run">#run</a>
+    
+    <li ><a href="#method-i-runFinal">#runFinal</a>
+    
+    <li ><a href="#method-i-runInit">#runInit</a>
+    
+    <li ><a href="#method-i-setHost">#setHost</a>
+    
+    <li ><a href="#method-i-setSimulator">#setSimulator</a>
+    
+    <li ><a href="#method-i-spawnParamSet">#spawnParamSet</a>
+    
+    <li ><a href="#method-i-spawnParamSetN">#spawnParamSetN</a>
+    
+    <li ><a href="#method-i-syncAll">#syncAll</a>
+    
+    <li ><a href="#method-i-terminate-3F">#terminate?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-ItkOacis::Conductor">
+  <h1 id="class-ItkOacis::Conductor" class="class">
+    class ItkOacis::Conductor
+  </h1>
+
+  <section class="description">
+    
+<p>to control functionarities of OACIS via Oacis Watcher facility.</p>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="DefaultConf">DefaultConf
+        
+        <dd><p>default configulation for initialization.</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-finishedParamSetList" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">finishedParamSetList</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>list of finished ParamSet.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-host" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">host</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>stub to <a href="Conductor.html#attribute-i-host"><code>host</code></a> or <a href="Conductor.html#attribute-i-host"><code>host</code></a> group.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-interval" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">interval</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>duration of sleep in <a href="Conductor.html#method-i-run"><code>run</code></a> <a href="Conductor.html#method-i-cycle"><code>cycle</code></a> in sec.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-nPooledParamSet" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">nPooledParamSet</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>size of pooled ParamSet.  Generally, set doubled maxJobN of @host.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-nWholeParamSet" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">nWholeParamSet</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>counter of whole ParamSet.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-paramSetFactory" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">paramSetFactory</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p><a href="ParamSetFactory.html"><code>ParamSetFactory</code></a> ;</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-runningParamSetList" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">runningParamSetList</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>list of running ParamSet.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-simulator" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">simulator</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>stub to <a href="Conductor.html#attribute-i-simulator"><code>simulator</code></a> entity.</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(_conf = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>initialize an instance.</p>
+<dl class="rdoc-list note-list"><dt><em>conf</em>
+<dd>
+<p>configulation for the initialization.</p>
+</dd></dl>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre>   <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">72</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_conf</span> = {})
+<span class="line-num">73</span>   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">_conf</span>) ;
+<span class="line-num">74</span>   
+<span class="line-num">75</span>   <span class="ruby-identifier">setSimulator</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:simulatorName</span>)) ;
+<span class="line-num">76</span>   <span class="ruby-identifier">setHost</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:hostName</span>), <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:hostParam</span>)) ;
+<span class="line-num">77</span> 
+<span class="line-num">78</span>   <span class="ruby-ivar">@paramSetFactory</span> =
+<span class="line-num">79</span>     <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:paramSetFactoryClass</span>).<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>,
+<span class="line-num">80</span>                                        <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:paramSetFactoryConf</span>)) ;
+<span class="line-num">81</span>   
+<span class="line-num">82</span>   <span class="ruby-ivar">@nWholeParamSet</span> = <span class="ruby-value">0</span> ;
+<span class="line-num">83</span>   <span class="ruby-ivar">@runningParamSetList</span> = [] ;
+<span class="line-num">84</span>   <span class="ruby-ivar">@interval</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:interval</span>) ;
+<span class="line-num">85</span> 
+<span class="line-num">86</span>   <span class="ruby-ivar">@nPooledParamSet</span> = (<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:nPooledParamSet</span>) <span class="ruby-operator">||</span>
+<span class="line-num">87</span>                       <span class="ruby-value">2</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@host</span>.<span class="ruby-identifier">maxJobN</span>()) ;
+<span class="line-num">88</span>   
+<span class="line-num">89</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-checkRunning" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">checkRunning</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to update all status. If some ParamSets are finished, they move from @runningParamSetList to @finishedParamSetList.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="checkRunning-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">165</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">checkRunning</span>() 
+<span class="line-num">166</span>   <span class="ruby-identifier">syncAll</span>() ;
+<span class="line-num">167</span>   
+<span class="line-num">168</span>   <span class="ruby-ivar">@finishedParamSetList</span> = [] ;
+<span class="line-num">169</span>   <span class="ruby-identifier">eachRunningParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">170</span>     <span class="ruby-ivar">@finishedParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">finished?</span>()) ;
+<span class="line-num">171</span>   }
+<span class="line-num">172</span>   <span class="ruby-identifier">eachFinishedParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">173</span>     <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">174</span>   }
+<span class="line-num">175</span>   
+<span class="line-num">176</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-cycle" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cycle</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to check status as a <a href="Conductor.html#method-i-cycle"><code>cycle</code></a>. In default, update status. It can be overrided by expanded classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cycle-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">155</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycle</span>()
+<span class="line-num">156</span>   <span class="ruby-identifier">checkRunning</span>() ;
+<span class="line-num">157</span>   <span class="ruby-identifier">cycleBody</span>() ;
+<span class="line-num">158</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-cycleBody" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cycleBody</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to execute body operation for a <a href="Conductor.html#method-i-cycle"><code>cycle</code></a> just after checkRunning() ; In default, do nothing. It can be overrided by expanded classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cycleBody-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">193</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>() 
+<span class="line-num">194</span>   <span class="ruby-comment"># do nothing indefault.</span>
+<span class="line-num">195</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-eachFinishedParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">eachFinishedParamSet</span><span
+            class="method-args">() { |_psStub| ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to call block for each finished ParamSet.</p>
+<dl class="rdoc-list note-list"><dt><em>block</em>
+<dd>
+<p>a procedure to call with each finished ParamSet.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="eachFinishedParamSet-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">247</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachFinishedParamSet</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>) <span class="ruby-comment"># :yield: _psStub</span>
+<span class="line-num">248</span>   <span class="ruby-ivar">@finishedParamSetList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">249</span>     <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">250</span>   }
+<span class="line-num">251</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-eachRunningParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">eachRunningParamSet</span><span
+            class="method-args">() { |_psStub| ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to call block for each running ParamSet.</p>
+<dl class="rdoc-list note-list"><dt><em>block</em>
+<dd>
+<p>a procedure to call with each running ParamSet.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="eachRunningParamSet-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">237</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachRunningParamSet</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>) <span class="ruby-comment"># :yield: _psStub</span>
+<span class="line-num">238</span>   <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">239</span>     <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">240</span>   }
+<span class="line-num">241</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-fillRunningParamSetList" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fillRunningParamSetList</span><span
+            class="method-args">(_paramSeed = nil, &amp;_block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to spawn multiple <a href="ParamSetStub.html"><code>ParamSetStub</code></a> to fill a running list.</p>
+<dl class="rdoc-list note-list"><dt><em>paramSeed</em>
+<dd>
+<p>a Hash of paramter set. Can be partial.</p>
+</dd><dt><em>block</em>
+<dd>
+<p>a procedure to generate paramSeed.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>an Array of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> to be generated.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="fillRunningParamSetList-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">297</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fillRunningParamSetList</span>(<span class="ruby-identifier">_paramSeed</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
+<span class="line-num">298</span>   <span class="ruby-identifier">_n</span> = <span class="ruby-ivar">@nPooledParamSet</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nRunning</span>() ;
+<span class="line-num">299</span>   <span class="ruby-identifier">spawnParamSetN</span>(<span class="ruby-identifier">_n</span>, <span class="ruby-identifier">_paramSeed</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
+<span class="line-num">300</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nFinished" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nFinished</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to get number of finished ParamSet.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>the number of ParamSet in @finishedParamSetList.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="nFinished-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">229</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nFinished</span>()
+<span class="line-num">230</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@finishedParamSetList</span>.<span class="ruby-identifier">size</span> ;
+<span class="line-num">231</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nRunning" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nRunning</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to get number of running ParamSet.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>the number of ParamSet in @runningParamSetList.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="nRunning-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">221</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nRunning</span>()
+<span class="line-num">222</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">size</span> ;
+<span class="line-num">223</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nRunningParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nRunningParamSet</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get number of running ParamSet.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>the number of running ParamSet.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="nRunningParamSet-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">117</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nRunningParamSet</span>()
+<span class="line-num">118</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">size</span>() ;
+<span class="line-num">119</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a href="Conductor.html#method-i-run"><code>run</code></a> loop</p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">125</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">run</span>()
+<span class="line-num">126</span>   <span class="ruby-identifier">runInit</span>() ;
+<span class="line-num">127</span> 
+<span class="line-num">128</span>   <span class="ruby-ivar">@cycleCount</span> = <span class="ruby-value">0</span> ;
+<span class="line-num">129</span>   <span class="ruby-keyword">while</span>(<span class="ruby-keyword">true</span>)
+<span class="line-num">130</span>     <span class="ruby-identifier">sleep</span>(<span class="ruby-ivar">@interval</span>) ;
+<span class="line-num">131</span> 
+<span class="line-num">132</span>     <span class="ruby-identifier">cycle</span>() ;
+<span class="line-num">133</span>     
+<span class="line-num">134</span>     <span class="ruby-ivar">@cycleCount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
+<span class="line-num">135</span>     <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">terminate?</span>()) ;
+<span class="line-num">136</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">137</span> 
+<span class="line-num">138</span>   <span class="ruby-identifier">runFinal</span>() ;
+<span class="line-num">139</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-runFinal" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">runFinal</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to finalize <a href="Conductor.html#method-i-run"><code>run</code></a> process. In default, do nothing. It can be overrided by expanded classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="runFinal-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">202</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runFinal</span>()
+<span class="line-num">203</span>   <span class="ruby-comment"># do nothing.</span>
+<span class="line-num">204</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-runInit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">runInit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to initialize <a href="Conductor.html#method-i-run"><code>run</code></a> process. In default, raise exception. It can be overrided by expanded classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="runInit-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">146</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runInit</span>()
+<span class="line-num">147</span>   <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;runInit() is not defined.&quot;</span> ;
+<span class="line-num">148</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setHost" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setHost</span><span
+            class="method-args">(_hostName, _hostParam = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>set <a href="HostStub.html"><code>HostStub</code></a> by name.</p>
+<dl class="rdoc-list note-list"><dt><em>hostName</em>
+<dd>
+<p>the name of Host or HostGroup.</p>
+</dd><dt><em>hostParam</em>
+<dd>
+<p>a Hash of the parameters for the Host.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>the <a href="HostStub.html"><code>HostStub</code></a>.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="setHost-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">108</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setHost</span>(<span class="ruby-identifier">_hostName</span>, <span class="ruby-identifier">_hostParam</span> = <span class="ruby-keyword">nil</span>)
+<span class="line-num">109</span>   <span class="ruby-ivar">@host</span> = <span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_hostName</span>, { <span class="ruby-value">:hostParam</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_hostParam</span> }) ;
+<span class="line-num">110</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@host</span> ;
+<span class="line-num">111</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setSimulator" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setSimulator</span><span
+            class="method-args">(_simName)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>set <a href="SimulatorStub.html"><code>SimulatorStub</code></a> by name.</p>
+<dl class="rdoc-list note-list"><dt><em>simName</em>
+<dd>
+<p>the name of <a href="Conductor.html#attribute-i-simulator"><code>simulator</code></a>.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>the <a href="SimulatorStub.html"><code>SimulatorStub</code></a>.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="setSimulator-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num"> 97</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setSimulator</span>(<span class="ruby-identifier">_simName</span>)
+<span class="line-num"> 98</span>   <span class="ruby-ivar">@simulator</span> = <span class="ruby-constant">SimulatorStub</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_simName</span>) ;
+<span class="line-num"> 99</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@simulator</span> ;
+<span class="line-num">100</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-spawnParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">spawnParamSet</span><span
+            class="method-args">(_paramSeed = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to spawn a <a href="ParamSetStub.html"><code>ParamSetStub</code></a> and push to a running list.</p>
+<dl class="rdoc-list note-list"><dt><em>paramSeed</em>
+<dd>
+<p>a Hash of paramter set. Can be partial.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>a <a href="ParamSetStub.html"><code>ParamSetStub</code></a>.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="spawnParamSet-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">259</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">spawnParamSet</span>(<span class="ruby-identifier">_paramSeed</span> = <span class="ruby-keyword">nil</span>)
+<span class="line-num">260</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramSeed</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">261</span>     <span class="ruby-identifier">_psStub</span> = <span class="ruby-ivar">@paramSetFactory</span>.<span class="ruby-identifier">newParamSet</span>(<span class="ruby-identifier">_paramSeed</span>) ;
+<span class="line-num">262</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">263</span>     <span class="ruby-identifier">_psStub</span> = <span class="ruby-ivar">@paramSetFactory</span>.<span class="ruby-identifier">newParamSet</span>() ;
+<span class="line-num">264</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">265</span>   
+<span class="line-num">266</span>   <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">267</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_psStub</span> ;
+<span class="line-num">268</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-spawnParamSetN" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">spawnParamSetN</span><span
+            class="method-args">(_n, _paramSeed = nil, &amp;_block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to spawn <em>n</em> <a href="ParamSetStub.html"><code>ParamSetStub</code></a> and push to a running list.</p>
+<dl class="rdoc-list note-list"><dt><em>n</em>
+<dd>
+<p>the number of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> to spawn.</p>
+</dd><dt><em>paramSeed</em>
+<dd>
+<p>a Hash of paramter set. Can be partial.</p>
+</dd><dt><em>block</em>
+<dd>
+<p>a procedure to generate paramSeed.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>an Array of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> to be generated.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="spawnParamSetN-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">277</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">spawnParamSetN</span>(<span class="ruby-identifier">_n</span>, <span class="ruby-identifier">_paramSeed</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
+<span class="line-num">278</span>   <span class="ruby-identifier">_list</span> = [] ;
+<span class="line-num">279</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_n</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">280</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_block</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">281</span>       <span class="ruby-identifier">_seed</span> = <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_paramSeed</span>, <span class="ruby-identifier">_i</span>) ;
+<span class="line-num">282</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">283</span>       <span class="ruby-identifier">_seed</span> = <span class="ruby-identifier">_paramSeed</span> ;
+<span class="line-num">284</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">285</span>     <span class="ruby-identifier">_ps</span> = <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_seed</span>) ;
+<span class="line-num">286</span>     <span class="ruby-identifier">_list</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_ps</span>) ;
+<span class="line-num">287</span>   }
+<span class="line-num">288</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_list</span> ;
+<span class="line-num">289</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-syncAll" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">syncAll</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to update all status.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="syncAll-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">181</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAll</span>()
+<span class="line-num">182</span>   <span class="ruby-ivar">@simulator</span>.<span class="ruby-identifier">syncAll</span>() ;
+<span class="line-num">183</span>   <span class="ruby-identifier">eachRunningParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">184</span>     <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">sync</span>() ;
+<span class="line-num">185</span>   }
+<span class="line-num">186</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-terminate-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">terminate?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to check conditions to terminate <a href="Conductor.html#method-i-run"><code>run</code></a>-loop. In default, output log. It can be overrided by expanded classes.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>true when the conditions to terminate are satisfied.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="terminate-3F-source">
+            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
+<span class="line-num">212</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
+<span class="line-num">213</span>   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
+<span class="line-num">214</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

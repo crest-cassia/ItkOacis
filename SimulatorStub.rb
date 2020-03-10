@@ -22,8 +22,6 @@ require 'WithConfParam.rb' ;
 
 
 #--======================================================================
-#++
-## package module of Interactive Toolkit for Oacis.
 module ItkOacis
   #--======================================================================
   #++
