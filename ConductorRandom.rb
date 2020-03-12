@@ -1,6 +1,6 @@
 #! /usr/bin/env ../../oacis/bin/oacis_ruby
 ## -*- mode: ruby -*-
-## = Itk Oacis Conductor
+## = Itk Oacis Conductor for Random Search.
 ## Author:: Itsuki Noda
 ## Version:: 0.0 2020/02/14 I.Noda
 ##
