@@ -1,11 +1,11 @@
 #! /usr/bin/env ../../oacis/bin/oacis_ruby
 ## -*- mode: ruby -*-
-## = Itk Oacis ParamSet Factory (Random Search)
+## = Itk Oacis Conductor
 ## Author:: Itsuki Noda
-## Version:: 0.0 2020/03/10 I.Noda
+## Version:: 0.0 2020/02/14 I.Noda
 ##
 ## === History
-## * [2020/03/10]: Create This File.
+## * [2020/02/14]: Create This File.
 ## * [YYYY/MM/DD]: add more
 ## == Usage
 ## * ...
@@ -20,100 +20,120 @@ $LOAD_PATH.addIfNeed(File.dirname(__FILE__) + "/itkLib");
 require 'pp' ;
 require 'json' ;
 
-require 'ParamSetFactory.rb' ;
+require 'WithConfParam.rb' ;
+require 'Stat/Random.rb' ;
+
+require 'Conductor.rb' ;
 
 #--======================================================================
 module ItkOacis
   #--======================================================================
   #++
-  ## to manage to create new ParamSetStub for random-search.
-  ## A policy to scatter ParamSets can be specified
+  ## Conductor that manages to create new ParamSetStub
+  ## by exploring whole combination.
+  ## Lists of values for each parameter can be specified
   ## in _conf_ parameter in new as follow:
   ##     <Conf> ::= { ...
-  ##                  :scatterPolicy => { <ParamName> => <RandPolicy>,
-  ##                                      <ParamName> => <RandPolicy>,
+  ##                  :paramList => { <ParamName> => [value, value, ...],
+  ##                                  <ParamName> => [value, value, ...],
   ##                                      ... },
   ##                  ... }
   ##     <ParamName> ::=  a string of the name of a parameter.
-  ##     <RandPolicy> ::= { :type => :uniform, :min => min, :max => max }
-  ##                    | { :type => :gaussian, :ave => ave, :std => std }
-  ##                    | { :type => :value, :value => value }
-  ##                    | { :type => :list, :list => [value, value, ...] }
-  ## 
-  class ParamSetFactoryRandom < ParamSetFactory
+  class ConductorCombine < Conductor
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
-    ## default configulation for initialization.
+    ## default values of _conf_ in new method.
     DefaultConf = {
-      :scatterPolicy => {},
+      :paramList => {},
       nil => nil } ;
 
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     #++
-    ## default seed to create new ParamSet.
-    attr_reader :scatterPolicy ;
+    ## a Hash of the parameter and the list of values.
+    ## The Hash is specified in _conf_ in new method
+    ## by key <tt>:paramList</tt>. 
+    attr_reader :paramListTable ;
+    
+    ## the current index of parameter in the list.
+    attr_reader :paramListIndex ;
+    ## maximum number of combination.
+    attr_reader :maxCombination ;
+    ## scatter policy definition.
 
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
-    ## initialize an instance.
-    ## _conf_:: configulation for the initialization.
-    def initialize(_conductor, _conf = {})
-      super(_conductor, _conf) ;
-      setupScatterPolicy(getConf(:scatterPolicy)) ;
+    ## to setup configulations.
+    def setup()
+      setupParamListTable(getConf(:paramList)) ;
+      super() ;
     end
 
     #--------------------------------------------------------------
     #++
-    ## to set scatter policy.
+    ## to set palameter list policy.
     ## _policyTable_:: a Hash from param. name to scatter policy.
-    def setupScatterPolicy(_policyTable)
-      @scatterPolicySpec = _policyTable ;
-      @scatterPolicy = {} ;
-      @scatterPolicySpec.each{|_name, _policyOriginal|
-        _policy = _policyOriginal.dup() ;
-        case(_policy[:type])
-        when :uniform ;
-          _policy[:value] = Stat::Uniform.new(_policy[:min], _policy[:max]) ;
-        when :gaussian ;
-          _policy[:value] = Stat::Gaussian.new(_policy[:ave], _policy[:std]) ;
-        end
-        @scatterPolicy[_name] = _policy ;
+    def setupParamListTable(_paramListTable)
+      @paramListTable = _paramListTable ;
+      @paramListIndex = [] ;
+      @maxCombination = 1 ;
+      @paramListTable.each{|_name, _paramList|
+        @paramListIndex.push({:name => _name, :index => 0}) ;
+        @maxCombination *= _paramList.size ;
       }
     end
 
+    #--------------------------------------------------------------
+    #++
+    ## to get initial number of pooled ParamSet.
+    ## *return*:: the number of ParamSet.
+    def getInitialNPooledParamSet()
+      return @maxCombination ;
+    end
+    
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
     ## to setup ParamSet setting for new one.
-    ## It generate a partial _paramSet hash according to
-    ## a specified policy in scatterPolicy.
-    ## The value specified in _seed_ override the policy.
+    ## It generates a partial _paramSet hash by picking up
+    ## each combination of parameter values.
     ## _seed_:: a Hash of overriding parameters. 
     ## *return*:: a Hash of a partial ParamSet setting.
     def setupNewParam(_seed)
       _param = {} ;
-      @scatterPolicy.each{|_paramName, _policy|
-        _param[_paramName] = ( _seed.key?(_paramName) ?
-                                 _seed[_paramName] :
-                                 getValueByPolicy(_policy) ) ;
+      @paramListIndex.each{|_entry|
+        _name = _entry[:name] ;
+        _param[_name] = ( _seed.key?(_name) ?
+                            _seed[_name] :
+                            @paramListTable[_name][_entry[:index]] ) ;
       }
+      shiftIndex(@paramListIndex,0) ;
       return _param ;
     end
 
     #--------------------------------------------------------------
     #++
-    ## to generate a random value specifyed in _policy_.
-    ## _policy_:: a Hash of overriding parameters. 
-    ## *return*:: a random value.
-    def getValueByPolicy(_policy)
-      case(_policy[:type])
-      when :uniform, :gaussian, :value ;
-        return _policy[:value].value() ;
-      when :list ;
-        return _policy[:list].sample() ;
+    ## to shift indexes in _paramListIndex_.
+    ## _paramListIndex_:: an Array of name-index tables.
+    ## _k_:: to focus _k_-th entry.
+    ## *return*:: true if the index rewinded.
+    def shiftIndex(_paramListIndex, _k)
+      if(_k >= _paramListIndex.size) then
+        return true ;
       else
-        raise "Unknown policy type: " + _policy.inspect ;
+        _rewindP = shiftIndex(_paramListIndex, _k + 1) ;
+        if(_rewindP) then
+          _paramListIndex[_k][:index] += 1;
+          _name = _paramListIndex[_k][:name] ;
+          if(_paramListIndex[_k][:index] >= @paramListTable[_name].size) then
+            _paramListIndex[_k][:index] = 0 ;
+            return true ;
+          else
+            return false ;
+          end
+        else
+          return false ;
+        end
       end
     end
     
@@ -122,7 +142,7 @@ module ItkOacis
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     #--------------------------------------------------------------
-  end # class ParamSetFactoryRandom
+  end # class Conductor
 end # module ItkOacis
 
 ########################################################################
@@ -130,34 +150,20 @@ end # module ItkOacis
 ########################################################################
 if($0 == __FILE__) then
 
-  require 'Conductor.rb' ;
   #--============================================================
   #++
   ## test conductor
-  class FooConductor < ItkOacis::Conductor
+  class FooConductor < ItkOacis::ConductorCombine
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default configulation for initialization.
     DefaultConf = {
       :simulatorName => "foo00",
       :hostName => "localhost",
-      :paramSetFactoryClass => ItkOacis::ParamSetFactoryRandom,
-      :paramSetFactoryConf => {
-        :scatterPolicy => { "x" => { :type => :uniform,
-                                     :min => -1.0, :max => 1.0 },
-                            "y" => { :type => :gaussian,
-                                     :ave => 10.0, :std => 1.0 },
-                            "z" => { :type => :list,
-                                     :list => [0.0, 1.0, 2.0, 3.0] } }
-      },
+      :paramList => { "x" => [0.1, 0.2, 0.3],
+                      "y" => [4.0, 5.0, 6.0],
+                      "z" => [0.7, 0.8, 0.9] },
     } ;
-    
-    #----------------------------------------------------
-    #++
-    ## override runInit().
-    def runInit()
-      fillRunningParamSetList() ;
-    end
     
     #--------------------------------------------------------------
     #++
@@ -165,13 +171,6 @@ if($0 == __FILE__) then
     def cycleBody()
       super() ;
       p [:cycle, @cycleCount, nRunning(), nDone()] ;
-    end
-    
-    #----------------------------------------------------
-    #++
-    ## override terminated().
-    def terminate?()
-      return nRunning() == 0 ;
     end
     
   end # class FooConductor
@@ -229,7 +228,7 @@ if($0 == __FILE__) then
     
     #----------------------------------------------------
     #++
-    ## my conductor.
+    ## test ConductorRandom.
     def test_a()
       _conductor = FooConductor.new() ;
       pp [:test_a, _conductor] ;

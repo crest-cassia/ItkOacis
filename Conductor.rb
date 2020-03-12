@@ -24,7 +24,7 @@ require 'WithConfParam.rb' ;
 
 require 'SimulatorStub.rb' ;
 require 'HostStub.rb' ;
-require 'ParamSetFactory.rb' ;
+require 'ParamSetStub.rb' ;
 
 #--======================================================================
 module ItkOacis
@@ -34,35 +34,68 @@ module ItkOacis
   class Conductor < WithConfParam
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
-    ## default configulation for initialization.
+    ## default values of _conf_ in new method.
     DefaultConf = {
       :simulatorName => "foo00",
       :hostName => "localhost",
       :hostParam => nil,
-      :paramSetFactoryClass => ItkOacis::ParamSetFactory,
-      :paramSetFactoryConf => {},
+      :paramSetClass => ItkOacis::ParamSetStub,
+      :nRun => 1,
+      :defaultVariedParam => {},
       :interval => 1,  # sleep interval in run in sec.
       :nPooledParamSet => nil,
       nil => nil } ;
 
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     #++
-    ## stub to simulator entity.
+    ## a SimulatorStub, stub to simulator entity.
+    ## The simulator is looked up by the name registered in Oacis.
+    ## The name is specified in _conf_ in new method
+    ## by key <tt>:simulatorName</tt>. 
     attr_reader :simulator ;
-    ## stub to host or host group.
+    
+    ## a HostStub, stub to host or host group.
+    ## The host (host group) is looked up by the name registered in Oacis.
+    ## The name is specified in _conf_ in new method
+    ## by key <tt>:hostName</tt>.
     attr_reader :host ;
-    ## ParamSetFactory ;
-    attr_reader :paramSetFactory ;
+    
+    ## ParamSetStub class.
+    ## The class is specified in _conf_ in new method
+    ## by key <tt>:paramSetClass</tt>.
+    attr_reader :paramSetClass ;
+    
+    ## number of runs.
+    ## The number of runs will be created and executed for each ParamSet.
+    ## The number is specified in _conf_ in new method
+    ## by key <tt>:nRun</tt>.
+    attr_reader :nRun ;
+    
+    ## default varied ParamSet in Hash.
+    ## When a new ParamSet is created, the value of each parameter is selected
+    ## from specification in _varidParam_ argument in spawnParamSet,
+    ## this defaultVariedParam, and the default of the simulator.
+    ## The Hash is specified in _conf_ in new method
+    ## by key <tt>:defaultVairdParam</tt>.
+    attr_reader :defaultVariedParam ;
+
+    ## duration of sleep in run cycle in sec.
+    ## The duration is specified in _conf_ in new method
+    ## by key <tt>:interval</tt>.
+    attr_reader :interval ;
+    
+    ## size of pooled ParamSet.
+    ## Generally, set doubled maxJobN of @host.
+    ## The duration is specified in _conf_ in new method
+    ## by key <tt>:nPooledParamSet</tt>.
+    attr_reader :nPooledParamSet ;
+    
     ## counter of whole ParamSet.
     attr_reader :nWholeParamSet ;
-    ## size of pooled ParamSet.  Generally, set doubled maxJobN of @host.
-    attr_reader :nPooledParamSet ;
     ## list of running ParamSet.
     attr_reader :runningParamSetList ;
     ## list of finished or failed ParamSet.
     attr_reader :doneParamSetList ;
-    ## duration of sleep in run cycle in sec.
-    attr_reader :interval ;
 
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
@@ -82,21 +115,20 @@ module ItkOacis
       setSimulator(getConf(:simulatorName)) ;
       setHost(getConf(:hostName), getConf(:hostParam)) ;
 
-      @paramSetFactory =
-        getConf(:paramSetFactoryClass).new(self,
-                                           getConf(:paramSetFactoryConf)) ;
+      @paramSetClass = getConf(:paramSetClass) ;
+      @nRun = getConf(:nRun) ;
+      @defaultVariedParam = getConf(:defaultVariedParam) ;
       
       @nWholeParamSet = 0 ;
       @runningParamSetList = [] ;
       @interval = getConf(:interval) ;
 
-      @nPooledParamSet = (getConf(:nPooledParamSet) ||
-                          2 * @host.maxJobN()) ;
+      @nPooledParamSet = getInitialNPooledParamSet()
     end
 
     #--------------------------------------------------------------
     #++
-    ## set SimulatorStub by name.
+    ## to set SimulatorStub by name.
     ## _simName_:: the name of simulator.
     ## *return*:: the SimulatorStub.
     def setSimulator(_simName)
@@ -106,7 +138,7 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## set HostStub by name.
+    ## to set HostStub by name.
     ## _hostName_:: the name of Host or HostGroup.
     ## _hostParam_:: a Hash of the parameters for the Host.
     ## *return*:: the HostStub.
@@ -117,10 +149,11 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## get number of running ParamSet.
-    ## *return*:: the number of running ParamSet.
-    def nRunningParamSet()
-      return @runningParamSetList.size() ;
+    ## to get initial number of pooled ParamSet.
+    ## *return*:: the number of ParamSet.
+    def getInitialNPooledParamSet()
+      return (getConf(:nPooledParamSet) ||
+              2 * @host.maxJobN()) ;
     end
 
     #--////////////////////////////////////////////////////////////
@@ -145,11 +178,12 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## to initialize run process.
-    ## In default, raise exception.
+    ## to generate initial set of ParamSets.
+    ## In fillRunningParamSetList(),
+    ## the size of initial set equals to nPooledParamSet.
     ## It can be overrided by expanded classes.
     def runInit()
-      raise "runInit() is not defined." ;
+      fillRunningParamSetList() ;
     end
     
     #--------------------------------------------------------------
@@ -215,7 +249,7 @@ module ItkOacis
     ## It can be overrided by expanded classes.
     ## *return*:: true when the conditions to terminate are satisfied.
     def terminate?()
-      return false ;
+      return nRunning() == 0 ;
     end
 
     #--////////////////////////////////////////////////////////////
@@ -263,9 +297,9 @@ module ItkOacis
     ## *return*:: a ParamSetStub.
     def spawnParamSet(_paramSeed = nil)
       if(_paramSeed) then
-        _psStub = @paramSetFactory.newParamSet(_paramSeed) ;
+        _psStub = newParamSet(_paramSeed) ;
       else
-        _psStub = @paramSetFactory.newParamSet() ;
+        _psStub = newParamSet() ;
       end
       
       @runningParamSetList.push(_psStub) ;
@@ -304,6 +338,49 @@ module ItkOacis
       spawnParamSetN(_n, _paramSeed, &_block)
     end
       
+    #--////////////////////////////////////////////////////////////
+    #--------------------------------------------------------------
+    #++
+    ## to create ParamSetStub.
+    ## Can be override.
+    ## _varied_:: a paried information to generate ParamSet.
+    ## _nRun_:: number of runs.
+    ## *return*:: a ParamSetStub.
+    def newParamSet(_varied = @defaultVariedParam, _nRun = @nRun)
+      _param = setupNewParam(_varied) ;
+      _psStub = @paramSetClass.new(_param, self, _nRun) ;
+      return _psStub ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## to setup ParamSet setting for new one.
+    ## As a default, just return _seed.
+    ## Can be override.
+    ## _varied_:: a paried information to generate ParamSet.
+    ## *return*:: a Hash of ParamSet setting.
+    def setupNewParam(_varied)
+      return _varied ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## to create PS.
+    ## _param_:: a Hash of a parameter set. Can be partial.
+    ## *return*:: a Ps.
+    def createPs(_param)
+      return simulator().createPs(_param) ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to run ParamSetStub on Host.
+    ## _psStub_:: a ParamSetStub.
+    ## _nRun_:: number of runs.
+    def runParamSet(_psStub, _nRun)
+      host().createRuns(_psStub, _nRun) ;
+    end
+
     #--////////////////////////////////////////////////////////////
     #--============================================================
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -350,13 +427,6 @@ if($0 == __FILE__) then
       eachDoneParamSet(){|_psStub|
         pp [:done, _psStub.toJson()] ;
       }
-    end
-    
-    #----------------------------------------------------
-    #++
-    ## override terminate?().
-    def terminate?()
-      return nRunning() == 0 ;
     end
     
   end # class FooConductor
