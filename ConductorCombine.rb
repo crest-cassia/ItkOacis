@@ -1,3 +1,4 @@
+#! /usr/bin/env ../../,Work/oacis_current/bin/oacis_ruby
 #! /usr/bin/env ../../oacis/bin/oacis_ruby
 ## -*- mode: ruby -*-
 ## = Itk Oacis Conductor to explore whole combination of lists.
