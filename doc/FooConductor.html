@@ -77,13 +77,7 @@
     
     <li class="calls-super" ><a href="#method-i-cycleBody">#cycleBody</a>
     
-    <li class="calls-super" ><a href="#method-i-cycleCheck">#cycleCheck</a>
-    
-    <li ><a href="#method-i-isFinished">#isFinished</a>
-    
     <li ><a href="#method-i-runInit">#runInit</a>
-    
-    <li ><a href="#method-i-terminate-3F">#terminate?</a>
     
   </ul>
 </div>
@@ -162,85 +156,13 @@
           
           <div class="method-source-code" id="cycleBody-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">342</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
-<span class="line-num">343</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">344</span>   <span class="ruby-identifier">p</span> [<span class="ruby-value">:cycle</span>, <span class="ruby-ivar">@cycleCount</span>, <span class="ruby-identifier">nRunning</span>(), <span class="ruby-identifier">nFinished</span>()] ;
-<span class="line-num">345</span>   <span class="ruby-identifier">eachFinishedParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
-<span class="line-num">346</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:finished</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>()] ;
-<span class="line-num">347</span>   }
-<span class="line-num">348</span> <span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-cycleCheck" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">cycleCheck</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>override cycleCheck().</p>
-          
-          
-            <div class="method-calls-super">
-              Calls superclass method
-              
-            </div>
-          
-
-          
-          <div class="method-source-code" id="cycleCheck-source">
-            <pre>    <span class="ruby-comment"># File ParamSetFactory.rb</span>
-<span class="line-num">171</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleCheck</span>()
-<span class="line-num">172</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">173</span>   <span class="ruby-identifier">p</span> [<span class="ruby-value">:count</span>, <span class="ruby-ivar">@cycleCount</span>] ;
-<span class="line-num">174</span> <span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-isFinished" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">isFinished</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>override isFinished().</p>
-          
-          
-
-          
-          <div class="method-source-code" id="isFinished-source">
-            <pre>    <span class="ruby-comment"># File ParamSetFactory.rb</span>
-<span class="line-num">178</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">isFinished</span>()
-<span class="line-num">179</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@cycleCount</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">10</span> ;
-<span class="line-num">180</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">424</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
+<span class="line-num">425</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">426</span>   <span class="ruby-identifier">p</span> [<span class="ruby-value">:cycle</span>, <span class="ruby-ivar">@cycleCount</span>, <span class="ruby-identifier">nRunning</span>(), <span class="ruby-identifier">nDone</span>()] ;
+<span class="line-num">427</span>   <span class="ruby-identifier">eachDoneParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">428</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:done</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>()] ;
+<span class="line-num">429</span>   }
+<span class="line-num">430</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -271,47 +193,14 @@
           
           <div class="method-source-code" id="runInit-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">330</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runInit</span>()
-<span class="line-num">331</span>   <span class="ruby-identifier">fillRunningParamSetList</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_seed</span>, <span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
-<span class="line-num">332</span>     <span class="ruby-identifier">_x</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">333</span>     <span class="ruby-identifier">_z</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">334</span>     { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_x</span>,
-<span class="line-num">335</span>       <span class="ruby-string">&quot;z&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_z</span>, }
-<span class="line-num">336</span>   } ;
-<span class="line-num">337</span> <span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-terminate-3F" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">terminate?</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>override isFinished().</p>
-          
-          
-
-          
-          <div class="method-source-code" id="terminate-3F-source">
-            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">352</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
-<span class="line-num">353</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">nRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span> ;
-<span class="line-num">354</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">412</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runInit</span>()
+<span class="line-num">413</span>   <span class="ruby-identifier">fillRunningParamSetList</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_seed</span>, <span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">414</span>     <span class="ruby-identifier">_x</span> = <span class="ruby-identifier">rand</span>() ;
+<span class="line-num">415</span>     <span class="ruby-identifier">_z</span> = <span class="ruby-identifier">rand</span>() ;
+<span class="line-num">416</span>     { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_x</span>,
+<span class="line-num">417</span>       <span class="ruby-string">&quot;z&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_z</span>, }
+<span class="line-num">418</span>   } ;
+<span class="line-num">419</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

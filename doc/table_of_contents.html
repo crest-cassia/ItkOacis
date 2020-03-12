@@ -61,17 +61,17 @@
   </li>
 
   <li class="class">
+    <a href="ItkOacis/ConductorCombine.html">ItkOacis::ConductorCombine</a>
+
+  </li>
+
+  <li class="class">
+    <a href="ItkOacis/ConductorRandom.html">ItkOacis::ConductorRandom</a>
+
+  </li>
+
+  <li class="class">
     <a href="ItkOacis/HostStub.html">ItkOacis::HostStub</a>
-
-  </li>
-
-  <li class="class">
-    <a href="ItkOacis/ParamSetFactory.html">ItkOacis::ParamSetFactory</a>
-
-  </li>
-
-  <li class="class">
-    <a href="ItkOacis/ParamSetFactoryRandom.html">ItkOacis::ParamSetFactoryRandom</a>
 
   </li>
 
@@ -166,16 +166,6 @@
     <span class="container">ItkOacis::HostStub</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
-
-  <li class="method">
-    <a href="ItkOacis/ParamSetFactoryRandom.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactoryRandom</span>
-
-  <li class="method">
     <a href="ItkOacis/ParamSetStub.html#method-c-new">::new</a>
     &mdash;
     <span class="container">ItkOacis::ParamSetStub</span>
@@ -206,14 +196,9 @@
     <span class="container">ItkOacis::ParamSetStub</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-i-createPs">#createPs</a>
+    <a href="ItkOacis/Conductor.html#method-i-createPs">#createPs</a>
     &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
-
-  <li class="method">
-    <a href="ItkOacis/ParamSetFactoryRandom.html#method-i-createPs">#createPs</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactoryRandom</span>
+    <span class="container">ItkOacis::Conductor</span>
 
   <li class="method">
     <a href="ItkOacis/SimulatorStub.html#method-i-createPs">#createPs</a>
@@ -246,17 +231,12 @@
     <span class="container">FooConductor</span>
 
   <li class="method">
-    <a href="FooConductor.html#method-i-cycleCheck">#cycleCheck</a>
-    &mdash;
-    <span class="container">FooConductor</span>
-
-  <li class="method">
     <a href="ItkOacis/ParamSetStub.html#method-i-done-3F">#done?</a>
     &mdash;
     <span class="container">ItkOacis::ParamSetStub</span>
 
   <li class="method">
-    <a href="ItkOacis/Conductor.html#method-i-eachFinishedParamSet">#eachFinishedParamSet</a>
+    <a href="ItkOacis/Conductor.html#method-i-eachDoneParamSet">#eachDoneParamSet</a>
     &mdash;
     <span class="container">ItkOacis::Conductor</span>
 
@@ -306,14 +286,19 @@
     <span class="container">ItkOacis::SimulatorStub</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-i-getHost">#getHost</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
-
-  <li class="method">
     <a href="ItkOacis/HostStub.html#method-i-getHostParamTable">#getHostParamTable</a>
     &mdash;
     <span class="container">ItkOacis::HostStub</span>
+
+  <li class="method">
+    <a href="ItkOacis/Conductor.html#method-i-getInitialNPooledParamSet">#getInitialNPooledParamSet</a>
+    &mdash;
+    <span class="container">ItkOacis::Conductor</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorCombine.html#method-i-getInitialNPooledParamSet">#getInitialNPooledParamSet</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorCombine</span>
 
   <li class="method">
     <a href="ItkOacis/ParamSetStub.html#method-i-getInput">#getInput</a>
@@ -346,14 +331,9 @@
     <span class="container">ItkOacis::ParamSetStub</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-i-getSimulator">#getSimulator</a>
+    <a href="ItkOacis/ConductorRandom.html#method-i-getValueByPolicy">#getValueByPolicy</a>
     &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
-
-  <li class="method">
-    <a href="FooConductor.html#method-i-isFinished">#isFinished</a>
-    &mdash;
-    <span class="container">FooConductor</span>
+    <span class="container">ItkOacis::ConductorRandom</span>
 
   <li class="method">
     <a href="ItkOacis/HostStub.html#method-i-isHost">#isHost</a>
@@ -371,7 +351,7 @@
     <span class="container">ItkOacis::HostStub</span>
 
   <li class="method">
-    <a href="ItkOacis/Conductor.html#method-i-nFinished">#nFinished</a>
+    <a href="ItkOacis/Conductor.html#method-i-nDone">#nDone</a>
     &mdash;
     <span class="container">ItkOacis::Conductor</span>
 
@@ -381,19 +361,9 @@
     <span class="container">ItkOacis::Conductor</span>
 
   <li class="method">
-    <a href="ItkOacis/Conductor.html#method-i-nRunningParamSet">#nRunningParamSet</a>
+    <a href="ItkOacis/Conductor.html#method-i-newParamSet">#newParamSet</a>
     &mdash;
     <span class="container">ItkOacis::Conductor</span>
-
-  <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-i-newParamSet">#newParamSet</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
-
-  <li class="method">
-    <a href="ItkOacis/ParamSetFactoryRandom.html#method-i-newParamSet">#newParamSet</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactoryRandom</span>
 
   <li class="method">
     <a href="ItkOacis/Conductor.html#method-i-run">#run</a>
@@ -416,14 +386,9 @@
     <span class="container">FooConductor</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-i-runParamSet">#runParamSet</a>
+    <a href="ItkOacis/Conductor.html#method-i-runParamSet">#runParamSet</a>
     &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
-
-  <li class="method">
-    <a href="ItkOacis/ParamSetFactoryRandom.html#method-i-runParamSet">#runParamSet</a>
-    &mdash;
-    <span class="container">ItkOacis::ParamSetFactoryRandom</span>
+    <span class="container">ItkOacis::Conductor</span>
 
   <li class="method">
     <a href="ItkOacis/HostStub.html#method-i-setEntityByName">#setEntityByName</a>
@@ -446,14 +411,49 @@
     <span class="container">ItkOacis::Conductor</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactory.html#method-i-setupNewParam">#setupNewParam</a>
+    <a href="ItkOacis/Conductor.html#method-i-setup">#setup</a>
     &mdash;
-    <span class="container">ItkOacis::ParamSetFactory</span>
+    <span class="container">ItkOacis::Conductor</span>
 
   <li class="method">
-    <a href="ItkOacis/ParamSetFactoryRandom.html#method-i-setupNewParam">#setupNewParam</a>
+    <a href="ItkOacis/ConductorCombine.html#method-i-setup">#setup</a>
     &mdash;
-    <span class="container">ItkOacis::ParamSetFactoryRandom</span>
+    <span class="container">ItkOacis::ConductorCombine</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorRandom.html#method-i-setup">#setup</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorRandom</span>
+
+  <li class="method">
+    <a href="ItkOacis/Conductor.html#method-i-setupNewParam">#setupNewParam</a>
+    &mdash;
+    <span class="container">ItkOacis::Conductor</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorCombine.html#method-i-setupNewParam">#setupNewParam</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorCombine</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorRandom.html#method-i-setupNewParam">#setupNewParam</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorRandom</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorCombine.html#method-i-setupParamListTable">#setupParamListTable</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorCombine</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorRandom.html#method-i-setupScatterPolicy">#setupScatterPolicy</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorRandom</span>
+
+  <li class="method">
+    <a href="ItkOacis/ConductorCombine.html#method-i-shiftIndex">#shiftIndex</a>
+    &mdash;
+    <span class="container">ItkOacis::ConductorCombine</span>
 
   <li class="method">
     <a href="ItkOacis/Conductor.html#method-i-spawnParamSet">#spawnParamSet</a>
@@ -499,11 +499,6 @@
     <a href="ItkOacis/Conductor.html#method-i-terminate-3F">#terminate?</a>
     &mdash;
     <span class="container">ItkOacis::Conductor</span>
-
-  <li class="method">
-    <a href="FooConductor.html#method-i-terminate-3F">#terminate?</a>
-    &mdash;
-    <span class="container">FooConductor</span>
 
   <li class="method">
     <a href="ItkTest.html#method-i-test_a">#test_a</a>

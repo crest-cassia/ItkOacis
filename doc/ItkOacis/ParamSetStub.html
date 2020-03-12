@@ -212,7 +212,7 @@
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(_seedParam, _factory, _nRun)</span>
+            class="method-args">(_seedParam, _conductor, _nRun)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -225,9 +225,9 @@
 <dl class="rdoc-list note-list"><dt><em>seedParam</em>
 <dd>
 <p>seed of parameters in a Hash.</p>
-</dd><dt><em>factory</em>
+</dd><dt><em>conductor</em>
 <dd>
-<p>a <a href="ParamSetFactory.html"><code>ParamSetFactory</code></a>.</p>
+<p>a <a href="Conductor.html"><code>Conductor</code></a>.</p>
 </dd><dt><em>nRun</em>
 <dd>
 <p>a number of runs.</p>
@@ -238,11 +238,11 @@
           
           <div class="method-source-code" id="new-source">
             <pre>   <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">59</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_seedParam</span>, <span class="ruby-identifier">_factory</span>, <span class="ruby-identifier">_nRun</span>)
+<span class="line-num">59</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_seedParam</span>, <span class="ruby-identifier">_conductor</span>, <span class="ruby-identifier">_nRun</span>)
 <span class="line-num">60</span>   <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">@@maxId</span> ;
 <span class="line-num">61</span>   <span class="ruby-identifier">@@maxId</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
 <span class="line-num">62</span>   
-<span class="line-num">63</span>   <span class="ruby-identifier">createAndRun</span>(<span class="ruby-identifier">_seedParam</span>, <span class="ruby-identifier">_factory</span>, <span class="ruby-identifier">_nRun</span>) ;
+<span class="line-num">63</span>   <span class="ruby-identifier">createAndRun</span>(<span class="ruby-identifier">_seedParam</span>, <span class="ruby-identifier">_conductor</span>, <span class="ruby-identifier">_nRun</span>) ;
 <span class="line-num">64</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -307,7 +307,7 @@
         
         <div class="method-heading">
           <span class="method-name">createAndRun</span><span
-            class="method-args">(_seedParam, _factory, _nRun)</span>
+            class="method-args">(_seedParam, _conductor, _nRun)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -320,9 +320,9 @@
 <dl class="rdoc-list note-list"><dt><em>seedParam</em>
 <dd>
 <p>parameters in a Hash.</p>
-</dd><dt><em>factory</em>
+</dd><dt><em>conductor</em>
 <dd>
-<p>a <a href="ParamSetFactory.html"><code>ParamSetFactory</code></a>.</p>
+<p>a <a href="Conductor.html"><code>Conductor</code></a>.</p>
 </dd><dt><em>nRun</em>
 <dd>
 <p>a number of runs.</p>
@@ -333,10 +333,10 @@
           
           <div class="method-source-code" id="createAndRun-source">
             <pre>   <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">72</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createAndRun</span>(<span class="ruby-identifier">_seedParam</span>, <span class="ruby-identifier">_factory</span>, <span class="ruby-identifier">_nRun</span>)
+<span class="line-num">72</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createAndRun</span>(<span class="ruby-identifier">_seedParam</span>, <span class="ruby-identifier">_conductor</span>, <span class="ruby-identifier">_nRun</span>)
 <span class="line-num">73</span>   <span class="ruby-ivar">@seedParam</span> = <span class="ruby-identifier">_seedParam</span> ;
-<span class="line-num">74</span>   <span class="ruby-ivar">@entity</span> = <span class="ruby-identifier">_factory</span>.<span class="ruby-identifier">createPs</span>(<span class="ruby-ivar">@seedParam</span>) ;
-<span class="line-num">75</span>   <span class="ruby-identifier">_factory</span>.<span class="ruby-identifier">runParamSet</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">_nRun</span>) ;
+<span class="line-num">74</span>   <span class="ruby-ivar">@entity</span> = <span class="ruby-identifier">_conductor</span>.<span class="ruby-identifier">createPs</span>(<span class="ruby-ivar">@seedParam</span>) ;
+<span class="line-num">75</span>   <span class="ruby-identifier">_conductor</span>.<span class="ruby-identifier">runParamSet</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">_nRun</span>) ;
 <span class="line-num">76</span>   
 <span class="line-num">77</span>   <span class="ruby-ivar">@runList</span> = [] ;
 <span class="line-num">78</span>   <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">runs</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>

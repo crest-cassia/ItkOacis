@@ -9,9 +9,9 @@
 
 
 RDOC_FILES = docItkOacis.rb \
-		Conductor.rb HostStub.rb SimulatorStub.rb \
-		ParamSetStub.rb \
-		ParamSetFactory.rb ParamSetFactoryRandom.rb
+		Conductor.rb \
+		ConductorRandom.rb ConductorCombine.rb \
+		HostStub.rb SimulatorStub.rb ParamSetStub.rb
 
 top : rdoc
 

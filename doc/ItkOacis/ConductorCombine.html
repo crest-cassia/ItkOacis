@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class ItkOacis::ConductorCombine - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
+</script>
+
+<script src="../js/navigation.js" defer></script>
+<script src="../js/search.js" defer></script>
+<script src="../js/search_index.js" defer></script>
+<script src="../js/searcher.js" defer></script>
+<script src="../js/darkfish.js" defer></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Conductor.html">ItkOacis::Conductor</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-getInitialNPooledParamSet">#getInitialNPooledParamSet</a>
+    
+    <li class="calls-super" ><a href="#method-i-setup">#setup</a>
+    
+    <li ><a href="#method-i-setupNewParam">#setupNewParam</a>
+    
+    <li ><a href="#method-i-setupParamListTable">#setupParamListTable</a>
+    
+    <li ><a href="#method-i-shiftIndex">#shiftIndex</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-ItkOacis::ConductorCombine">
+  <h1 id="class-ItkOacis::ConductorCombine" class="class">
+    class ItkOacis::ConductorCombine
+  </h1>
+
+  <section class="description">
+    
+<p><a href="Conductor.html"><code>Conductor</code></a> that manages to create new <a href="ParamSetStub.html"><code>ParamSetStub</code></a> by exploring whole combination. Lists of values for each parameter can be specified in <em>conf</em> parameter in new as follow:</p>
+
+<pre>&lt;Conf&gt; ::= { ...
+             :paramList =&gt; { &lt;ParamName&gt; =&gt; [value, value, ...],
+                             &lt;ParamName&gt; =&gt; [value, value, ...],
+                                 ... },
+             ... }
+&lt;ParamName&gt; ::=  a string of the name of a parameter.</pre>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="DefaultConf">DefaultConf
+        
+        <dd><p>default values of <em>conf</em> in new method.</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-maxCombination" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">maxCombination</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>maximum number of combination.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-paramListIndex" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">paramListIndex</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the current index of parameter in the list.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-paramListTable" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">paramListTable</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>a Hash of the parameter and the list of values. The Hash is specified in <em>conf</em> in new method by key <code>:paramList</code>.</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-getInitialNPooledParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">getInitialNPooledParamSet</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to get initial number of pooled ParamSet.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>the number of ParamSet.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="getInitialNPooledParamSet-source">
+            <pre>   <span class="ruby-comment"># File ConductorCombine.rb</span>
+<span class="line-num">90</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getInitialNPooledParamSet</span>()
+<span class="line-num">91</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@maxCombination</span> ;
+<span class="line-num">92</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setup</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to <a href="ConductorCombine.html#method-i-setup"><code>setup</code></a> configulations.</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Conductor.html#method-i-setup"><code>ItkOacis::Conductor#setup</code></a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="setup-source">
+            <pre>   <span class="ruby-comment"># File ConductorCombine.rb</span>
+<span class="line-num">67</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setup</span>()
+<span class="line-num">68</span>   <span class="ruby-identifier">setupParamListTable</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:paramList</span>)) ;
+<span class="line-num">69</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">70</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setupNewParam" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setupNewParam</span><span
+            class="method-args">(_seed)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to <a href="ConductorCombine.html#method-i-setup"><code>setup</code></a> ParamSet setting for new one. It generates a partial _paramSet hash by picking up each combination of parameter values.</p>
+<dl class="rdoc-list note-list"><dt><em>seed</em>
+<dd>
+<p>a Hash of overriding parameters. </p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>a Hash of a partial ParamSet setting.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="setupNewParam-source">
+            <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
+<span class="line-num">102</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupNewParam</span>(<span class="ruby-identifier">_seed</span>)
+<span class="line-num">103</span>   <span class="ruby-identifier">_param</span> = {} ;
+<span class="line-num">104</span>   <span class="ruby-ivar">@paramListIndex</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_entry</span><span class="ruby-operator">|</span>
+<span class="line-num">105</span>     <span class="ruby-identifier">_name</span> = <span class="ruby-identifier">_entry</span>[<span class="ruby-value">:name</span>] ;
+<span class="line-num">106</span>     <span class="ruby-identifier">_param</span>[<span class="ruby-identifier">_name</span>] = ( <span class="ruby-identifier">_seed</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-operator">?</span>
+<span class="line-num">107</span>                         <span class="ruby-identifier">_seed</span>[<span class="ruby-identifier">_name</span>] <span class="ruby-operator">:</span>
+<span class="line-num">108</span>                         <span class="ruby-ivar">@paramListTable</span>[<span class="ruby-identifier">_name</span>][<span class="ruby-identifier">_entry</span>[<span class="ruby-value">:index</span>]] ) ;
+<span class="line-num">109</span>   }
+<span class="line-num">110</span>   <span class="ruby-identifier">shiftIndex</span>(<span class="ruby-ivar">@paramListIndex</span>,<span class="ruby-value">0</span>) ;
+<span class="line-num">111</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_param</span> ;
+<span class="line-num">112</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setupParamListTable" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setupParamListTable</span><span
+            class="method-args">(_paramListTable)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to set palameter list policy.</p>
+<dl class="rdoc-list note-list"><dt><em>policyTable</em>
+<dd>
+<p>a Hash from param. name to scatter policy.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="setupParamListTable-source">
+            <pre>   <span class="ruby-comment"># File ConductorCombine.rb</span>
+<span class="line-num">76</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupParamListTable</span>(<span class="ruby-identifier">_paramListTable</span>)
+<span class="line-num">77</span>   <span class="ruby-ivar">@paramListTable</span> = <span class="ruby-identifier">_paramListTable</span> ;
+<span class="line-num">78</span>   <span class="ruby-ivar">@paramListIndex</span> = [] ;
+<span class="line-num">79</span>   <span class="ruby-ivar">@maxCombination</span> = <span class="ruby-value">1</span> ;
+<span class="line-num">80</span>   <span class="ruby-ivar">@paramListTable</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_paramList</span><span class="ruby-operator">|</span>
+<span class="line-num">81</span>     <span class="ruby-ivar">@paramListIndex</span>.<span class="ruby-identifier">push</span>({<span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_name</span>, <span class="ruby-value">:index</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0</span>}) ;
+<span class="line-num">82</span>     <span class="ruby-ivar">@maxCombination</span> <span class="ruby-operator">*=</span> <span class="ruby-identifier">_paramList</span>.<span class="ruby-identifier">size</span> ;
+<span class="line-num">83</span>   }
+<span class="line-num">84</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-shiftIndex" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">shiftIndex</span><span
+            class="method-args">(_paramListIndex, _k)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to shift indexes in <em>paramListIndex</em>.</p>
+<dl class="rdoc-list note-list"><dt><em>paramListIndex</em>
+<dd>
+<p>an Array of name-index tables.</p>
+</dd><dt><em>k</em>
+<dd>
+<p>to focus <em>k</em>-th entry.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>true if the index rewinded.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="shiftIndex-source">
+            <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
+<span class="line-num">120</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">shiftIndex</span>(<span class="ruby-identifier">_paramListIndex</span>, <span class="ruby-identifier">_k</span>)
+<span class="line-num">121</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_k</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">_paramListIndex</span>.<span class="ruby-identifier">size</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">122</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> ;
+<span class="line-num">123</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">124</span>     <span class="ruby-identifier">_rewindP</span> = <span class="ruby-identifier">shiftIndex</span>(<span class="ruby-identifier">_paramListIndex</span>, <span class="ruby-identifier">_k</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) ;
+<span class="line-num">125</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_rewindP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">126</span>       <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>;
+<span class="line-num">127</span>       <span class="ruby-identifier">_name</span> = <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:name</span>] ;
+<span class="line-num">128</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@paramListTable</span>[<span class="ruby-identifier">_name</span>].<span class="ruby-identifier">size</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">129</span>         <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] = <span class="ruby-value">0</span> ;
+<span class="line-num">130</span>         <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> ;
+<span class="line-num">131</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">132</span>         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
+<span class="line-num">133</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">134</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">135</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
+<span class="line-num">136</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">137</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">138</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
