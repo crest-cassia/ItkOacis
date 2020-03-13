@@ -141,11 +141,11 @@ module ItkOacis
     ## generate param. set and run.
     ## _param_:: parameter set. should be a Hash.
     ## _host_:: a HostStub to run.
-    ## _numRan_:: the number of runs.
+    ## _nofRan_:: the number of runs.
     ## *return*:: parameter set (Ps)
-    def createPsAndRun(_param,  _host, _numRun = 1)
+    def createPsAndRun(_param,  _host, _nofRun = 1)
       _ps = createPs(_param) ;
-      _host.createRuns(_ps, _numRun) ;
+      _host.createRuns(_ps, _nofRun) ;
       return _ps ;
     end
 

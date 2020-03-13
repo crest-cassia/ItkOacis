@@ -48,6 +48,11 @@ module ItkOacis
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default values of _conf_ in new method.
+    ## It should be a Hash. It overrides Conductor::DefaultConf.
+    ## See below for meaning of each key:
+    ## - :scatterPolicy : define a policy to scatter parameter values.
+    ##   See description of ItkOacis::ConductorRandom. 
+    ##   (default: {})
     DefaultConf = {
       :scatterPolicy => {},
       nil => nil } ;
@@ -158,7 +163,6 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      p [:cycle, @cycleCount, nRunning(), nDone()] ;
     end
     
   end # class FooConductor

@@ -156,13 +156,13 @@
           
           <div class="method-source-code" id="cycleBody-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">424</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
-<span class="line-num">425</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">426</span>   <span class="ruby-identifier">p</span> [<span class="ruby-value">:cycle</span>, <span class="ruby-ivar">@cycleCount</span>, <span class="ruby-identifier">nRunning</span>(), <span class="ruby-identifier">nDone</span>()] ;
-<span class="line-num">427</span>   <span class="ruby-identifier">eachDoneParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
-<span class="line-num">428</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:done</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>()] ;
-<span class="line-num">429</span>   }
-<span class="line-num">430</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">529</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
+<span class="line-num">530</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">531</span>   <span class="ruby-identifier">p</span> [<span class="ruby-value">:cycle</span>, <span class="ruby-ivar">@cycleCount</span>, <span class="ruby-identifier">nofRunning</span>(), <span class="ruby-identifier">nofDone</span>()] ;
+<span class="line-num">532</span>   <span class="ruby-identifier">eachDoneParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">533</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:done</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>()] ;
+<span class="line-num">534</span>   }
+<span class="line-num">535</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -193,14 +193,14 @@
           
           <div class="method-source-code" id="runInit-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">412</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runInit</span>()
-<span class="line-num">413</span>   <span class="ruby-identifier">fillRunningParamSetList</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_seed</span>, <span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
-<span class="line-num">414</span>     <span class="ruby-identifier">_x</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">415</span>     <span class="ruby-identifier">_z</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">416</span>     { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_x</span>,
-<span class="line-num">417</span>       <span class="ruby-string">&quot;z&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_z</span>, }
-<span class="line-num">418</span>   } ;
-<span class="line-num">419</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">517</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runInit</span>()
+<span class="line-num">518</span>   <span class="ruby-identifier">fillRunningParamSetList</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_seed</span>, <span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">519</span>     <span class="ruby-identifier">_x</span> = <span class="ruby-identifier">rand</span>() ;
+<span class="line-num">520</span>     <span class="ruby-identifier">_z</span> = <span class="ruby-identifier">rand</span>() ;
+<span class="line-num">521</span>     { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_x</span>,
+<span class="line-num">522</span>       <span class="ruby-string">&quot;z&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_z</span>, }
+<span class="line-num">523</span>   } ;
+<span class="line-num">524</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

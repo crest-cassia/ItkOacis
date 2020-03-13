@@ -56,12 +56,12 @@ module ItkOacis
     ## initialize
     ## _seedParam_:: seed of parameters in a Hash.
     ## _conductor_:: a Conductor.
-    ## _nRun_:: a number of runs.
-    def initialize(_seedParam, _conductor, _nRun)
+    ## _nofRun_:: a number of runs.
+    def initialize(_seedParam, _conductor, _nofRun)
       @id = @@maxId ;
       @@maxId += 1 ;
       
-      createAndRun(_seedParam, _conductor, _nRun) ;
+      createAndRun(_seedParam, _conductor, _nofRun) ;
     end
 
     #--------------------------------------------------------------
@@ -69,11 +69,11 @@ module ItkOacis
     ## create PS and Run
     ## _seedParam_:: parameters in a Hash.
     ## _conductor_:: a Conductor.
-    ## _nRun_:: a number of runs.
-    def createAndRun(_seedParam, _conductor, _nRun)
+    ## _nofRun_:: a number of runs.
+    def createAndRun(_seedParam, _conductor, _nofRun)
       @seedParam = _seedParam ;
       @entity = _conductor.createPs(@seedParam) ;
-      _conductor.runParamSet(self, _nRun) ;
+      _conductor.runParamSet(self, _nofRun) ;
       
       @runList = [] ;
       @entity.runs.each{|_run|

@@ -259,17 +259,17 @@ module ItkOacis
     #++
     ## to (find or) create runs with param.
     ## _paramSet_ :: a Ps or ParamSetStub.
-    ## _nRun_ :: total number of runs.
-    def createRuns(_paramSet, _nRun = 1)
+    ## _nofRun_ :: total number of runs.
+    def createRuns(_paramSet, _nofRun = 1)
       if(_paramSet.is_a?(ParamSetStub)) then
-        createRuns(_paramSet.entity, _nRun) ;
+        createRuns(_paramSet.entity, _nofRun) ;
       else
         if(isHost()) then
-          _paramSet.find_or_create_runs_upto(_nRun,
+          _paramSet.find_or_create_runs_upto(_nofRun,
                                              submitted_to: @entity,
                                              host_param: @hostParam) ;
         else
-          _paramSet.find_or_create_runs_upto(_nRun,
+          _paramSet.find_or_create_runs_upto(_nofRun,
                                              host_group: @entity) ;
         end
       end

@@ -182,15 +182,15 @@
           
           <div class="method-source-code" id="callTest-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">475</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">callTest</span>(<span class="ruby-identifier">_method</span>)
-<span class="line-num">476</span>   <span class="ruby-keyword">if</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">listTestMethods</span>.<span class="ruby-identifier">member?</span>(<span class="ruby-identifier">_method</span>)) <span class="ruby-keyword">then</span>
-<span class="line-num">477</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:call</span>, <span class="ruby-identifier">_method</span>] ;
-<span class="line-num">478</span>     <span class="ruby-constant">Singleton</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">_method</span>) ;
-<span class="line-num">479</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">480</span>     <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Warning!!&quot;</span> ;
-<span class="line-num">481</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:no_test_method</span>, <span class="ruby-identifier">_method</span>] ;
-<span class="line-num">482</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">483</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">580</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">callTest</span>(<span class="ruby-identifier">_method</span>)
+<span class="line-num">581</span>   <span class="ruby-keyword">if</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">listTestMethods</span>.<span class="ruby-identifier">member?</span>(<span class="ruby-identifier">_method</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">582</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:call</span>, <span class="ruby-identifier">_method</span>] ;
+<span class="line-num">583</span>     <span class="ruby-constant">Singleton</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">_method</span>) ;
+<span class="line-num">584</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">585</span>     <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Warning!!&quot;</span> ;
+<span class="line-num">586</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:no_test_method</span>, <span class="ruby-identifier">_method</span>] ;
+<span class="line-num">587</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">588</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -221,13 +221,13 @@
           
           <div class="method-source-code" id="listTestMethods-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">450</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">listTestMethods</span>()
-<span class="line-num">451</span>   <span class="ruby-identifier">_r</span> = [] ;
-<span class="line-num">452</span>   <span class="ruby-constant">Singleton</span>.<span class="ruby-identifier">methods</span>(<span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_method</span><span class="ruby-operator">|</span>
-<span class="line-num">453</span>     <span class="ruby-identifier">_r</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_method</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_method</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^test_/</span>) ;
-<span class="line-num">454</span>   }
-<span class="line-num">455</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_r</span> ;
-<span class="line-num">456</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">555</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">listTestMethods</span>()
+<span class="line-num">556</span>   <span class="ruby-identifier">_r</span> = [] ;
+<span class="line-num">557</span>   <span class="ruby-constant">Singleton</span>.<span class="ruby-identifier">methods</span>(<span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_method</span><span class="ruby-operator">|</span>
+<span class="line-num">558</span>     <span class="ruby-identifier">_r</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_method</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_method</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^test_/</span>) ;
+<span class="line-num">559</span>   }
+<span class="line-num">560</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_r</span> ;
+<span class="line-num">561</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -258,14 +258,14 @@
           
           <div class="method-source-code" id="run-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">462</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">run</span>(<span class="ruby-identifier">_argv</span> = [])
-<span class="line-num">463</span>   <span class="ruby-identifier">_methodList</span> = ((<span class="ruby-identifier">_argv</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-operator">?</span>
-<span class="line-num">464</span>                    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">listTestMethods</span>() <span class="ruby-operator">:</span>
-<span class="line-num">465</span>                    <span class="ruby-identifier">_argv</span>) ;
-<span class="line-num">466</span>   <span class="ruby-identifier">_methodList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_method</span><span class="ruby-operator">|</span>
-<span class="line-num">467</span>     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">callTest</span>(<span class="ruby-identifier">_method</span>) ;
-<span class="line-num">468</span>   }
-<span class="line-num">469</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">567</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">run</span>(<span class="ruby-identifier">_argv</span> = [])
+<span class="line-num">568</span>   <span class="ruby-identifier">_methodList</span> = ((<span class="ruby-identifier">_argv</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-operator">?</span>
+<span class="line-num">569</span>                    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">listTestMethods</span>() <span class="ruby-operator">:</span>
+<span class="line-num">570</span>                    <span class="ruby-identifier">_argv</span>) ;
+<span class="line-num">571</span>   <span class="ruby-identifier">_methodList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_method</span><span class="ruby-operator">|</span>
+<span class="line-num">572</span>     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">callTest</span>(<span class="ruby-identifier">_method</span>) ;
+<span class="line-num">573</span>   }
+<span class="line-num">574</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -304,10 +304,10 @@
           
           <div class="method-source-code" id="test_a-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">488</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_a</span>()
-<span class="line-num">489</span>   <span class="ruby-identifier">_conductor</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">Conductor</span>.<span class="ruby-identifier">new</span>() ;
-<span class="line-num">490</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_a</span>, <span class="ruby-identifier">_conductor</span>] ;
-<span class="line-num">491</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">593</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_a</span>()
+<span class="line-num">594</span>   <span class="ruby-identifier">_conductor</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">Conductor</span>.<span class="ruby-identifier">new</span>() ;
+<span class="line-num">595</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_a</span>, <span class="ruby-identifier">_conductor</span>] ;
+<span class="line-num">596</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -338,11 +338,11 @@
           
           <div class="method-source-code" id="test_b-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">496</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_b</span>()
-<span class="line-num">497</span>   <span class="ruby-identifier">_conductor</span> = <span class="ruby-constant">FooConductor</span>.<span class="ruby-identifier">new</span>() ;
-<span class="line-num">498</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_b</span>, <span class="ruby-identifier">_conductor</span>] ;
-<span class="line-num">499</span>   <span class="ruby-identifier">_conductor</span>.<span class="ruby-identifier">run</span>() ;
-<span class="line-num">500</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">601</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_b</span>()
+<span class="line-num">602</span>   <span class="ruby-identifier">_conductor</span> = <span class="ruby-constant">FooConductor</span>.<span class="ruby-identifier">new</span>() ;
+<span class="line-num">603</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_b</span>, <span class="ruby-identifier">_conductor</span>] ;
+<span class="line-num">604</span>   <span class="ruby-identifier">_conductor</span>.<span class="ruby-identifier">run</span>() ;
+<span class="line-num">605</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -373,9 +373,9 @@
           
           <div class="method-source-code" id="test_c-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">358</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_c</span>()
-<span class="line-num">359</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_c</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostGroupNameList</span>()] ;
-<span class="line-num">360</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">359</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_c</span>()
+<span class="line-num">360</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_c</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostGroupNameList</span>()] ;
+<span class="line-num">361</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -406,9 +406,9 @@
           
           <div class="method-source-code" id="test_d-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">365</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_d</span>()
-<span class="line-num">366</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_d</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-string">&quot;local_group&quot;</span>)] ;
-<span class="line-num">367</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">366</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_d</span>()
+<span class="line-num">367</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_d</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-string">&quot;local_group&quot;</span>)] ;
+<span class="line-num">368</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -439,9 +439,9 @@
           
           <div class="method-source-code" id="test_e-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">372</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_e</span>()
-<span class="line-num">373</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_e</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostListInGroup</span>(<span class="ruby-string">&quot;local_group&quot;</span>)] ;
-<span class="line-num">374</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">373</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_e</span>()
+<span class="line-num">374</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_e</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostListInGroup</span>(<span class="ruby-string">&quot;local_group&quot;</span>)] ;
+<span class="line-num">375</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -472,9 +472,9 @@
           
           <div class="method-source-code" id="test_f-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">379</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_f</span>()
-<span class="line-num">380</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_f</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostNameListInGroup</span>(<span class="ruby-string">&quot;local_group&quot;</span>)] ;
-<span class="line-num">381</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">380</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_f</span>()
+<span class="line-num">381</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_f</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostNameListInGroup</span>(<span class="ruby-string">&quot;local_group&quot;</span>)] ;
+<span class="line-num">382</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -505,9 +505,9 @@
           
           <div class="method-source-code" id="test_g-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">386</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_g</span>()
-<span class="line-num">387</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_g</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostAndGroupNameList</span>()] ;
-<span class="line-num">388</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">387</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_g</span>()
+<span class="line-num">388</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_g</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">getHostAndGroupNameList</span>()] ;
+<span class="line-num">389</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -538,9 +538,9 @@
           
           <div class="method-source-code" id="test_h-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">393</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_h</span>()
-<span class="line-num">394</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_h</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;localhost&quot;</span>)] ;
-<span class="line-num">395</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">394</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_h</span>()
+<span class="line-num">395</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_h</span>, <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;localhost&quot;</span>)] ;
+<span class="line-num">396</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -571,11 +571,11 @@
           
           <div class="method-source-code" id="test_h2-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">400</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_h2</span>()
-<span class="line-num">401</span>   <span class="ruby-identifier">_host</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;local_group&quot;</span>) ;
-<span class="line-num">402</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_h2</span>, <span class="ruby-identifier">_host</span>] ;
-<span class="line-num">403</span>   <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">eachHost</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pp</span> <span class="ruby-identifier">_h</span>} ;
-<span class="line-num">404</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">401</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_h2</span>()
+<span class="line-num">402</span>   <span class="ruby-identifier">_host</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;local_group&quot;</span>) ;
+<span class="line-num">403</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:test_h2</span>, <span class="ruby-identifier">_host</span>] ;
+<span class="line-num">404</span>   <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">eachHost</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pp</span> <span class="ruby-identifier">_h</span>} ;
+<span class="line-num">405</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

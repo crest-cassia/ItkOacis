@@ -44,6 +44,11 @@ module ItkOacis
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default values of _conf_ in new method.
+    ## It should be a Hash. It overrides Conductor::DefaultConf.
+    ## See below for meaning of each key:
+    ## - :paramList : define a list of values for each parameter.
+    ##   See description of ItkOacis::ConductorCombine.
+    ##   (default: {})
     DefaultConf = {
       :paramList => {},
       nil => nil } ;
@@ -86,9 +91,10 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## to get initial number of pooled ParamSet.
+    ## to get the number of initial ParamSet.
+    ## Use @maxCombination for this Conductor class.
     ## *return*:: the number of ParamSet.
-    def getInitialNPooledParamSet()
+    def getNofInitParamSet()
       return @maxCombination ;
     end
     
@@ -171,7 +177,6 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      p [:cycle, @cycleCount, nRunning(), nDone()] ;
     end
     
   end # class FooConductor

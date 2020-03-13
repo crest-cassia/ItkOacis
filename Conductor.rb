@@ -20,6 +20,7 @@ $LOAD_PATH.addIfNeed(File.dirname(__FILE__) + "/itkLib");
 
 require 'pp' ;
 require 'json' ;
+require 'logger' ;
 
 require 'WithConfParam.rb' ;
 
@@ -35,17 +36,42 @@ module ItkOacis
   class Conductor < WithConfParam
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
-    ## default values of _conf_ in new method.
+    ## default values of _conf_ in new () method.
+    ## It should be a Hash. 
+    ## See below for meaning of each key:
+    ## - :simulatorName : simulator. (default: "foo00")
+    ## - :hostName : host. (default: "localhost")
+    ## - :hostParam : host. (default: nil)
+    ## - :paramSetClass : ParamSetStub class or its extended class,
+    ##   used to manage parameter set (PS) in Oacis.
+    ## - :nofRun : number of simulation runs per a ParamSetStub. (default: 1)
+    ## - :defaultVariedParam : default value for newParamSet ().
+    ##   See also defaultVariedParam. (default: {})
+    ## - :nofInitParamSet : getNofInitParamSet (). (default: nil)
+    ## - :interval : interval to wait each at cycle () in run (). (default: 1)
+    ## - :logger : logger and setupLogger (). (default: :stderr)
+    ## - :logLevel : one of :debug, :info, :warn, :error, and :fatal.
+    ##   (default: :info)
     DefaultConf = {
-      :simulatorName => "foo00",
+      :simulatorName => "foo00",  ## hogehoge
       :hostName => "localhost",
       :hostParam => nil,
       :paramSetClass => ItkOacis::ParamSetStub,
-      :nRun => 1,
+      :nofRun => 1,
       :defaultVariedParam => {},
+      :nofInitParamSet => nil,
       :interval => 1,  # sleep interval in run in sec.
-      :nPooledParamSet => nil,
+      :logger => :stderr,
+      :logLevel => :info,
       nil => nil } ;
+
+    ## a table of LogLevel that maps from Symbol to Logger's LogLevel
+    LogLevelTable = { :fatal => Logger::FATAL,
+                      :error => Logger::ERROR,
+                      :warn => Logger::WARN,
+                      :info => Logger::INFO,
+                      :debug => Logger::DEBUG,
+                    } ;
 
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     #++
@@ -69,8 +95,8 @@ module ItkOacis
     ## number of runs.
     ## The number of runs will be created and executed for each ParamSet.
     ## The number is specified in _conf_ in new method
-    ## by key <tt>:nRun</tt>.
-    attr_reader :nRun ;
+    ## by key <tt>:nofRun</tt>.
+    attr_reader :nofRun ;
     
     ## default varied ParamSet in Hash.
     ## When a new ParamSet is created, the value of each parameter is selected
@@ -85,12 +111,6 @@ module ItkOacis
     ## by key <tt>:interval</tt>.
     attr_reader :interval ;
     
-    ## size of pooled ParamSet.
-    ## Generally, set doubled maxJobN of @host.
-    ## The duration is specified in _conf_ in new method
-    ## by key <tt>:nPooledParamSet</tt>.
-    attr_reader :nPooledParamSet ;
-    
     ## counter of whole ParamSet.
     attr_reader :nWholeParamSet ;
     ## list of running ParamSet.
@@ -98,11 +118,23 @@ module ItkOacis
     ## list of finished or failed ParamSet.
     attr_reader :doneParamSetList ;
 
+    ## an Array of Loggers.
+    ## The definition of each elements are specified in _conf_ in new method
+    ## by key <tt>:logger</tt> as follows:
+    ## - <tt> :stdout </tt> :: STDOUT.
+    ## - <tt> :stderr </tt> :: STDERR. (default)
+    ## - String :: a filename.
+    ## - IO :: IO stream.
+    ## - Logger :: an instance of Logger
+    ## - [ <Logger>, <Logger>, ... ] :: an Array of above.
+    attr_reader :loggerList ;
+
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
     ## initialize an instance.
     ## _conf_:: configulation for the initialization.
+    ##          This override DefaultConf.
     def initialize(_conf = {})
       super(_conf) ;
 
@@ -117,14 +149,15 @@ module ItkOacis
       setHost(getConf(:hostName), getConf(:hostParam)) ;
 
       @paramSetClass = getConf(:paramSetClass) ;
-      @nRun = getConf(:nRun) ;
+      @nofRun = getConf(:nofRun) ;
       @defaultVariedParam = getConf(:defaultVariedParam) ;
       
       @nWholeParamSet = 0 ;
       @runningParamSetList = [] ;
       @interval = getConf(:interval) ;
 
-      @nPooledParamSet = getInitialNPooledParamSet()
+      setupLogger() ;
+
     end
 
     #--------------------------------------------------------------
@@ -150,11 +183,79 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
-    ## to get initial number of pooled ParamSet.
+    ## to get the number of initial ParamSet.
+    ## If <tt>:nofInitParamSet</tt> is specified in _conf_ in new(),
+    ## its value is returned.
+    ## If <tt>:nofInitParamSet</tt> is not specified,
+    ## double of maxJobN is returned.
+    ## Can be override in extended classes.
     ## *return*:: the number of ParamSet.
-    def getInitialNPooledParamSet()
-      return (getConf(:nPooledParamSet) ||
+    def getNofInitParamSet()
+      return (getConf(:nofInitParamSet) ||
               2 * @host.maxJobN()) ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to setup @loggerList.
+    ## The value of <tt>:logger</tt> in _spec_ in run() specifies 
+    ## the type of logging device as follow:
+    ## - :stdout : STDOUT.
+    ## - :stderr : STDERR.
+    ## - a String : a log filename.
+    ## - an IO : a IO device for logging.
+    ## - an Array : a list of above.  The log messages are outputted to
+    ##   all of them.
+    ## *return*:: an Array of Logger.
+    def setupLogger()
+      @loggerList = [] ;
+      if(getConf(:logger)) then
+        setupLoggerBody(getConf(:logger)) ;
+      end
+      return @loggerList ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to setup @loggerList (body).
+    ## _loggerSpec_:: a specification of the Logger.
+    ## *return*:: an Array of Logger.
+    def setupLoggerBody(_loggerSpec)
+      _logdev = nil ;
+      if   (_loggerSpec == :stdout) then
+        _logdev = STDOUT ;
+      elsif(_loggerSpec == :stderr) then
+        _logdev = STDERR ;
+      elsif(_loggerSpec.is_a?(IO)) then
+        _logdev = _loggerSpec ;
+      elsif(_loggerSpec.is_a?(String)) then
+        _logdev = _loggerSpec ;
+      elsif(_loggerSpec.is_a?(Array)) then
+        _loggerSpec.each{|_spec| setupLoggerBody(_spec) ; } ;
+      else
+        raise "unknown Logger specification: " + _loggerSpec.inspect ;
+      end
+
+      if(_logdev) then
+        _logger = Logger.new(_logdev,
+                             level: LogLevelTable[getConf(:logLevel)],
+                             datetime_format: "%Y-%m-%d_%H:%M:%S") ;
+        @loggerList.push(_logger) ;
+      end
+
+      return _logger ;
+    end  
+
+    #--------------------------------------------------------------
+    #++
+    ## to logging information.
+    ## _level_:: log level.
+    ## _message_:: 
+    def logging(_level, *_message)
+      _fullMessage = _message.join(" ") ;
+      @loggerList.each{|_logger|
+        _logger.log(LogLevelTable[_level], _fullMessage) ;
+      }
     end
 
     #--////////////////////////////////////////////////////////////
@@ -181,7 +282,7 @@ module ItkOacis
     #++
     ## to generate initial set of ParamSets.
     ## In fillRunningParamSetList(),
-    ## the size of initial set equals to nPooledParamSet.
+    ## the size of initial set equals to getNofInitParamSet().
     ## It can be overrided by expanded classes.
     def runInit()
       fillRunningParamSetList() ;
@@ -231,7 +332,8 @@ module ItkOacis
     ## In default, do nothing.
     ## It can be overrided by expanded classes.
     def cycleBody() 
-      # do nothing indefault.
+      logging(:info, :cycle, @cycleCount,
+              [getNofInitParamSet(), nofRunning(), nofDone()].inspect) ; 
     end
     
     #--------------------------------------------------------------
@@ -250,7 +352,7 @@ module ItkOacis
     ## It can be overrided by expanded classes.
     ## *return*:: true when the conditions to terminate are satisfied.
     def terminate?()
-      return nRunning() == 0 ;
+      return nofRunning() == 0 ;
     end
 
     #--////////////////////////////////////////////////////////////
@@ -258,7 +360,7 @@ module ItkOacis
     #++
     ## to get number of running ParamSet.
     ## *return*:: the number of ParamSet in @runningParamSetList.
-    def nRunning()
+    def nofRunning()
       return @runningParamSetList.size ;
     end
 
@@ -266,7 +368,7 @@ module ItkOacis
     #++
     ## to get number of done ParamSet.
     ## *return*:: the number of ParamSet in @doneParamSetList.
-    def nDone()
+    def nofDone()
       return @doneParamSetList.size ;
     end
     
@@ -331,11 +433,13 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## to spawn multiple ParamSetStub to fill a running list.
+    ## _max:: maximum number to fill.  If nil, use getNofInitParamSet().
     ## _paramSeed_:: a Hash of paramter set. Can be partial.
     ## _block_:: a procedure to generate paramSeed.
     ## *return*:: an Array of ParamSetStub to be generated.
-    def fillRunningParamSetList(_paramSeed = nil, &_block)
-      _n = @nPooledParamSet - nRunning() ;
+    def fillRunningParamSetList(_max = nil, _paramSeed = nil, &_block)
+      _max = getNofInitParamSet() if(_max.nil?) ;
+      _n = _max - nofRunning() ;
       spawnParamSetN(_n, _paramSeed, &_block)
     end
       
@@ -345,11 +449,11 @@ module ItkOacis
     ## to create ParamSetStub.
     ## Can be override.
     ## _varied_:: a paried information to generate ParamSet.
-    ## _nRun_:: number of runs.
+    ## _nofRun_:: number of runs.
     ## *return*:: a ParamSetStub.
-    def newParamSet(_varied = @defaultVariedParam, _nRun = @nRun)
+    def newParamSet(_varied = @defaultVariedParam, _nofRun = @nofRun)
       _param = setupNewParam(_varied) ;
-      _psStub = @paramSetClass.new(_param, self, _nRun) ;
+      _psStub = @paramSetClass.new(_param, self, _nofRun) ;
       return _psStub ;
     end
     
@@ -377,9 +481,9 @@ module ItkOacis
     #++
     ## to run ParamSetStub on Host.
     ## _psStub_:: a ParamSetStub.
-    ## _nRun_:: number of runs.
-    def runParamSet(_psStub, _nRun)
-      host().createRuns(_psStub, _nRun) ;
+    ## _nofRun_:: number of runs.
+    def runParamSet(_psStub, _nofRun)
+      host().createRuns(_psStub, _nofRun) ;
     end
 
     #--////////////////////////////////////////////////////////////
@@ -424,7 +528,7 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      p [:cycle, @cycleCount, nRunning(), nDone()] ;
+      p [:cycle, @cycleCount, nofRunning(), nofDone()] ;
       eachDoneParamSet(){|_psStub|
         pp [:done, _psStub.toJson()] ;
       }
