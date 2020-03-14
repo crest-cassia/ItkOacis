@@ -587,7 +587,12 @@ if($0 == __FILE__) then
     def cycleBody()
       super() ;
       eachDoneParamSet(){|_psStub|
-        pp [:done, _psStub.toJson()] ;
+        pp [:all, _psStub.toJson(:whole, :all)] ;
+        pp [:ave, _psStub.toJson(:whole, :average)] ;
+        pp [:first, _psStub.toJson(:whole, :first)] ;
+        pp [:last, _psStub.toJson(:whole, :last)] ;
+        pp [:_1th, _psStub.toJson(:whole, 1)] ;
+        pp [:ave, _psStub.toJson(:whole, :stat)] ;
       }
     end
     

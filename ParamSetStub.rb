@@ -17,12 +17,14 @@ end
 
 # $LOAD_PATH.addIfNeed("~/lib/ruby");
 $LOAD_PATH.addIfNeed(File.dirname(__FILE__));
+$LOAD_PATH.addIfNeed(File.dirname(__FILE__) + "/itkLib");
 
 require 'pp' ;
 require 'json' ;
 
 require 'WithConfParam.rb' ;
 require 'Stat/Random.rb' ;
+require 'Stat/StatInfo.rb' ;
 
 # require 'SimulatorStub.rb' ;
 # require 'Conductor.rb' ;
@@ -130,7 +132,7 @@ module ItkOacis
       if(_nth == :all) then
         return eachRun(&_block) ;
       else
-        return block.call(nthRun(_nth)) ;
+        return _block.call(nthRun(_nth)) ;
       end
     end
     
@@ -242,17 +244,35 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## get result table in hash.
+    ## _nth_ :: an Integer or :first or :last or :all or :average or :stat.
+    ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: result hash.
     def getResultTable(_nth = :all, _sync = false)
-      if(done?(_sync, _nth)) then
+      _nthForLoop = ((_nth == :average || _nth == :stat) ? :all : _nth) ;
+      if(done?(_sync, _nthForLoop)) then
         _resultList = [] ;
-        doWithNthRun(_nth){|_run|
+        doWithNthRun(_nthForLoop){|_run|
           _resultList.push(_run.result) ;
         }
         if(_nth == :all) then
           return _resultList ;
+        elsif(_nth == :average || _nth == :stat) then
+          _stat = {} ;
+          _resultList.each{|_result|
+            _result.each{|_key, _value|
+              _stat[_key] = Stat::StatInfo.new() if(_stat[_key].nil?) ;
+              _stat[_key].put(_value) ;
+            }
+          }
+          if(_nth == :average) then
+            _ave = {} ;
+            _stat.each{|_key, _value| _ave[_key] = _value.average() ;}
+            return _ave ;
+          else
+            return _stat ;
+          end
         else
-          return _resultList.fist ;
+          return _resultList.first ;
         end
       else
         return nil ;
@@ -262,6 +282,9 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## get result by name in hash.
+    ## _name_:: the name of result data.
+    ## _nth_ :: an Integer or :first or :last or :all or :average or :stat.
+    ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: result value
     def getResult(_name, _nth = :all, _sync = false)
       _resultTab = getResultTable(_nth, _sync) ;
@@ -280,6 +303,7 @@ module ItkOacis
     ## _mode_:: mode of the conversion.
     ## _runs_:: specify which runs include.
     ##          If :all, return Array of information of runs inside JSON.
+    ##          If :average, return average table of result.
     ##          If :first or :last, return ones of the first or last run.
     ##          If an Integer, return ones of the nth run.
     ## *return*:: json object (Hash)
