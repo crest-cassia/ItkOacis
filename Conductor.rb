@@ -33,6 +33,42 @@ module ItkOacis
   #--======================================================================
   #++
   ## to control functionarities of OACIS via Oacis Watcher facility.
+  ## === Usage
+  ##  class FooConductor < ItkOacis::Conductor
+  ##    ## Override DefaultConf
+  ##    DefaultConf = {
+  ##      :simulatorName => "foo00",  # registered name on Oacis.
+  ##      :hostName => "localhost",   # registered name on Oacis.
+  ##    } ;
+  ##    
+  ##    ## override runInit().
+  ##    def runInit()
+  ##      fillRunningParamSetList(){|_seed, _i|
+  ##        _x = rand() ;
+  ##        _z = rand() ;
+  ##        { "x" => _x, "z" => _z, }
+  ##      } ;
+  ##    end
+  ##    
+  ##    ## override cycleCheck().
+  ##    def cycleBody()
+  ##      super() ;
+  ##      eachDoneParamSet(){|_psStub| pp [:done, _psStub.toJson()] ; }
+  ##    end
+  ##
+  ##    ## override terminate?(). (use default in this sample).
+  ##    def terminate?()
+  ##      super() ;
+  ##    end
+  ##  end
+  ##
+  ##  # create a FooConductor and run.
+  ##  conductor0 =   FooConductor.new() ;
+  ##  conductor0.run() ;
+  ##  # OR, to run jobs on "another_host"
+  ##  conductor1 =   FooConductor.new({:host => "another_host"}) ;
+  ##  conductor1.run() ;
+  ##
   class Conductor < WithConfParam
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
@@ -52,6 +88,7 @@ module ItkOacis
     ## - :logger : logger and setupLogger (). (default: :stderr)
     ## - :logLevel : one of :debug, :info, :warn, :error, and :fatal.
     ##   (default: :info)
+    ##
     DefaultConf = {
       :simulatorName => "foo00",  ## hogehoge
       :hostName => "localhost",
@@ -412,11 +449,21 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## to spawn _n_ ParamSetStub and push to a running list.
+    ## If _block_ is given, it calls _block_ with arguments _paramSeed_ and _i_,
+    ## where _paramSeed_ is the same one of given _paramSeed_, and _i_ indicate
+    ## nth in the generating ParamSet.
+    ## The return value of _block_ is passed to spawnParamSet () instead of
+    ## _paramSeed_.
     ## _n_:: the number of ParamSetStub to spawn.
     ## _paramSeed_:: a Hash of paramter set. Can be partial.
-    ## _block_:: a procedure to generate paramSeed.
+    ## _block_:: a procedure to generate paramSeed to pass createParamSet ().
     ## *return*:: an Array of ParamSetStub to be generated.
-    def spawnParamSetN(_n, _paramSeed = nil, &_block)
+    ## :call-seq:
+    ##     spawnParamSetN(_n) 
+    ##     spawnParamSetN(_n, _paramSeed) 
+    ##     spawnParamSetN(_n){|_paramSeed, _i| ... }
+    ##     spawnParamSetN(_n, _paramSeed){|_paramSeed, _i| ... }
+    def spawnParamSetN(_n, _paramSeed = nil, &_block) # :yield: _paramSeed_, _i_
       _list = [] ;
       (0..._n).each{|_i|
         if(_block) then
@@ -433,11 +480,21 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## to spawn multiple ParamSetStub to fill a running list.
-    ## _max:: maximum number to fill.  If nil, use getNofInitParamSet().
+    ## If _block_ is given, _paramSeed_ is modified as described in
+    ## spawnParamSetN ().
+    ## _max_:: maximum number to fill.  If nil, use getNofInitParamSet().
     ## _paramSeed_:: a Hash of paramter set. Can be partial.
-    ## _block_:: a procedure to generate paramSeed.
+    ## _block_:: a procedure to generate paramSeed to pass createParamSet ().
     ## *return*:: an Array of ParamSetStub to be generated.
-    def fillRunningParamSetList(_max = nil, _paramSeed = nil, &_block)
+    ## :call-seq:
+    ##     fillRunningParamSetList()
+    ##     fillRunningParamSetList(_n) 
+    ##     fillRunningParamSetList(_n, _paramSetSeed)) 
+    ##     fillRunningParamSetList(){|_paramSeed, _i| ... }
+    ##     fillRunningParamSetList(_n){|_paramSeed, _i| ... }
+    ##     fillRunningParamSetList(_n, _paramSetSeed)){|_paramSeed, _i| ... }
+    def fillRunningParamSetList(_max = nil, _paramSeed = nil,
+                                &_block) # :yield: _paramSeed_, _i_
       _max = getNofInitParamSet() if(_max.nil?) ;
       _n = _max - nofRunning() ;
       spawnParamSetN(_n, _paramSeed, &_block)
@@ -528,7 +585,6 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      p [:cycle, @cycleCount, nofRunning(), nofDone()] ;
       eachDoneParamSet(){|_psStub|
         pp [:done, _psStub.toJson()] ;
       }

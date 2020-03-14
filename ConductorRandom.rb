@@ -32,7 +32,8 @@ module ItkOacis
   #++
   ## Conductor that manages to create new ParamSetStub for random-search.
   ## A policy to scatter ParamSets can be specified
-  ## in _conf_ parameter in new as follow:
+  ## in _conf_ parameter in new or DefaultConf constant defined in sub-classes
+  ## as follow:
   ##     <Conf> ::= { ...
   ##                  :scatterPolicy => { <ParamName> => <RandPolicy>,
   ##                                      <ParamName> => <RandPolicy>,
@@ -43,7 +44,27 @@ module ItkOacis
   ##                    | { :type => :gaussian, :ave => ave, :std => std }
   ##                    | { :type => :value, :value => value }
   ##                    | { :type => :list, :list => [value, value, ...] }
+  ##
+  ## === Usage
+  ##  class FooConductor < ItkOacis::ConductorRandom
+  ##    ## override DefaultConf.
+  ##    DefaultConf = {
+  ##      :simulatorName => "foo00",
+  ##      :hostName => "localhost",
+  ##      :scatterPolicy => { "x" => { :type => :uniform,
+  ##                                   :min => -1.0, :max => 1.0 },
+  ##                          "y" => { :type => :gaussian,
+  ##                                   :ave => 10.0, :std => 1.0 },
+  ##                          "z" => { :type => :list,
+  ##                                   :list => [0.0, 1.0, 2.0, 3.0] } }
+  ##    } ;
+  ##    
+  ##  end
   ## 
+  ##  # create a FooConductor and run.
+  ##  conductor = FooConductor.new() ;
+  ##  conductor.run() ;
+  ##  
   class ConductorRandom < Conductor
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++

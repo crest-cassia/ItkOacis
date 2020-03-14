@@ -16,5 +16,5 @@ RDOC_FILES = docItkOacis.rb \
 top : rdoc
 
 rdoc :
-	rdoc --all --main docItkOacis.rb --markup rdoc --hyperlink-all --force-update --line-numbers $(RDOC_FILES) 
+	rdoc --all --main docItkOacis.rb --title ItkOacis --hyperlink-all --force-update --line-numbers $(RDOC_FILES) 
 #	rdoc --force-update --one-file --line-numbers --diagram $(RDOC_FILES)

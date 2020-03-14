@@ -40,6 +40,33 @@ module ItkOacis
   ##                                      ... },
   ##                  ... }
   ##     <ParamName> ::=  a string of the name of a parameter.
+  ##
+  ## === Usage
+  ##  class FooConductor < ItkOacis::ConductorCombine
+  ##    #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ##    #++
+  ##    ## default configulation for initialization.
+  ##    DefaultConf = {
+  ##      :simulatorName => "foo00",
+  ##      :hostName => "localhost",
+  ##      :paramList => { "x" => [0.1, 0.2, 0.3],
+  ##                      "y" => [4.0, 5.0, 6.0],
+  ##                      "z" => [0.7, 0.8, 0.9] },
+  ##    } ;
+  ##    
+  ##    #--------------------------------------------------------------
+  ##    #++
+  ##    ## override cycleCheck().
+  ##    def cycleBody()
+  ##      super() ;
+  ##      eachDoneParamSet(){|_psStub| pp [:done, _psStub.toJson()] };
+  ##    end
+  ##  end
+  ##  
+  ##  # create a FooConductor and run.
+  ##  conductor = FooConductor.new() ;
+  ##  conductor.run() ;
+  ##  
   class ConductorCombine < Conductor
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++

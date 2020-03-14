@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>RDoc Documentation</title>
+<title>ItkOacis</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -106,23 +106,30 @@
 </dd></dl>
 
 <h4 id="label-History">History<span><a href="#label-History">&para;</a> <a href="#top">&uarr;</a></span></h4>
-<ul><li><dl class="rdoc-list label-list"><dt>2020/03/10
+<dl class="rdoc-list label-list"><dt>2020/03/10
 <dd>
 <p>Create This File.</p>
 </dd></dl>
-</li></ul>
 
-<h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
-<ul><li>
-<p>sample here</p>
+<h2 id="label-Overview">Overview<span><a href="#label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<pre>(sample code here)
-...</pre>
-</li></ul>
+<p><a href="ItkOacis.html"><code>ItkOacis</code></a> is a Ruby Module that consists of classes to handle Oacis process via Oacis Watcher facility.</p>
+
+<p><a href="ItkOacis/Conductor.html"><code>ItkOacis::Conductor</code></a> and its sub-classes are top-level class for this facility. An instance of these classes handles Simulator and Host registered in a running Oacis by name, and manages PSs (parameter sets). The Conductor&#39;s main routeine is <code>run()</code>, in which, after create new PSs, it submits the PSs and watches job executions until termination condition satisfied. Each method in the <code>run()</code> procedure can be overrided in sub-classes.</p>
+
+<p><a href="ItkOacis/HostStub.html"><code>ItkOacis::HostStub</code></a>, <a href="ItkOacis/SimulatorStub.html"><code>ItkOacis::SimulatorStub</code></a>, and <a href="ItkOacis/ParamSetStub.html"><code>ItkOacis::ParamSetStub</code></a> are wrapper classes to link to Host, Simulator and PS (parameter set) classes in Oacis, respectively. They also provide easy-to-use interfaces to handle instances/data in the running Oacis.</p>
+
+<p>For the detailed usage and functions, please see each class secion.</p>
 
 <h2 id="label-Sea+Also">Sea Also<span><a href="#label-Sea+Also">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>To see samples to use <a href="ItkOacis.html"><code>ItkOacis</code></a>, please check followings:</p>
 <ul><li>
-<p>class <a href="ItkOacis/Conductor.html#method-c-new"><code>ItkOacis::Conductor.new</code></a></p>
+<p>class <a href="ItkOacis/Conductor.html"><code>ItkOacis::Conductor</code></a></p>
+</li><li>
+<p>class <a href="ItkOacis/ConductorCombine.html"><code>ItkOacis::ConductorCombine</code></a></p>
+</li><li>
+<p>class <a href="ItkOacis/ConductorRandom.html"><code>ItkOacis::ConductorRandom</code></a></p>
 </li></ul>
 
 
