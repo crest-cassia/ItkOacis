@@ -79,7 +79,13 @@
     
     <li ><a href="#method-i-checkRunStatus">#checkRunStatus</a>
     
+    <li ><a href="#method-i-collectRunStatus">#collectRunStatus</a>
+    
+    <li ><a href="#method-i-countRunStatus">#countRunStatus</a>
+    
     <li ><a href="#method-i-createAndRun">#createAndRun</a>
+    
+    <li ><a href="#method-i-doWithNthRun">#doWithNthRun</a>
     
     <li ><a href="#method-i-done-3F">#done?</a>
     
@@ -96,6 +102,12 @@
     <li ><a href="#method-i-getResult">#getResult</a>
     
     <li ><a href="#method-i-getResultTable">#getResultTable</a>
+    
+    <li ><a href="#method-i-nofRuns">#nofRuns</a>
+    
+    <li ><a href="#method-i-nofRunsInNth">#nofRunsInNth</a>
+    
+    <li ><a href="#method-i-nthRun">#nthRun</a>
     
     <li ><a href="#method-i-sync">#sync</a>
     
@@ -159,19 +171,6 @@
         </div>
       </div>
       
-      <div id="attribute-i-run" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">run</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>last <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a></p>
-        
-        </div>
-      </div>
-      
       <div id="attribute-i-runList" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">runList</span><span
@@ -180,7 +179,7 @@
 
         <div class="method-description">
         
-        <p>list of <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a></p>
+        <p>list of run</p>
         
         </div>
       </div>
@@ -266,7 +265,7 @@
         
         <div class="method-heading">
           <span class="method-name">checkRunStatus</span><span
-            class="method-args">(_syncP = false)</span>
+            class="method-args">(_reference, _syncP = false, _nth = :all, _mode = :and)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -275,13 +274,19 @@
 
         <div class="method-description">
           
-          <p>check <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+          <p>check all runs specified by <em>nth</em> are in a certain status.</p>
 <dl class="rdoc-list note-list"><dt><em>syncP</em>
 <dd>
 <p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all.</p>
+</dd><dt><em>mode</em> 
+<dd>
+<p>:and or :or.</p>
 </dd><dt><strong>return</strong>
 <dd>
-<p><a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+<p>run status</p>
 </dd></dl>
           
           
@@ -289,10 +294,117 @@
           
           <div class="method-source-code" id="checkRunStatus-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">109</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">checkRunStatus</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">110</span>   <span class="ruby-identifier">sync</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_syncP</span>) ;
-<span class="line-num">111</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@run</span>.<span class="ruby-identifier">status</span> ;
-<span class="line-num">112</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">192</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">checkRunStatus</span>(<span class="ruby-identifier">_reference</span>, <span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:and</span>)
+<span class="line-num">193</span>   <span class="ruby-identifier">_threshold</span> = <span class="ruby-identifier">nofRunsInNth</span>(<span class="ruby-identifier">_nth</span>) ;
+<span class="line-num">194</span>   <span class="ruby-identifier">_count</span> = <span class="ruby-identifier">countRunStatus</span>(<span class="ruby-identifier">_reference</span>, <span class="ruby-identifier">_syncP</span>, <span class="ruby-identifier">_nth</span>) ;
+<span class="line-num">195</span>   <span class="ruby-keyword">return</span> ((<span class="ruby-identifier">_mode</span> <span class="ruby-operator">==</span> <span class="ruby-value">:and</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">_count</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">_threshold</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">_count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) ;
+<span class="line-num">196</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-collectRunStatus" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">collectRunStatus</span><span
+            class="method-args">(_syncP = false, _nth = :all)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>check run status</p>
+<dl class="rdoc-list note-list"><dt><em>syncP</em>
+<dd>
+<p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>an Array of the status if <em>nth</em> == :all.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="collectRunStatus-source">
+            <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">155</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">collectRunStatus</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>)
+<span class="line-num">156</span>   <span class="ruby-identifier">_statusList</span> = [] ;
+<span class="line-num">157</span>   <span class="ruby-identifier">doWithNthRun</span>(<span class="ruby-identifier">_nth</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">158</span>     <span class="ruby-identifier">sync</span>(<span class="ruby-identifier">_run</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_syncP</span>) ;
+<span class="line-num">159</span>     <span class="ruby-identifier">_statusList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_run</span>.<span class="ruby-identifier">status</span>) ;
+<span class="line-num">160</span>   }
+<span class="line-num">161</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_statusList</span> ;
+<span class="line-num">162</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-countRunStatus" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">countRunStatus</span><span
+            class="method-args">(_reference, _syncP = false, _nth = :all)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>check run status to be a <em>status</em>.</p>
+<dl class="rdoc-list note-list"><dt><em>targettype</em>
+<dd>
+<p>one of :finished, :failed, :running…</p>
+</dd><dt><em>syncP</em>
+<dd>
+<p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all.</p>
+</dd><dt><em>mode</em> 
+<dd>
+<p>:and or :or.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>run status</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="countRunStatus-source">
+            <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">172</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">countRunStatus</span>(<span class="ruby-identifier">_reference</span>, <span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>)
+<span class="line-num">173</span>   <span class="ruby-identifier">_count</span> = <span class="ruby-value">0</span> ;
+<span class="line-num">174</span>   <span class="ruby-identifier">doWithNthRun</span>(<span class="ruby-identifier">_nth</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">175</span>     <span class="ruby-identifier">sync</span>(<span class="ruby-identifier">_run</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_syncP</span>) ;
+<span class="line-num">176</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_reference</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">177</span>       <span class="ruby-identifier">_count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_reference</span>.<span class="ruby-identifier">member?</span>(<span class="ruby-identifier">_run</span>.<span class="ruby-identifier">status</span>)) ;
+<span class="line-num">178</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">179</span>       <span class="ruby-identifier">_count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_reference</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_run</span>.<span class="ruby-identifier">status</span>) ;
+<span class="line-num">180</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">181</span>   }
+<span class="line-num">182</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_count</span> ;
+<span class="line-num">183</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -342,8 +454,51 @@
 <span class="line-num">79</span>   <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">runs</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
 <span class="line-num">80</span>     <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_run</span>) ;
 <span class="line-num">81</span>   }
-<span class="line-num">82</span>   <span class="ruby-ivar">@run</span> = <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">last</span> ;
-<span class="line-num">83</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">82</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-doWithNthRun" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">doWithNthRun</span><span
+            class="method-args">(_nth, &amp;_block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>call block for the nth run.</p>
+<dl class="rdoc-list note-list"><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all.</p>
+</dd><dt><em>block</em>
+<dd>
+<p>a block to call.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="doWithNthRun-source">
+            <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">131</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">doWithNthRun</span>(<span class="ruby-identifier">_nth</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
+<span class="line-num">132</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:all</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">133</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">eachRun</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>) ;
+<span class="line-num">134</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">135</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">nthRun</span>(<span class="ruby-identifier">_nth</span>)) ;
+<span class="line-num">136</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">137</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -358,7 +513,7 @@
         
         <div class="method-heading">
           <span class="method-name">done?</span><span
-            class="method-args">(_syncP = false)</span>
+            class="method-args">(_syncP = false, _nth = :all, _mode = :and)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -367,13 +522,13 @@
 
         <div class="method-description">
           
-          <p>check <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+          <p>check run status</p>
 <dl class="rdoc-list note-list"><dt><em>syncP</em>
 <dd>
 <p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
 </dd><dt><strong>return</strong>
 <dd>
-<p><a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+<p>run status</p>
 </dd></dl>
           
           
@@ -381,10 +536,9 @@
           
           <div class="method-source-code" id="done-3F-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">139</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">done?</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">140</span>   <span class="ruby-identifier">sync</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_syncP</span>) ;
-<span class="line-num">141</span>   <span class="ruby-keyword">return</span> (<span class="ruby-identifier">finished?</span>(<span class="ruby-keyword">false</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">failed?</span>(<span class="ruby-keyword">false</span>)) ;
-<span class="line-num">142</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">224</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">done?</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:and</span>)
+<span class="line-num">225</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">checkRunStatus</span>([<span class="ruby-value">:finished</span>, <span class="ruby-value">:failed</span>], <span class="ruby-identifier">_syncP</span>, <span class="ruby-identifier">_nth</span>, <span class="ruby-identifier">_mode</span>) ;
+<span class="line-num">226</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -408,7 +562,7 @@
 
         <div class="method-description">
           
-          <p>call block for each <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a>.</p>
+          <p>call block for each run.</p>
 <dl class="rdoc-list note-list"><dt><em>block</em>
 <dd>
 <p>a block to call.</p>
@@ -418,12 +572,12 @@
 
           
           <div class="method-source-code" id="eachRun-source">
-            <pre>   <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">89</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachRun</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
-<span class="line-num">90</span>   <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
-<span class="line-num">91</span>     <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_run</span>) ;
-<span class="line-num">92</span>   }
-<span class="line-num">93</span> <span class="ruby-keyword">end</span></pre>
+            <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">120</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachRun</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
+<span class="line-num">121</span>   <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">122</span>     <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_run</span>) ;
+<span class="line-num">123</span>   }
+<span class="line-num">124</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -438,7 +592,7 @@
         
         <div class="method-heading">
           <span class="method-name">failed?</span><span
-            class="method-args">(_syncP = false)</span>
+            class="method-args">(_syncP = false, _nth = :all, _mode = :and)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -447,13 +601,16 @@
 
         <div class="method-description">
           
-          <p>check <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+          <p>check run status</p>
 <dl class="rdoc-list note-list"><dt><em>syncP</em>
 <dd>
 <p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><em>mode</em> 
+<dd>
+<p>:and or :or.</p>
 </dd><dt><strong>return</strong>
 <dd>
-<p><a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+<p>run status</p>
 </dd></dl>
           
           
@@ -461,10 +618,9 @@
           
           <div class="method-source-code" id="failed-3F-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">129</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">failed?</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">130</span>   <span class="ruby-identifier">sync</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_syncP</span>) ;
-<span class="line-num">131</span>   <span class="ruby-keyword">return</span> (<span class="ruby-identifier">checkRunStatus</span>() <span class="ruby-operator">==</span> <span class="ruby-value">:failed</span>) ;
-<span class="line-num">132</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">215</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">failed?</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:and</span>)
+<span class="line-num">216</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">checkRunStatus</span>(<span class="ruby-value">:failed</span>, <span class="ruby-identifier">_syncP</span>, <span class="ruby-identifier">_nth</span>, <span class="ruby-identifier">_mode</span>) ;
+<span class="line-num">217</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -479,7 +635,7 @@
         
         <div class="method-heading">
           <span class="method-name">finished?</span><span
-            class="method-args">(_syncP = false)</span>
+            class="method-args">(_syncP = false, _nth = :all, _mode = :and)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -488,13 +644,19 @@
 
         <div class="method-description">
           
-          <p>check <a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+          <p>check all runs specified by <em>nth</em> are finished.</p>
 <dl class="rdoc-list note-list"><dt><em>syncP</em>
 <dd>
 <p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all.</p>
+</dd><dt><em>mode</em> 
+<dd>
+<p>:and or :or.</p>
 </dd><dt><strong>return</strong>
 <dd>
-<p><a href="ParamSetStub.html#attribute-i-run"><code>run</code></a> status</p>
+<p>run status</p>
 </dd></dl>
           
           
@@ -502,10 +664,9 @@
           
           <div class="method-source-code" id="finished-3F-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">119</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">finished?</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">120</span>   <span class="ruby-identifier">sync</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_syncP</span>) ;
-<span class="line-num">121</span>   <span class="ruby-keyword">return</span> (<span class="ruby-identifier">checkRunStatus</span>() <span class="ruby-operator">==</span> <span class="ruby-value">:finished</span>) ;
-<span class="line-num">122</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">205</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">finished?</span>(<span class="ruby-identifier">_syncP</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:and</span>)
+<span class="line-num">206</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">checkRunStatus</span>(<span class="ruby-value">:finished</span>, <span class="ruby-identifier">_syncP</span>, <span class="ruby-identifier">_nth</span>, <span class="ruby-identifier">_mode</span>) ;
+<span class="line-num">207</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -540,9 +701,9 @@
           
           <div class="method-source-code" id="getInput-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">156</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getInput</span>(<span class="ruby-identifier">_name</span>)
-<span class="line-num">157</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">getInputTable</span>()[<span class="ruby-identifier">_name</span>] ;
-<span class="line-num">158</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">240</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getInput</span>(<span class="ruby-identifier">_name</span>)
+<span class="line-num">241</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">getInputTable</span>()[<span class="ruby-identifier">_name</span>] ;
+<span class="line-num">242</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -577,9 +738,9 @@
           
           <div class="method-source-code" id="getInputTable-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">148</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getInputTable</span>()
-<span class="line-num">149</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">v</span> ;
-<span class="line-num">150</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">232</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getInputTable</span>()
+<span class="line-num">233</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">v</span> ;
+<span class="line-num">234</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -594,7 +755,7 @@
         
         <div class="method-heading">
           <span class="method-name">getResult</span><span
-            class="method-args">(_name)</span>
+            class="method-args">(_name, _nth = :all, _sync = false)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -604,7 +765,16 @@
         <div class="method-description">
           
           <p>get result by name in hash.</p>
-<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dl class="rdoc-list note-list"><dt><em>name</em>
+<dd>
+<p>the name of result data.</p>
+</dd><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all or :average or :stat.</p>
+</dd><dt><em>syncP</em>
+<dd>
+<p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><strong>return</strong>
 <dd>
 <p>result value</p>
 </dd></dl>
@@ -614,14 +784,16 @@
           
           <div class="method-source-code" id="getResult-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">176</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getResult</span>(<span class="ruby-identifier">_name</span>)
-<span class="line-num">177</span>   <span class="ruby-identifier">_resultTab</span> = <span class="ruby-identifier">getResultTable</span>() ;
-<span class="line-num">178</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_resultTab</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">179</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>[<span class="ruby-identifier">_name</span>] ;
-<span class="line-num">180</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">181</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">182</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">183</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">289</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getResult</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_sync</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">290</span>   <span class="ruby-identifier">_resultTab</span> = <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_nth</span>, <span class="ruby-identifier">_sync</span>) ;
+<span class="line-num">291</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_resultTab</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">292</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_tab</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_tab</span>[<span class="ruby-identifier">_name</span>]} ;
+<span class="line-num">293</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_resultTab</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">294</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>[<span class="ruby-identifier">_name</span>] ;
+<span class="line-num">295</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">296</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">297</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">298</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -636,7 +808,7 @@
         
         <div class="method-heading">
           <span class="method-name">getResultTable</span><span
-            class="method-args">()</span>
+            class="method-args">(_nth = :all, _sync = false)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -646,7 +818,13 @@
         <div class="method-description">
           
           <p>get result table in hash.</p>
-<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dl class="rdoc-list note-list"><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all or :average or :stat.</p>
+</dd><dt><em>syncP</em>
+<dd>
+<p>if true, <a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> to Oacis DB.</p>
+</dd><dt><strong>return</strong>
 <dd>
 <p>result hash.</p>
 </dd></dl>
@@ -656,13 +834,158 @@
           
           <div class="method-source-code" id="getResultTable-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">164</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getResultTable</span>()
-<span class="line-num">165</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">done?</span>()) <span class="ruby-keyword">then</span>
-<span class="line-num">166</span>     <span class="ruby-keyword">return</span> <span class="ruby-ivar">@run</span>.<span class="ruby-identifier">result</span> ;
-<span class="line-num">167</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">168</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">169</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">170</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">250</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getResultTable</span>(<span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_sync</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">251</span>   <span class="ruby-identifier">_nthForLoop</span> = ((<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stat</span>) <span class="ruby-operator">?</span> <span class="ruby-value">:all</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">_nth</span>) ;
+<span class="line-num">252</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">done?</span>(<span class="ruby-identifier">_sync</span>, <span class="ruby-identifier">_nthForLoop</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">253</span>     <span class="ruby-identifier">_resultList</span> = [] ;
+<span class="line-num">254</span>     <span class="ruby-identifier">doWithNthRun</span>(<span class="ruby-identifier">_nthForLoop</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">255</span>       <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_run</span>.<span class="ruby-identifier">result</span>) ;
+<span class="line-num">256</span>     }
+<span class="line-num">257</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:all</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">258</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultList</span> ;
+<span class="line-num">259</span>     <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stat</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">260</span>       <span class="ruby-identifier">_stat</span> = {} ;
+<span class="line-num">261</span>       <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_result</span><span class="ruby-operator">|</span>
+<span class="line-num">262</span>         <span class="ruby-identifier">_result</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span>
+<span class="line-num">263</span>           <span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-constant">Stat</span><span class="ruby-operator">::</span><span class="ruby-constant">StatInfo</span>.<span class="ruby-identifier">new</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>].<span class="ruby-identifier">nil?</span>) ;
+<span class="line-num">264</span>           <span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>].<span class="ruby-identifier">put</span>(<span class="ruby-identifier">_value</span>) ;
+<span class="line-num">265</span>         }
+<span class="line-num">266</span>       }
+<span class="line-num">267</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">268</span>         <span class="ruby-identifier">_ave</span> = {} ;
+<span class="line-num">269</span>         <span class="ruby-identifier">_stat</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_ave</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span>.<span class="ruby-identifier">average</span>() ;}
+<span class="line-num">270</span>         <span class="ruby-keyword">return</span> <span class="ruby-identifier">_ave</span> ;
+<span class="line-num">271</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">272</span>         <span class="ruby-keyword">return</span> <span class="ruby-identifier">_stat</span> ;
+<span class="line-num">273</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">274</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">275</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">first</span> ;
+<span class="line-num">276</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">277</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">278</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">279</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">280</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nofRuns" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nofRuns</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get number of runs.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong> 
+<dd>
+<p>a number of runs.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="nofRuns-source">
+            <pre>   <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">88</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nofRuns</span>()
+<span class="line-num">89</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">size</span>() ;
+<span class="line-num">90</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nofRunsInNth" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nofRunsInNth</span><span
+            class="method-args">(_nth)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get number of runs specified by _nth ;</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong> 
+<dd>
+<p>a number of runs.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="nofRunsInNth-source">
+            <pre>   <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">96</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nofRunsInNth</span>(<span class="ruby-identifier">_nth</span>)
+<span class="line-num">97</span>   <span class="ruby-keyword">return</span> (<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:all</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">nofRuns</span>() <span class="ruby-operator">:</span> <span class="ruby-value">1</span>) ;
+<span class="line-num">98</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nthRun" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nthRun</span><span
+            class="method-args">(_nth)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get Nth run.</p>
+<dl class="rdoc-list note-list"><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or a Run.</p>
+</dd><dt><strong>return</strong> 
+<dd>
+<p>a Run.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="nthRun-source">
+            <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
+<span class="line-num">105</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nthRun</span>(<span class="ruby-identifier">_nth</span>)
+<span class="line-num">106</span>   <span class="ruby-keyword">case</span>(<span class="ruby-identifier">_nth</span>)
+<span class="line-num">107</span>   <span class="ruby-keyword">when</span> <span class="ruby-constant">Run</span> ; <span class="ruby-keyword">return</span> <span class="ruby-identifier">_nth</span> ;
+<span class="line-num">108</span>   <span class="ruby-keyword">when</span> <span class="ruby-constant">Integer</span> ; <span class="ruby-keyword">return</span> <span class="ruby-ivar">@runList</span>[<span class="ruby-identifier">_nth</span>] ;
+<span class="line-num">109</span>   <span class="ruby-keyword">when</span> <span class="ruby-value">:first</span> ; <span class="ruby-keyword">return</span> <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">first</span> ;
+<span class="line-num">110</span>   <span class="ruby-keyword">when</span> <span class="ruby-value">:last</span> ; <span class="ruby-keyword">return</span> <span class="ruby-ivar">@runList</span>.<span class="ruby-identifier">last</span> ;
+<span class="line-num">111</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">112</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown _nth index type for @runList: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_nth</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">113</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">114</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -677,7 +1000,7 @@
         
         <div class="method-heading">
           <span class="method-name">sync</span><span
-            class="method-args">()</span>
+            class="method-args">(_nthRun = :all)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -687,17 +1010,21 @@
         <div class="method-description">
           
           <p><a href="ParamSetStub.html#method-i-sync"><code>sync</code></a> status.</p>
+<dl class="rdoc-list note-list"><dt><em>nth</em> 
+<dd>
+<p>an Integer or :first or :last or :all.</p>
+</dd></dl>
           
           
 
           
           <div class="method-source-code" id="sync-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num"> 98</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sync</span>()
-<span class="line-num"> 99</span>   <span class="ruby-identifier">eachRun</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
-<span class="line-num">100</span>     <span class="ruby-identifier">_run</span>.<span class="ruby-identifier">reload</span>() ;
-<span class="line-num">101</span>   }
-<span class="line-num">102</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">143</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sync</span>(<span class="ruby-identifier">_nthRun</span> = <span class="ruby-value">:all</span>)
+<span class="line-num">144</span>   <span class="ruby-identifier">doWithNthRun</span>(<span class="ruby-identifier">_nthRun</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">145</span>     <span class="ruby-identifier">_run</span>.<span class="ruby-identifier">reload</span>() ;
+<span class="line-num">146</span>   }
+<span class="line-num">147</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -712,7 +1039,7 @@
         
         <div class="method-heading">
           <span class="method-name">toJson</span><span
-            class="method-args">(_mode = nil)</span>
+            class="method-args">(_mode = nil, _runs = :all)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -725,6 +1052,9 @@
 <dl class="rdoc-list note-list"><dt><em>mode</em>
 <dd>
 <p>mode of the conversion.</p>
+</dd><dt><em>runs</em>
+<dd>
+<p>specify which runs include. If :all, return Array of information of runs inside JSON. If :average, return average table of result. If :first or :last, return ones of the first or last run. If an Integer, return ones of the nth run.</p>
 </dd><dt><strong>return</strong>
 <dd>
 <p>json object (Hash)</p>
@@ -735,31 +1065,31 @@
           
           <div class="method-source-code" id="toJson-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">190</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">toJson</span>(<span class="ruby-identifier">_mode</span> = <span class="ruby-keyword">nil</span>)
-<span class="line-num">191</span>   <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:whole</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">nil?</span>)
-<span class="line-num">192</span>   
-<span class="line-num">193</span>   <span class="ruby-identifier">_json</span> = <span class="ruby-keyword">nil</span> ;
-<span class="line-num">194</span>   <span class="ruby-keyword">case</span>(<span class="ruby-identifier">_mode</span>)
-<span class="line-num">195</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:whole</span>)
-<span class="line-num">196</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
-<span class="line-num">197</span>               <span class="ruby-value">:seedParam</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@seedParam</span>,
-<span class="line-num">198</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
-<span class="line-num">199</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(),
-<span class="line-num">200</span>             } ;
-<span class="line-num">201</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:result</span>)
-<span class="line-num">202</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
-<span class="line-num">203</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(),
-<span class="line-num">204</span>             } ;
-<span class="line-num">205</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:input</span>)
-<span class="line-num">206</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
-<span class="line-num">207</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
-<span class="line-num">208</span>             } ;
-<span class="line-num">209</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">210</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown conversion mode:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">inspect</span> ;
-<span class="line-num">211</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">212</span>   
-<span class="line-num">213</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_json</span> ;
-<span class="line-num">214</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">310</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">toJson</span>(<span class="ruby-identifier">_mode</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_runs</span> = <span class="ruby-value">:all</span>)
+<span class="line-num">311</span>   <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:whole</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">nil?</span>) ;
+<span class="line-num">312</span>   
+<span class="line-num">313</span>   <span class="ruby-identifier">_json</span> = <span class="ruby-keyword">nil</span> ;
+<span class="line-num">314</span>   <span class="ruby-keyword">case</span>(<span class="ruby-identifier">_mode</span>)
+<span class="line-num">315</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:whole</span>)
+<span class="line-num">316</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
+<span class="line-num">317</span>               <span class="ruby-value">:seedParam</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@seedParam</span>,
+<span class="line-num">318</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
+<span class="line-num">319</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_runs</span>),
+<span class="line-num">320</span>             } ;
+<span class="line-num">321</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:result</span>)
+<span class="line-num">322</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
+<span class="line-num">323</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_runs</span>),
+<span class="line-num">324</span>             } ;
+<span class="line-num">325</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:input</span>)
+<span class="line-num">326</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
+<span class="line-num">327</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
+<span class="line-num">328</span>             } ;
+<span class="line-num">329</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">330</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown conversion mode:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">331</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">332</span>   
+<span class="line-num">333</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_json</span> ;
+<span class="line-num">334</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

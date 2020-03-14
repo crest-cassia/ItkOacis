@@ -24,57 +24,56 @@ require 'json' ;
 require 'WithConfParam.rb' ;
 require 'Stat/Random.rb' ;
 
-require 'Conductor.rb' ;
+require 'ConductorRandom.rb' ;
 
 #--======================================================================
 module ItkOacis
   #--======================================================================
   #++
-  ## Conductor that manages to create new ParamSetStub for random-search.
-  ## A policy to scatter ParamSets can be specified
-  ## in _conf_ parameter in new or DefaultConf constant defined in sub-classes.
-  ## (See DefaultConf for the syntax of the specification.)
-  ## === Usage
-  ##  class FooConductor < ItkOacis::ConductorRandom
-  ##    ## override DefaultConf.
-  ##    DefaultConf = {
-  ##      :simulatorName => "foo00",
-  ##      :hostName => "localhost",
-  ##      :scatterPolicy => { "x" => { :type => :uniform,
-  ##                                   :min => -1.0, :max => 1.0 },
-  ##                          "y" => { :type => :gaussian,
-  ##                                   :ave => 10.0, :std => 1.0 },
-  ##                          "z" => { :type => :list,
-  ##                                   :list => [0.0, 1.0, 2.0, 3.0] } }
-  ##    } ;
-  ##    
-  ##  end
+  ## Conductor that manages to ParamSet
+  ## according to a simple GA (Genetic Algorithm) way.
+  ##
+  ## At the initialization,
+  ## the Conductor create a population of ParamSet in the same way
+  ## of ItkOacis::ConductorRandom.
+  ## (See scatterPolicy setup in ItkOacis::ConductorRandom.)
+  ##
+  ## Then, the Conductor submits jobs and waits until all population are done.
+  ## After all runs in the population of ParamSet complete,
+  ## the Conductor evaluates them and create the next generation.
+  ##
+  ## This process is repeated until a certain alternation cycle.
   ## 
+  ## Meta parameters of the GA are specified 
+  ## in _conf_ parameter in new or DefaultConf constant defined in sub-classes
+  ## as follow:
+  ##     <Conf> ::= { ...
+  ##                  :population => Integer,
+  ##                  :compareBy => <ComparisonMethod>
+  ##                  :alternateConf => {
+  ##                    :surviveRate => <Rate>,
+  ##                    :
+  ##                  ... }
+  ##     <ParamName> ::=  a string of the name of a parameter.
+  ##     <RandPolicy> ::= { :type => :uniform, :min => min, :max => max }
+  ##                    | { :type => :gaussian, :ave => ave, :std => std }
+  ##                    | { :type => :value, :value => value }
+  ##                    | { :type => :list, :list => [value, value, ...] }
+  ##
+  ## === Usage
   ##  # create a FooConductor and run.
   ##  conductor = FooConductor.new() ;
   ##  conductor.run() ;
   ##  
-  class ConductorRandom < Conductor
+  class ConductorSimpleGa < ConductorRandom
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default values of _conf_ in new method.
     ## It should be a Hash. It overrides Conductor::DefaultConf.
     ## See below for meaning of each key:
-    ## (See also (ItkOacis::Conductor::DefaultConf)[Conductor.html#DefaultConf])
     ## - :scatterPolicy : define a policy to scatter parameter values.
+    ##   See description of ItkOacis::ConductorRandom. 
     ##   (default: {})
-    ##   Detailed syntax of the specification is as follows:
-    ##     <Conf> ::= { ...
-    ##                  :scatterPolicy => { <ParamName> => <RandPolicy>,
-    ##                                      <ParamName> => <RandPolicy>,
-    ##                                      ... },
-    ##                  ... }
-    ##     <ParamName> ::=  a string of the name of a parameter.
-    ##     <RandPolicy> ::= { :type => :uniform, :min => min, :max => max }
-    ##                    | { :type => :gaussian, :ave => ave, :std => std }
-    ##                    | { :type => :value, :value => value }
-    ##                    | { :type => :list, :list => [value, value, ...] }
-    ##
     DefaultConf = {
       :scatterPolicy => {},
       nil => nil } ;
