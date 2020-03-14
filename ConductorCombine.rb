@@ -33,13 +33,8 @@ module ItkOacis
   ## Conductor that manages to create new ParamSetStub
   ## by exploring whole combination.
   ## Lists of values for each parameter can be specified
-  ## in _conf_ parameter in new as follow:
-  ##     <Conf> ::= { ...
-  ##                  :paramList => { <ParamName> => [value, value, ...],
-  ##                                  <ParamName> => [value, value, ...],
-  ##                                      ... },
-  ##                  ... }
-  ##     <ParamName> ::=  a string of the name of a parameter.
+  ## in _conf_ parameter in new or DefaultConf constant defined in sub-classes.
+  ## (See DefaultConf for the syntax of the specification.)
   ##
   ## === Usage
   ##  class FooConductor < ItkOacis::ConductorCombine
@@ -73,9 +68,17 @@ module ItkOacis
     ## default values of _conf_ in new method.
     ## It should be a Hash. It overrides Conductor::DefaultConf.
     ## See below for meaning of each key:
+    ## (See also {ItkOacis::Conductor::DefaultConf}[Conductor.html#DefaultConf])
     ## - :paramList : define a list of values for each parameter.
     ##   See description of ItkOacis::ConductorCombine.
     ##   (default: {})
+    ##   Detailed syntax of the specification is as follows:
+    ##     <Conf> ::= { ...
+    ##                  :paramList => { <ParamName> => [value, value, ...],
+    ##                                  <ParamName> => [value, value, ...],
+    ##                                      ... },
+    ##                  ... }
+    ##     <ParamName> ::=  a string of the name of a parameter.
     DefaultConf = {
       :paramList => {},
       nil => nil } ;
@@ -186,6 +189,7 @@ if($0 == __FILE__) then
 
   #--============================================================
   #++
+  # :nodoc: all
   ## test conductor
   class FooConductor < ItkOacis::ConductorCombine
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -210,6 +214,7 @@ if($0 == __FILE__) then
   
   #--============================================================
   #++
+  # :nodoc: all
   ## unit test for this file.
   class ItkTest
 

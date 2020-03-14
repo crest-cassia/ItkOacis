@@ -46,23 +46,44 @@ module ItkOacis
   ## 
   ## Meta parameters of the GA are specified 
   ## in _conf_ parameter in new or DefaultConf constant defined in sub-classes
-  ## as follow:
-  ##     <Conf> ::= { ...
-  ##                  :population => Integer,
-  ##                  :compareBy => <ComparisonMethod>
-  ##                  :alternateConf => {
-  ##                    :surviveRate => <Rate>,
-  ##                    :
-  ##                  ... }
-  ##     <ParamName> ::=  a string of the name of a parameter.
-  ##     <RandPolicy> ::= { :type => :uniform, :min => min, :max => max }
-  ##                    | { :type => :gaussian, :ave => ave, :std => std }
-  ##                    | { :type => :value, :value => value }
-  ##                    | { :type => :list, :list => [value, value, ...] }
   ##
   ## === Usage
+  ##
+  ##  class FooConductor < ItkOacis::ConductorSimpleGa
+  ##    ## default configulation for initialization.
+  ##    DefaultConf = {
+  ##      :simulatorName => "foo00",
+  ##      :hostName => "localhost",
+  ##      :scatterPolicy => { "x" => { :type => :uniform,
+  ##                                   :min => -1.0, :max => 1.0 },
+  ##                          "y" => { :type => :gaussian,
+  ##                                   :ave => 10.0, :std => 1.0 },
+  ##                          "z" => { :type => :list,
+  ##                                   :list => [0, 1, 2, 3] } },
+  ##      :population => 10,      
+  ##      :nofAlternation => 10,
+  ##      :ratioSurvive => 0.3,
+  ##      :ratioCrossOver => 0.3,
+  ##      :ratioMutate => 0.3,
+  ##      :mutateRange => { "x" => { :type => :uniform,
+  ##                                 :min => -0.1, :max => 0.1 },
+  ##                        "y" => { :type => :gaussian,
+  ##                                 :ave => 0.0, :std => 0.1 } },
+  ##      :logLevel => :debug,
+  ##    } ;
+  ##    
+  ##    ## to compare two ParamSetStub.
+  ##    def scoreOf(_psStub)
+  ##      _r = _psStub.getResultTable(:average) ;
+  ##      _v = _r["u"] + _r["v"] + _r["w"] ; 
+  ##      
+  ##      return _v ;
+  ##    end
+  ##    
+  ##  end 
+  ##
   ##  # create a FooConductor and run.
-  ##  conductor = FooConductor.new() ;
+  ##  conductor = FooConductor.new({:nofAlternation => 100}) ;
   ##  conductor.run() ;
   ##  
   class ConductorSimpleGa < ConductorRandom
@@ -71,19 +92,144 @@ module ItkOacis
     ## default values of _conf_ in new method.
     ## It should be a Hash. It overrides Conductor::DefaultConf.
     ## See below for meaning of each key:
-    ## - :scatterPolicy : define a policy to scatter parameter values.
-    ##   See description of ItkOacis::ConductorRandom. 
+    ## (See also {ItkOacis::ConductorRandom::DefaultConf}[ConductorRandom.html#DefaultConf])
+    ## - :population : the population of ParamSetStub in one generation.
+    ##   (default: 100)
+    ## - :nofAlternation : the number of alternation in GA.
+    ##   (default: 10)
+    ## - :ratioSurvive : the ratio of survivers of ParamSetStub.
+    ##   in the evaluation.
+    ##   Should be in the range [0,1].
+    ##   (default: 0.1)
+    ## - :ratioMutate : the ratio to population to generate a new generation
+    ##   by mutation.
+    ##   Should be in the range [0,1].
+    ##   (default: 0.3)
+    ## - :ratioCrossOver : the ratio to population to generate a new generation
+    ##   by cross over.
+    ##   Should be in the range [0,1].
+    ##   (default: 0.5)
+    ##   The remain ratio (1 - surviveRatio - crossOverRatio - mutateRatio)
+    ##   is used to generate in random way.
+    ## - :compareBy : the procedure to compare ParamSetStub for the sorting.
+    ##   The procedure should receive two ParamSetStub and return -1, 0, or 1.
+    ##   If nil, use the default (compare? ()) method.
+    ##   If a Proc, call it with two ParamSetStub.
+    ##   (default: nil)
+    ## - :scoreBy : the procedure to calculate score of ParamSetStub
+    ##   for the sorting.
+    ##   The procedure should receive one ParamSetStub and return a Float.
+    ##   If nil, use the default (scoreOf ()) method.
+    ##   If a Proc, call it with one ParamSetStub.
+    ##   (default: nil)
+    ## - :mutateBy : the procedure to generate
+    ##   a new _varied_ (_paramSeed_) argument for newParamSet () by mutation.
+    ##   If nil, use the default (newSeedByMutate ()) method.
+    ##   If a Proc, call it with one ParamSetStub.
+    ##   (default: nil)
+    ## - :crossOverBy : the procedure to generate
+    ##   a new _varied_ (_paramSeed_) argument for newParamSet () by cross over.
+    ##   If nil, use the default (newSeedByCrossOver ()) method.
+    ##   If a Proc, call it with one ParamSetStub.
+    ##   (default: nil)
+    ## - :mutateRange : the range information for the mutation.
+    ##   It specify amont to modify each parameter used in newSeedByMutate ().
+    ##   The format is the same as :scatterPolicy in ConductorRandom.
     ##   (default: {})
+    ##
+    ## See below for syntax of each key:
+    ##     <Conf> ::= { ...
+    ##                  :population => Integer,
+    ##                  :nofAlternation => Integer,
+    ##                  :ratioSurvive => <Ratio>,
+    ##                  :ratioMutate => <Ratio>,
+    ##                  :ratioCrossOver => <Ratio>,
+    ##                  :compareBy => <MethodSpec>,
+    ##                  :scoreBy => <MethodSpec>,
+    ##                  :scoreBy => <MethodSpec>,
+    ##                  :mutateBy => <MethodSpec>,
+    ##                  :crossOverBy => <MethodSpec>,
+    ##                  :mutateRange => <ScatterPolicy>,
+    ##                  ... }
+    ##     <Ratio> ::= a Float in the range [0,1].
+    ##     <MethodSpec> ::= nil | a Proc.
+    ##     <ScatterPolicy> ::= the same as :scatterPolicy for ConductorRandom.
+    ##
     DefaultConf = {
-      :scatterPolicy => {},
+      :population => 100,
+      :nofAlternation => 10,
+      :ratioSurvive => 0.1,
+      :ratioCrossOver => 0.5,
+      :ratioMutate => 0.3,
+      :compareBy => nil,
+      :scoreBy => nil,
+      :crossOverBy => nil,
+      :mutateBy => nil,
+      :murateRange => {},
       nil => nil } ;
 
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     #++
-    ## scatter policy definition.
-    ## The name is specified in _conf_ in new method
-    ## by key <tt>:scatterPolicy</tt>. 
-    attr_reader :scatterPolicy ;
+    ## the population of ParamSetStub in one generation.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:population</tt>. 
+    attr_reader :population ;
+
+    ## the number of alternation in GA.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:nofAlternation</tt>. 
+    attr_reader :nofAlternation ;
+    
+    ## the ratio of survivers of ParamSetStub.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:ratioSurvive</tt>. 
+    attr_reader :ratioSurvive ;
+
+    ## the ratio to population to generate a new generation by mutation.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:ratioMutate</tt>. 
+    attr_reader :ratioMutate ;
+
+    ## the ratio to population to generate a new generation by cross over.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:ratioCrossOver</tt>. 
+    attr_reader :ratioCrossOver ;
+
+    ## the procedure to compare ParamSetStub for the sorting.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:compareBy</tt>. 
+    attr_reader :compareBy ;
+
+    ## the procedure to cauculate ParamSetStub for the sorting.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:scoreBy</tt>. 
+    attr_reader :scoreBy ;
+
+    ## the procedure to generate a new _varied_ (_paramSeed_) argument
+    ## for newParamSet () by mutation.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:mutateBy</tt>. 
+    attr_reader :mutateBy ;
+
+    ## the procedure to generate a new _varied_ (_paramSeed_) argument
+    ## for newParamSet () by cross over.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:crossOverBy</tt>. 
+    attr_reader :crossOverBy ;
+
+    ## the range information to mutate.
+    ## It is specified in _conf_ in new method
+    ## by key <tt>:mutateRange</tt>. 
+    attr_reader :mutateRange ;
+
+    ## the counter of alternation ;
+    attr_reader :alterCount ;
+
+    ## a list of ParamSetStub in the current generation ;
+    attr_reader :generation ;
+    
+    ## a list of generations as a history.
+    attr_reader :alterHistory ;
 
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
@@ -91,63 +237,232 @@ module ItkOacis
     ## to setup configulations.
     def setup()
       super() ;
-      setupScatterPolicy(getConf(:scatterPolicy)) ;
+      setupGaPolicy() ;
     end
 
     #--------------------------------------------------------------
     #++
-    ## to set scatter policy.
-    ## _policyTable_:: a Hash from param. name to scatter policy.
-    def setupScatterPolicy(_policyTable)
-      @scatterPolicySpec = _policyTable ;
-      @scatterPolicy = {} ;
-      @scatterPolicySpec.each{|_name, _policyOriginal|
-        _policy = _policyOriginal.dup() ;
-        case(_policy[:type])
-        when :uniform ;
-          _policy[:value] = Stat::Uniform.new(_policy[:min], _policy[:max]) ;
-        when :gaussian ;
-          _policy[:value] = Stat::Gaussian.new(_policy[:ave], _policy[:std]) ;
+    ## to set policies of genetic algorithm.
+    def setupGaPolicy()
+      @population = getConf(:population) ;
+      @nofAlternation = getConf(:nofAlternation) ;
+      
+      @ratioSurvive = getConf(:ratioSurvive) ;
+      @ratioCrossOver = getConf(:ratioCrossOver) ;
+      @ratioMutate = getConf(:ratioMutate) ;
+      
+      @compareBy = prepareProc(getConf(:compareBy) || :compare?) ;
+      @scoreBy = prepareProc(getConf(:scoreBy) || :scoreOf) ;
+
+      @mutateBy = prepareProc(getConf(:mutateBy) || :newSeedByMutate) ;
+      @crossOverBy = prepareProc(getConf(:crossOverBy) || :newSeedByCrossOver) ;
+
+      @mutateRange = convertScatterPolicy(getConf(:mutateRange)) ;
+
+      @alterCount = 0 ;
+      @generation = [] ;
+      @alterHistory = [] ;
+
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to prepare procedure.
+    ## _procSpec_ :: a Proc or a Symbol.
+    ##               If a Symbol, it should be the name of an instance method.
+    ## *return* :: a Proc instance.
+    def prepareProc(_procSpec)
+      if(_procSpec.is_a?(Symbol)) then
+        return Proc.new(){|*_argv| self.send(_procSpec, *_argv)} ;
+      elsif(_porcSpec.is_a?(Proc)) then
+        return _procSpec ;
+      else
+        raise "illegal procedure specification: " + _procSpec.inspect ;
+      end
+    end
+    
+
+    #--////////////////////////////////////////////////////////////
+    #--------------------------------------------------------------
+    #++
+    ## to get the number of initial ParamSet.
+    ## It just return @population.
+    ## *return*:: the number of ParamSet.
+    def getNofInitParamSet()
+      return @population ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to check a generation is over and alternate generation.
+    ## It can be overrided by expanded classes.
+    def cycleBody()
+      super() ;
+      if(nofRunning() == 0) then
+        # do alternation.
+        logging(:info, :alter, @alterCount) ;
+        @alterCount += 1 ;
+        if(@alterCount < @nofAlternation) then
+          alternateGeneration() ;          
         end
-        @scatterPolicy[_name] = _policy ;
+      end
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to check the alter count reaches @nofAlternation.
+    ## *return*:: true when the conditions to terminate are satisfied.
+    def terminate?()
+      return (@alterCount >= @nofAlternation) ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to spawn a ParamSetStub and push to a running list.
+    ## _paramSeed_:: a Hash of paramter set. Can be partial.
+    ## *return*:: a ParamSetStub.
+    def spawnParamSet(_paramSeed = nil)
+      _psStub = super(_paramSeed) ;
+      @generation.push(_psStub) ;
+      return _psStub ;
+    end
+    
+    #--////////////////////////////////////////////////////////////
+    #--------------------------------------------------------------
+    #++
+    ## to alternate generation
+    ## It can be overrided by expanded classes.
+    def alternateGeneration()
+      # sort.
+      @generation.sort!(&@compareBy) ;
+
+      # switch to new generation
+      @alterHistory.push(@generation) ;
+      @oldGeneration = @generation ;
+      @generation = [] ;
+
+      # survive
+      alternateGeneration_Survive()
+      # mutate
+      alternateGeneration_Mutate()
+      # cross-over
+      alternateGeneration_CrossOver()
+      # fill by random seed.
+      fillRunningParamSetList() ;
+      
+      logging(:info, :newGeneration) ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## to alternate generation (survive)
+    def alternateGeneration_Survive()
+      @nofSurviver = (@population * @ratioSurvive).ceil ;
+      logging(:debug, :survive, @nofSurviver) ;
+      (0...@nofSurviver).each{|_i| 
+        _surviver = @oldGeneration[_i] ;
+        logging(:debug, :survive1, :pickup, [_i]) ;
+        @runningParamSetList.push(_surviver) ;
+        @generation.push(_surviver) ;
+      }
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to alternate generation (mutate)
+    def alternateGeneration_Mutate()
+      _nofMutation = (@population * @ratioMutate).ceil ;
+      logging(:debug, :mutate, _nofMutation) ;
+      (0..._nofMutation).each{|_i|
+        _j = rand(@nofSurviver) ;
+        logging(:debug, :murate1, :pickup, [_j]) ;
+        _mutantSeed = @mutateBy.call(@oldGeneration[_j]) ;
+        spawnParamSet(_mutantSeed) ;
+      }
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to alternate generation (cross over)
+    def alternateGeneration_CrossOver()
+      _nofCrossOver = (@population * @ratioCrossOver).ceil ;
+      logging(:debug, :crossOver, _nofCrossOver) ;
+      (0..._nofCrossOver).each{|_i|
+        begin
+          _j = rand(@nofSurviver) ;
+          _k = rand(@nofSurviver) ;
+        end while(_j == _k) ;
+        logging(:debug, :crossOver1, :pickup, [_j,_k]) ;
+        _childSeed = @crossOverBy.call(@oldGeneration[_j],
+                                       @oldGeneration[_k]) ;
+        spawnParamSet(_childSeed) ;
       }
     end
 
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
-    ## to setup ParamSet setting for new one.
-    ## It generate a partial _paramSet hash according to
-    ## a specified policy in scatterPolicy.
-    ## The value specified in _seed_ override the policy.
-    ## _varied_:: a paried information to generate ParamSet.
-    ## *return*:: a Hash of a partial ParamSet setting.
-    def setupNewParam(_varied)
-      _param = {} ;
-      @scatterPolicy.each{|_paramName, _policy|
-        _param[_paramName] = ( _varied.key?(_paramName) ?
-                                 _varied[_paramName] :
-                                 getValueByPolicy(_policy) ) ;
-      }
-      return _param ;
+    ## to compare two ParamSetStub.
+    ## _psStub0_, _psStub1_ :: ParamSetStub to compare.
+    ## *return* :: -1 if scoreOf(_psStub0) > scoreOf(_psStub1),
+    ##             1 if scoreOf(_psStub0) < scoreOf(_psStub1), and
+    ##             0 otherwise.
+    def compare?(_psStub0, _psStub1)
+      return (@scoreBy.call(_psStub1) <=> @scoreBy.call(_psStub0)) ;
     end
 
     #--------------------------------------------------------------
     #++
-    ## to generate a random value specifyed in _policy_.
-    ## _policy_:: a Hash of overriding parameters. 
-    ## *return*:: a random value.
-    def getValueByPolicy(_policy)
-      case(_policy[:type])
-      when :uniform, :gaussian, :value ;
-        return _policy[:value].value() ;
-      when :list ;
-        return _policy[:list].sample() ;
-      else
-        raise "Unknown policy type: " + _policy.inspect ;
-      end
+    ## to calculate scalar score of a given ParamSetStub.
+    ## By default everyone is the same.
+    def scoreOf(_psStub)
+      return 0 ;
     end
-    
+
+    #--------------------------------------------------------------
+    #++
+    ## to generate a new seed of ParamSet in mutation.
+    ## It can be overrided in sub-classes.
+    def newSeedByMutate(_parent)
+      _childSeed = {} ;
+      _parentInput = _parent.getInputTable() ;
+      _parentInput.each{|_key, _value|
+        _policy = @mutateRange[_key] ;
+        if(_policy.nil?) then
+          _childSeed[_key] = _value ;
+        elsif(_policy[:type] == :list || _policy[:type] == :value) then
+          _childSeed[_key] = getValueByPolicy(_policy) ;
+        else
+          _childSeed[_key] = _value + getValueByPolicy(_policy) ;
+        end
+      }
+      logging(:debug, :newSeedByMutate, _childSeed, :from, _parentInput) ;
+      return _childSeed ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to generate a new seed of ParamSet in cross-over.
+    ## It can be overrided in sub-classes.
+    def newSeedByCrossOver(_parent0, _parent1)
+      _childSeed = {} ;
+      _parentInput0 = _parent0.getInputTable()
+      _parentInput1 = _parent1.getInputTable()
+      _parentInput0.each{|_key, _value0|
+        _value1 = _parentInput1[_key] ;
+        _r = rand() ;
+        if(_value0.is_a?(Float)) then
+          _value = (_r * _value0) + ((1.0 - _r) * _value1) ;
+        else
+          _value = ((_r < 0.5) ? _value0 : _value1) ;
+        end
+        _childSeed[_key] = _value ;
+      }
+      logging(:debug, :newSeedByCrossOver, _childSeed,
+              :from, [_parentInput0, _parentInput1]) ;
+      return _childSeed ;
+    end
+      
     #--////////////////////////////////////////////////////////////
     #--============================================================
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -163,8 +478,9 @@ if($0 == __FILE__) then
 
   #--============================================================
   #++
+  # :nodoc: all
   ## test conductor
-  class FooConductor < ItkOacis::ConductorRandom
+  class FooConductor < ItkOacis::ConductorSimpleGa
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default configulation for initialization.
@@ -176,20 +492,36 @@ if($0 == __FILE__) then
                           "y" => { :type => :gaussian,
                                    :ave => 10.0, :std => 1.0 },
                           "z" => { :type => :list,
-                                   :list => [0.0, 1.0, 2.0, 3.0] } }
+                                   :list => [0, 1, 2, 3] } },
+#      :population => 50,
+      :population => 10,      
+      :nofAlternation => 10,
+      :ratioSurvive => 0.3,
+      :ratioCrossOver => 0.3,
+      :ratioMutate => 0.3,
+      :mutateRange => { "x" => { :type => :uniform,
+                                 :min => -0.1, :max => 0.1 },
+                        "y" => { :type => :gaussian,
+                                 :ave => 0.0, :std => 0.1 } },
+      :logLevel => :debug,
     } ;
     
     #--------------------------------------------------------------
     #++
-    ## override cycleCheck().
-    def cycleBody()
-      super() ;
+    ## to compare two ParamSetStub.
+    ## by default everyone is the same.
+    def scoreOf(_psStub)
+      _r = _psStub.getResultTable(:average) ;
+      _v = _r["u"] + _r["v"] + _r["w"] ; 
+      
+      return _v ;
     end
     
   end # class FooConductor
   
   #--============================================================
   #++
+  # :nodoc: all
   ## unit test for this file.
   class ItkTest
 
@@ -243,7 +575,7 @@ if($0 == __FILE__) then
     #++
     ## test ConductorRandom.
     def test_a()
-      _conductor = FooConductor.new() ;
+      _conductor = FooConductor.new({:nofAlternation => 100}) ;
       pp [:test_a, _conductor] ;
       _conductor.run() ;
     end

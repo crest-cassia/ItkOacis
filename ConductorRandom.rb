@@ -60,7 +60,7 @@ module ItkOacis
     ## default values of _conf_ in new method.
     ## It should be a Hash. It overrides Conductor::DefaultConf.
     ## See below for meaning of each key:
-    ## (See also (ItkOacis::Conductor::DefaultConf)[Conductor.html#DefaultConf])
+    ## (See also {ItkOacis::Conductor::DefaultConf}[Conductor.html#DefaultConf])
     ## - :scatterPolicy : define a policy to scatter parameter values.
     ##   (default: {})
     ##   Detailed syntax of the specification is as follows:
@@ -101,8 +101,17 @@ module ItkOacis
     ## _policyTable_:: a Hash from param. name to scatter policy.
     def setupScatterPolicy(_policyTable)
       @scatterPolicySpec = _policyTable ;
-      @scatterPolicy = {} ;
-      @scatterPolicySpec.each{|_name, _policyOriginal|
+      @scatterPolicy = convertScatterPolicy(_policyTable) ;
+    end
+      
+    #--------------------------------------------------------------
+    #++
+    ## to convert scatter policy from _conf_ definition to random generator.
+    ## _policyTable_:: a Hash from param. name to scatter policy.
+      
+    def convertScatterPolicy(_policyTable)
+      _scatterPolicy = {} ;
+      _policyTable.each{|_name, _policyOriginal|
         _policy = _policyOriginal.dup() ;
         case(_policy[:type])
         when :uniform ;
@@ -110,8 +119,9 @@ module ItkOacis
         when :gaussian ;
           _policy[:value] = Stat::Gaussian.new(_policy[:ave], _policy[:std]) ;
         end
-        @scatterPolicy[_name] = _policy ;
+        _scatterPolicy[_name] = _policy ;
       }
+      return _scatterPolicy ;
     end
 
     #--////////////////////////////////////////////////////////////
@@ -164,6 +174,7 @@ if($0 == __FILE__) then
 
   #--============================================================
   #++
+  # :nodoc: all
   ## test conductor
   class FooConductor < ItkOacis::ConductorRandom
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -191,6 +202,7 @@ if($0 == __FILE__) then
   
   #--============================================================
   #++
+  # :nodoc: all
   ## unit test for this file.
   class ItkTest
 

@@ -497,7 +497,8 @@ module ItkOacis
                                 &_block) # :yield: _paramSeed_, _i_
       _max = getNofInitParamSet() if(_max.nil?) ;
       _n = _max - nofRunning() ;
-      spawnParamSetN(_n, _paramSeed, &_block)
+      spawnParamSetN(_n, _paramSeed, &_block) ;
+      logging(:debug, :fillRunningParamSetList, _n) ;
     end
       
     #--////////////////////////////////////////////////////////////
@@ -558,6 +559,7 @@ if($0 == __FILE__) then
 
   #--============================================================
   #++
+  # :nodoc: all
   ## test conductor
   class FooConductor < ItkOacis::Conductor
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -600,6 +602,7 @@ if($0 == __FILE__) then
   
   #--============================================================
   #++
+  # :nodoc: all
   ## unit test for this file.
   class ItkTest
 

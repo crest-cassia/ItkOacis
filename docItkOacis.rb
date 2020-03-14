@@ -3,8 +3,6 @@
 :markup: markdown
 :title: ItkOacis
 
-(Top Page)[index.html]
-
 # Itk's Oacis Utilities
 
 * Author:: Itsuki Noda <noda50@gmail.com>

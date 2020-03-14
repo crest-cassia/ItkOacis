@@ -69,19 +69,7 @@
 
     
     
-    <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
-
-  <ul class="link-list" role="directory">
     
-    <li class="calls-super" ><a href="#method-i-cycleBody">#cycleBody</a>
-    
-    <li ><a href="#method-i-runInit">#runInit</a>
-    
-  </ul>
-</div>
-
   </div>
 </nav>
 
@@ -92,12 +80,6 @@
 
   <section class="description">
     
-<p>test conductor</p>
-
-<p>test conductor</p>
-
-<p>test conductor</p>
-
   </section>
 
   
@@ -107,116 +89,10 @@
     
 
     
-    <section class="constants-list">
-      <header>
-        <h3>Constants</h3>
-      </header>
-      <dl>
-      
-        <dt id="DefaultConf">DefaultConf
-        
-        <dd><p>default configulation for initialization.</p>
-        
-      
-      </dl>
-    </section>
-    
 
     
 
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Instance Methods</h3>
-       </header>
-
-    
-      <div id="method-i-cycleBody" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">cycleBody</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>override cycleCheck().</p>
-          
-          
-            <div class="method-calls-super">
-              Calls superclass method
-              <a href="ItkOacis/Conductor.html#method-i-cycleBody"><code>ItkOacis::Conductor#cycleBody</code></a>
-            </div>
-          
-
-          
-          <div class="method-source-code" id="cycleBody-source">
-            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">587</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
-<span class="line-num">588</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">589</span>   <span class="ruby-identifier">eachDoneParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
-<span class="line-num">590</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:all</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:all</span>)] ;
-<span class="line-num">591</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:ave</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:average</span>)] ;
-<span class="line-num">592</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:first</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:first</span>)] ;
-<span class="line-num">593</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:last</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:last</span>)] ;
-<span class="line-num">594</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:_1th</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">1</span>)] ;
-<span class="line-num">595</span>     <span class="ruby-identifier">pp</span> [<span class="ruby-value">:ave</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:stat</span>)] ;
-<span class="line-num">596</span>   }
-<span class="line-num">597</span> <span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-runInit" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">runInit</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>override runInit().</p>
-          
-          
-
-          
-          <div class="method-source-code" id="runInit-source">
-            <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">575</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runInit</span>()
-<span class="line-num">576</span>   <span class="ruby-identifier">fillRunningParamSetList</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_seed</span>, <span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
-<span class="line-num">577</span>     <span class="ruby-identifier">_x</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">578</span>     <span class="ruby-identifier">_z</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">579</span>     { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_x</span>,
-<span class="line-num">580</span>       <span class="ruby-string">&quot;z&quot;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_z</span>, }
-<span class="line-num">581</span>   } ;
-<span class="line-num">582</span> <span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-    </section>
-  
   </section>
 
 </main>

@@ -290,6 +290,7 @@ if($0 ==  __FILE__) then
 
   #--============================================================
   #++
+  # :nodoc: all
   ## unit test for this file.
   class ItkTest
 

@@ -98,14 +98,7 @@
 
   <section class="description">
     
-<p><a href="Conductor.html"><code>Conductor</code></a> that manages to create new <a href="ParamSetStub.html"><code>ParamSetStub</code></a> by exploring whole combination. Lists of values for each parameter can be specified in <em>conf</em> parameter in new as follow:</p>
-
-<pre>&lt;Conf&gt; ::= { ...
-             :paramList =&gt; { &lt;ParamName&gt; =&gt; [value, value, ...],
-                             &lt;ParamName&gt; =&gt; [value, value, ...],
-                                 ... },
-             ... }
-&lt;ParamName&gt; ::=  a string of the name of a parameter.</pre>
+<p><a href="Conductor.html"><code>Conductor</code></a> that manages to create new <a href="ParamSetStub.html"><code>ParamSetStub</code></a> by exploring whole combination. Lists of values for each parameter can be specified in <em>conf</em> parameter in new or <a href="ConductorCombine.html#DefaultConf"><code>DefaultConf</code></a> constant defined in sub-classes. (See <a href="ConductorCombine.html#DefaultConf"><code>DefaultConf</code></a> for the syntax of the specification.)</p>
 
 <h3 id="class-ItkOacis::ConductorCombine-label-Usage">Usage<span><a href="#class-ItkOacis::ConductorCombine-label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
@@ -152,9 +145,16 @@
       
         <dt id="DefaultConf">DefaultConf
         
-        <dd><p>default values of <em>conf</em> in new method. It should be a Hash. It overrides Conductor::DefaultConf. See below for meaning of each key:</p>
+        <dd><p>default values of <em>conf</em> in new method. It should be a Hash. It overrides Conductor::DefaultConf. See below for meaning of each key: (See also <a href="Conductor.html#DefaultConf">ItkOacis::Conductor::DefaultConf</a>)</p>
 <ul><li>
-<p>:paramList : define a list of values for each parameter. See description of <a href="ConductorCombine.html"><code>ItkOacis::ConductorCombine</code></a>. (default: {})</p>
+<p>:paramList : define a list of values for each parameter. See description of <a href="ConductorCombine.html"><code>ItkOacis::ConductorCombine</code></a>. (default: {}) Detailed syntax of the specification is as follows:</p>
+
+<pre>&lt;Conf&gt; ::= { ...
+             :paramList =&gt; { &lt;ParamName&gt; =&gt; [value, value, ...],
+                             &lt;ParamName&gt; =&gt; [value, value, ...],
+                                 ... },
+             ... }
+&lt;ParamName&gt; ::=  a string of the name of a parameter.</pre>
 </li></ul>
         
       
@@ -242,9 +242,9 @@
           
           <div class="method-source-code" id="getNofInitParamSet-source">
             <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
-<span class="line-num">124</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
-<span class="line-num">125</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@maxCombination</span> ;
-<span class="line-num">126</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">127</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
+<span class="line-num">128</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@maxCombination</span> ;
+<span class="line-num">129</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -280,10 +280,10 @@
           
           <div class="method-source-code" id="setup-source">
             <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
-<span class="line-num">100</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setup</span>()
-<span class="line-num">101</span>   <span class="ruby-identifier">setupParamListTable</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:paramList</span>)) ;
-<span class="line-num">102</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">103</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">103</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setup</span>()
+<span class="line-num">104</span>   <span class="ruby-identifier">setupParamListTable</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:paramList</span>)) ;
+<span class="line-num">105</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">106</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -321,17 +321,17 @@
           
           <div class="method-source-code" id="setupNewParam-source">
             <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
-<span class="line-num">136</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupNewParam</span>(<span class="ruby-identifier">_seed</span>)
-<span class="line-num">137</span>   <span class="ruby-identifier">_param</span> = {} ;
-<span class="line-num">138</span>   <span class="ruby-ivar">@paramListIndex</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_entry</span><span class="ruby-operator">|</span>
-<span class="line-num">139</span>     <span class="ruby-identifier">_name</span> = <span class="ruby-identifier">_entry</span>[<span class="ruby-value">:name</span>] ;
-<span class="line-num">140</span>     <span class="ruby-identifier">_param</span>[<span class="ruby-identifier">_name</span>] = ( <span class="ruby-identifier">_seed</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-operator">?</span>
-<span class="line-num">141</span>                         <span class="ruby-identifier">_seed</span>[<span class="ruby-identifier">_name</span>] <span class="ruby-operator">:</span>
-<span class="line-num">142</span>                         <span class="ruby-ivar">@paramListTable</span>[<span class="ruby-identifier">_name</span>][<span class="ruby-identifier">_entry</span>[<span class="ruby-value">:index</span>]] ) ;
-<span class="line-num">143</span>   }
-<span class="line-num">144</span>   <span class="ruby-identifier">shiftIndex</span>(<span class="ruby-ivar">@paramListIndex</span>,<span class="ruby-value">0</span>) ;
-<span class="line-num">145</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_param</span> ;
-<span class="line-num">146</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">139</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupNewParam</span>(<span class="ruby-identifier">_seed</span>)
+<span class="line-num">140</span>   <span class="ruby-identifier">_param</span> = {} ;
+<span class="line-num">141</span>   <span class="ruby-ivar">@paramListIndex</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_entry</span><span class="ruby-operator">|</span>
+<span class="line-num">142</span>     <span class="ruby-identifier">_name</span> = <span class="ruby-identifier">_entry</span>[<span class="ruby-value">:name</span>] ;
+<span class="line-num">143</span>     <span class="ruby-identifier">_param</span>[<span class="ruby-identifier">_name</span>] = ( <span class="ruby-identifier">_seed</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-operator">?</span>
+<span class="line-num">144</span>                         <span class="ruby-identifier">_seed</span>[<span class="ruby-identifier">_name</span>] <span class="ruby-operator">:</span>
+<span class="line-num">145</span>                         <span class="ruby-ivar">@paramListTable</span>[<span class="ruby-identifier">_name</span>][<span class="ruby-identifier">_entry</span>[<span class="ruby-value">:index</span>]] ) ;
+<span class="line-num">146</span>   }
+<span class="line-num">147</span>   <span class="ruby-identifier">shiftIndex</span>(<span class="ruby-ivar">@paramListIndex</span>,<span class="ruby-value">0</span>) ;
+<span class="line-num">148</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_param</span> ;
+<span class="line-num">149</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -366,15 +366,15 @@
           
           <div class="method-source-code" id="setupParamListTable-source">
             <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
-<span class="line-num">109</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupParamListTable</span>(<span class="ruby-identifier">_paramListTable</span>)
-<span class="line-num">110</span>   <span class="ruby-ivar">@paramListTable</span> = <span class="ruby-identifier">_paramListTable</span> ;
-<span class="line-num">111</span>   <span class="ruby-ivar">@paramListIndex</span> = [] ;
-<span class="line-num">112</span>   <span class="ruby-ivar">@maxCombination</span> = <span class="ruby-value">1</span> ;
-<span class="line-num">113</span>   <span class="ruby-ivar">@paramListTable</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_paramList</span><span class="ruby-operator">|</span>
-<span class="line-num">114</span>     <span class="ruby-ivar">@paramListIndex</span>.<span class="ruby-identifier">push</span>({<span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_name</span>, <span class="ruby-value">:index</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0</span>}) ;
-<span class="line-num">115</span>     <span class="ruby-ivar">@maxCombination</span> <span class="ruby-operator">*=</span> <span class="ruby-identifier">_paramList</span>.<span class="ruby-identifier">size</span> ;
-<span class="line-num">116</span>   }
-<span class="line-num">117</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">112</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupParamListTable</span>(<span class="ruby-identifier">_paramListTable</span>)
+<span class="line-num">113</span>   <span class="ruby-ivar">@paramListTable</span> = <span class="ruby-identifier">_paramListTable</span> ;
+<span class="line-num">114</span>   <span class="ruby-ivar">@paramListIndex</span> = [] ;
+<span class="line-num">115</span>   <span class="ruby-ivar">@maxCombination</span> = <span class="ruby-value">1</span> ;
+<span class="line-num">116</span>   <span class="ruby-ivar">@paramListTable</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_paramList</span><span class="ruby-operator">|</span>
+<span class="line-num">117</span>     <span class="ruby-ivar">@paramListIndex</span>.<span class="ruby-identifier">push</span>({<span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_name</span>, <span class="ruby-value">:index</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0</span>}) ;
+<span class="line-num">118</span>     <span class="ruby-ivar">@maxCombination</span> <span class="ruby-operator">*=</span> <span class="ruby-identifier">_paramList</span>.<span class="ruby-identifier">size</span> ;
+<span class="line-num">119</span>   }
+<span class="line-num">120</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -415,25 +415,25 @@
           
           <div class="method-source-code" id="shiftIndex-source">
             <pre>    <span class="ruby-comment"># File ConductorCombine.rb</span>
-<span class="line-num">154</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">shiftIndex</span>(<span class="ruby-identifier">_paramListIndex</span>, <span class="ruby-identifier">_k</span>)
-<span class="line-num">155</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_k</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">_paramListIndex</span>.<span class="ruby-identifier">size</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">156</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> ;
-<span class="line-num">157</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">158</span>     <span class="ruby-identifier">_rewindP</span> = <span class="ruby-identifier">shiftIndex</span>(<span class="ruby-identifier">_paramListIndex</span>, <span class="ruby-identifier">_k</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) ;
-<span class="line-num">159</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_rewindP</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">160</span>       <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>;
-<span class="line-num">161</span>       <span class="ruby-identifier">_name</span> = <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:name</span>] ;
-<span class="line-num">162</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@paramListTable</span>[<span class="ruby-identifier">_name</span>].<span class="ruby-identifier">size</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">163</span>         <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] = <span class="ruby-value">0</span> ;
-<span class="line-num">164</span>         <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> ;
-<span class="line-num">165</span>       <span class="ruby-keyword">else</span>
-<span class="line-num">166</span>         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
-<span class="line-num">167</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">168</span>     <span class="ruby-keyword">else</span>
-<span class="line-num">169</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
-<span class="line-num">170</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">171</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">172</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">157</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">shiftIndex</span>(<span class="ruby-identifier">_paramListIndex</span>, <span class="ruby-identifier">_k</span>)
+<span class="line-num">158</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_k</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">_paramListIndex</span>.<span class="ruby-identifier">size</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">159</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> ;
+<span class="line-num">160</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">161</span>     <span class="ruby-identifier">_rewindP</span> = <span class="ruby-identifier">shiftIndex</span>(<span class="ruby-identifier">_paramListIndex</span>, <span class="ruby-identifier">_k</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) ;
+<span class="line-num">162</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_rewindP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">163</span>       <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>;
+<span class="line-num">164</span>       <span class="ruby-identifier">_name</span> = <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:name</span>] ;
+<span class="line-num">165</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@paramListTable</span>[<span class="ruby-identifier">_name</span>].<span class="ruby-identifier">size</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">166</span>         <span class="ruby-identifier">_paramListIndex</span>[<span class="ruby-identifier">_k</span>][<span class="ruby-value">:index</span>] = <span class="ruby-value">0</span> ;
+<span class="line-num">167</span>         <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> ;
+<span class="line-num">168</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">169</span>         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
+<span class="line-num">170</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">171</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">172</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> ;
+<span class="line-num">173</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">174</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">175</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
