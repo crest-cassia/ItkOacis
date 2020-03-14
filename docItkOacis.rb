@@ -1,16 +1,19 @@
-#  -*- Mode: Memo, coding: utf-8 -*-
+#  -*- coding: utf-8 -*-
 =begin rdoc
+:markup: markdown
 :title: ItkOacis
-= Itk's Oacis Utilities
-Author:: Itsuki Noda <noda50@gmail.com>
-Copyright:: Copyright (c) 2020 AIST & I.Noda
-License::   Distributes under the same terms as Oacis
-Version:: 0.0 2020/03/10 I.Noda
 
-==== History
-[2020/03/10] Create This File.
+# Itk's Oacis Utilities
 
-== Overview
+* Author:: Itsuki Noda <noda50@gmail.com>
+* Copyright:: Copyright (c) 2020 AIST & I.Noda
+* License::   Distributes under the same terms as Oacis
+* Version:: 0.0 2020/03/10 I.Noda
+
+#### History
+* [2020/03/10] Create This File.
+
+## Overview
 
 ItkOacis is a Ruby Module
 that consists of classes to handle Oacis process
@@ -36,7 +39,7 @@ in the running Oacis.
 For the detailed usage and functions, please see
 each class secion.
 
-== Sea Also
+## Sea Also
 To see samples to use ItkOacis,
 please check followings:
 
