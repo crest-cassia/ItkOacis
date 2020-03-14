@@ -566,6 +566,7 @@ if($0 == __FILE__) then
     DefaultConf = {
       :simulatorName => "foo00",
       :hostName => "localhost",
+      :nofRun => 3,
     } ;
     
     #----------------------------------------------------

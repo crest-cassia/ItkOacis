@@ -48,8 +48,6 @@ module ItkOacis
     attr_reader :entity ;
     ## list of run
     attr_reader :runList ;
-    ## last run
-    attr_reader :run ;
 
     #--------------------------------------------------------------
     #++
@@ -79,9 +77,40 @@ module ItkOacis
       @entity.runs.each{|_run|
         @runList.push(_run) ;
       }
-      @run = @runList.last ;
     end
 
+    #--------------------------------------------------------------
+    #++
+    ## get number of runs.
+    ## *return* :: a number of runs.
+    def nofRuns()
+      return @runList.size() ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## get number of runs specified by _nth ;
+    ## *return* :: a number of runs.
+    def nofRunsInNth(_nth)
+      return (_nth == :all ? nofRuns() : 1) ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## get Nth run.
+    ## _nth_ :: an Integer or :first or :last or a Run.
+    ## *return* :: a Run.
+    def nthRun(_nth)
+      case(_nth)
+      when Run ; return _nth ;
+      when Integer ; return @runList[_nth] ;
+      when :first ; return @runList.first ;
+      when :last ; return @runList.last ;
+      else
+        raise "unknown _nth index type for @runList: " + _nth.inspect ;
+      end
+    end
+    
     #--------------------------------------------------------------
     #++
     ## call block for each run.
@@ -94,31 +123,95 @@ module ItkOacis
     
     #--------------------------------------------------------------
     #++
+    ## call block for the nth run.
+    ## _nth_ :: an Integer or :first or :last or :all.
+    ## _block_:: a block to call.
+    def doWithNthRun(_nth, &_block)
+      if(_nth == :all) then
+        return eachRun(&_block) ;
+      else
+        return block.call(nthRun(_nth)) ;
+      end
+    end
+    
+    #--------------------------------------------------------------
+    #++
     ## sync status.
-    def sync()
-      eachRun(){|_run|
+    ## _nth_ :: an Integer or :first or :last or :all.
+    def sync(_nthRun = :all)
+      doWithNthRun(_nthRun){|_run|
         _run.reload() ;
       }
     end
-    
+
     #--------------------------------------------------------------
     #++
     ## check run status
     ## _syncP_:: if true, sync to Oacis DB.
-    ## *return*:: run status 
-    def checkRunStatus(_syncP = false)
-      sync() if(_syncP) ;
-      return @run.status ;
+    ## _nth_ :: an Integer or :first or :last or :all.
+    ## *return*:: an Array of the status if _nth_ == :all.
+    def collectRunStatus(_syncP = false, _nth = :all)
+      _statusList = [] ;
+      doWithNthRun(_nth){|_run|
+        sync(_run) if(_syncP) ;
+        _statusList.push(_run.status) ;
+      }
+      return _statusList ;
     end
     
     #--------------------------------------------------------------
     #++
+    ## check run status to be a _status_.
+    ## _targettype_:: one of :finished, :failed, :running...
+    ## _syncP_:: if true, sync to Oacis DB.
+    ## _nth_ :: an Integer or :first or :last or :all.
+    ## _mode_ :: :and or :or.
+    ## *return*:: run status 
+    def countRunStatus(_reference, _syncP = false, _nth = :all)
+      _count = 0 ;
+      doWithNthRun(_nth){|_run|
+        sync(_run) if(_syncP) ;
+        if(_reference.is_a?(Array)) then
+          _count += 1 if(_reference.member?(_run.status)) ;
+        else
+          _count += 1 if(_reference == _run.status) ;
+        end
+      }
+      return _count ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## check all runs specified by _nth_ are in a certain status.
+    ## _syncP_:: if true, sync to Oacis DB.
+    ## _nth_ :: an Integer or :first or :last or :all.
+    ## _mode_ :: :and or :or.
+    ## *return*:: run status 
+    def checkRunStatus(_reference, _syncP = false, _nth = :all, _mode = :and)
+      _threshold = nofRunsInNth(_nth) ;
+      _count = countRunStatus(_reference, _syncP, _nth) ;
+      return ((_mode == :and) ? (_count >= _threshold) : _count > 0) ;
+    end
+      
+    #--------------------------------------------------------------
+    #++
+    ## check all runs specified by _nth_ are finished.
+    ## _syncP_:: if true, sync to Oacis DB.
+    ## _nth_ :: an Integer or :first or :last or :all.
+    ## _mode_ :: :and or :or.
+    ## *return*:: run status 
+    def finished?(_syncP = false, _nth = :all, _mode = :and)
+      return checkRunStatus(:finished, _syncP, _nth, _mode) ;
+    end
+
+    #--------------------------------------------------------------
+    #++
     ## check run status
     ## _syncP_:: if true, sync to Oacis DB.
+    ## _mode_ :: :and or :or.
     ## *return*:: run status 
-    def finished?(_syncP = false)
-      sync() if(_syncP) ;
-      return (checkRunStatus() == :finished) ;
+    def failed?(_syncP = false, _nth = :all, _mode = :and)
+      return checkRunStatus(:failed, _syncP, _nth, _mode) ;
     end
 
     #--------------------------------------------------------------
@@ -126,19 +219,8 @@ module ItkOacis
     ## check run status
     ## _syncP_:: if true, sync to Oacis DB.
     ## *return*:: run status 
-    def failed?(_syncP = false)
-      sync() if(_syncP) ;
-      return (checkRunStatus() == :failed) ;
-    end
-
-    #--------------------------------------------------------------
-    #++
-    ## check run status
-    ## _syncP_:: if true, sync to Oacis DB.
-    ## *return*:: run status 
-    def done?(_syncP = false)
-      sync() if(_syncP) ;
-      return (finished?(false) || failed?(false)) ;
+    def done?(_syncP = false, _nth = :all, _mode = :and)
+      return checkRunStatus([:finished, :failed], _syncP, _nth, _mode) ;
     end
 
     #--------------------------------------------------------------
@@ -161,9 +243,17 @@ module ItkOacis
     #++
     ## get result table in hash.
     ## *return*:: result hash.
-    def getResultTable()
-      if(done?()) then
-        return @run.result ;
+    def getResultTable(_nth = :all, _sync = false)
+      if(done?(_sync, _nth)) then
+        _resultList = [] ;
+        doWithNthRun(_nth){|_run|
+          _resultList.push(_run.result) ;
+        }
+        if(_nth == :all) then
+          return _resultList ;
+        else
+          return _resultList.fist ;
+        end
       else
         return nil ;
       end
@@ -173,9 +263,11 @@ module ItkOacis
     #++
     ## get result by name in hash.
     ## *return*:: result value
-    def getResult(_name)
-      _resultTab = getResultTable() ;
-      if(_resultTab) then
+    def getResult(_name, _nth = :all, _sync = false)
+      _resultTab = getResultTable(_nth, _sync) ;
+      if(_resultTab.is_a?(Array)) then
+        return _resultTab.map{|_tab| _tab[_name]} ;
+      elsif(_resultTab) then
         return _resultTab[_name] ;
       else
         return nil ;
@@ -186,9 +278,13 @@ module ItkOacis
     #++
     ## generate JSON object for log.
     ## _mode_:: mode of the conversion.
+    ## _runs_:: specify which runs include.
+    ##          If :all, return Array of information of runs inside JSON.
+    ##          If :first or :last, return ones of the first or last run.
+    ##          If an Integer, return ones of the nth run.
     ## *return*:: json object (Hash)
-    def toJson(_mode = nil)
-      _mode = :whole if(_mode.nil?)
+    def toJson(_mode = nil, _runs = :all)
+      _mode = :whole if(_mode.nil?) ;
       
       _json = nil ;
       case(_mode)
@@ -196,11 +292,11 @@ module ItkOacis
         _json = { :id => @id,
                   :seedParam => @seedParam,
                   :input => getInputTable(),
-                  :result => getResultTable(),
+                  :result => getResultTable(_runs),
                 } ;
       when(:result)
         _json = { :id => @id,
-                  :result => getResultTable(),
+                  :result => getResultTable(_runs),
                 } ;
       when(:input)
         _json = { :id => @id,
