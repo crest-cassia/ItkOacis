@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class ItkOacis::ConductorSimpleGa - ItkOacis</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
+</script>
+
+<script src="../js/navigation.js" defer></script>
+<script src="../js/search.js" defer></script>
+<script src="../js/search_index.js" defer></script>
+<script src="../js/searcher.js" defer></script>
+<script src="../js/darkfish.js" defer></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ConductorRandom.html">ItkOacis::ConductorRandom</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-alternateGeneration">#alternateGeneration</a>
+    
+    <li ><a href="#method-i-alternateGeneration_CrossOver">#alternateGeneration_CrossOver</a>
+    
+    <li ><a href="#method-i-alternateGeneration_Mutate">#alternateGeneration_Mutate</a>
+    
+    <li ><a href="#method-i-alternateGeneration_Survive">#alternateGeneration_Survive</a>
+    
+    <li ><a href="#method-i-compare-3F">#compare?</a>
+    
+    <li class="calls-super" ><a href="#method-i-cycleBody">#cycleBody</a>
+    
+    <li ><a href="#method-i-getNofInitParamSet">#getNofInitParamSet</a>
+    
+    <li ><a href="#method-i-newSeedByCrossOver">#newSeedByCrossOver</a>
+    
+    <li ><a href="#method-i-newSeedByMutate">#newSeedByMutate</a>
+    
+    <li ><a href="#method-i-prepareProc">#prepareProc</a>
+    
+    <li ><a href="#method-i-scoreOf">#scoreOf</a>
+    
+    <li class="calls-super" ><a href="#method-i-setup">#setup</a>
+    
+    <li ><a href="#method-i-setupGaPolicy">#setupGaPolicy</a>
+    
+    <li class="calls-super" ><a href="#method-i-spawnParamSet">#spawnParamSet</a>
+    
+    <li ><a href="#method-i-terminate-3F">#terminate?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-ItkOacis::ConductorSimpleGa">
+  <h1 id="class-ItkOacis::ConductorSimpleGa" class="class">
+    class ItkOacis::ConductorSimpleGa
+  </h1>
+
+  <section class="description">
+    
+<p><a href="Conductor.html"><code>Conductor</code></a> that manages to ParamSet according to a simple GA (Genetic Algorithm) way.</p>
+
+<p>At the initialization, the <a href="Conductor.html"><code>Conductor</code></a> create a <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> of ParamSet in the same way of <a href="ConductorRandom.html"><code>ItkOacis::ConductorRandom</code></a>. (See scatterPolicy <a href="ConductorSimpleGa.html#method-i-setup"><code>setup</code></a> in <a href="ConductorRandom.html"><code>ItkOacis::ConductorRandom</code></a>.)</p>
+
+<p>Then, the <a href="Conductor.html"><code>Conductor</code></a> submits jobs and waits until all <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> are done. After all runs in the <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> of ParamSet complete, the <a href="Conductor.html"><code>Conductor</code></a> evaluates them and create the next <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a>.</p>
+
+<p>This process is repeated until a certain alternation cycle.</p>
+
+<p>Meta parameters of the GA are specified  in <em>conf</em> parameter in new or <a href="ConductorSimpleGa.html#DefaultConf"><code>DefaultConf</code></a> constant defined in sub-classes</p>
+
+<h3 id="class-ItkOacis::ConductorSimpleGa-label-Usage">Usage<span><a href="#class-ItkOacis::ConductorSimpleGa-label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">FooConductor</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">ConductorSimpleGa</span>
+  <span class="ruby-comment">## default configulation for initialization.</span>
+  <span class="ruby-constant">DefaultConf</span> = {
+    <span class="ruby-value">:simulatorName</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;foo00&quot;</span>,
+    <span class="ruby-value">:hostName</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;localhost&quot;</span>,
+    <span class="ruby-value">:scatterPolicy</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">:uniform</span>,
+                                 <span class="ruby-value">:min</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">-1.0</span>, <span class="ruby-value">:max</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">1.0</span> },
+                        <span class="ruby-string">&quot;y&quot;</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">:gaussian</span>,
+                                 <span class="ruby-value">:ave</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">10.0</span>, <span class="ruby-value">:std</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">1.0</span> },
+                        <span class="ruby-string">&quot;z&quot;</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">:list</span>,
+                                 <span class="ruby-value">:list</span> <span class="ruby-operator">=&gt;</span> [<span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>] } },
+    <span class="ruby-value">:population</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">10</span>,      
+    <span class="ruby-value">:nofAlternation</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">10</span>,
+    <span class="ruby-value">:ratioSurvive</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0.3</span>,
+    <span class="ruby-value">:ratioCrossOver</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0.3</span>,
+    <span class="ruby-value">:ratioMutate</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0.3</span>,
+    <span class="ruby-value">:mutateRange</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-string">&quot;x&quot;</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">:uniform</span>,
+                               <span class="ruby-value">:min</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">-0.1</span>, <span class="ruby-value">:max</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0.1</span> },
+                      <span class="ruby-string">&quot;y&quot;</span> <span class="ruby-operator">=&gt;</span> { <span class="ruby-value">:type</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">:gaussian</span>,
+                               <span class="ruby-value">:ave</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0.0</span>, <span class="ruby-value">:std</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">0.1</span> } },
+    <span class="ruby-value">:logLevel</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">:debug</span>,
+  } ;
+
+  <span class="ruby-comment">## to compare two ParamSetStub.</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">scoreOf</span>(<span class="ruby-identifier">_psStub</span>)
+    <span class="ruby-identifier">_r</span> = <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">getResultTable</span>(<span class="ruby-value">:average</span>) ;
+    <span class="ruby-identifier">_v</span> = <span class="ruby-identifier">_r</span>[<span class="ruby-string">&quot;u&quot;</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">_r</span>[<span class="ruby-string">&quot;v&quot;</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">_r</span>[<span class="ruby-string">&quot;w&quot;</span>] ; 
+
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">_v</span> ;
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span> 
+
+<span class="ruby-comment"># create a FooConductor and run.</span>
+<span class="ruby-identifier">conductor</span> = <span class="ruby-constant">FooConductor</span>.<span class="ruby-identifier">new</span>({<span class="ruby-value">:nofAlternation</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">100</span>}) ;
+<span class="ruby-identifier">conductor</span>.<span class="ruby-identifier">run</span>() ;
+</pre>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="DefaultConf">DefaultConf
+        
+        <dd><p>default values of <em>conf</em> in new method. It should be a Hash. It overrides Conductor::DefaultConf. See below for meaning of each key: (See also <a href="ConductorRandom.html#DefaultConf">ItkOacis::ConductorRandom::DefaultConf</a>)</p>
+<ul><li>
+<p>:population : the <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> in one <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a>. (default: 100)</p>
+</li><li>
+<p>:nofAlternation : the number of alternation in GA. (default: 10)</p>
+</li><li>
+<p>:ratioSurvive : the ratio of survivers of <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. in the evaluation. Should be in the range [0,1]. (default: 0.1)</p>
+</li><li>
+<p>:ratioMutate : the ratio to <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> to generate a new <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> by mutation. Should be in the range [0,1]. (default: 0.3)</p>
+</li><li>
+<p>:ratioCrossOver : the ratio to <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> to generate a new <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> by cross over. Should be in the range [0,1]. (default: 0.5) The remain ratio (1 - surviveRatio - crossOverRatio - mutateRatio) is used to generate in random way.</p>
+</li><li>
+<p>:compareBy : the procedure to compare <a href="ParamSetStub.html"><code>ParamSetStub</code></a> for the sorting. The procedure should receive two <a href="ParamSetStub.html"><code>ParamSetStub</code></a> and return -1, 0, or 1. If nil, use the default (compare? ()) method. If a Proc, call it with two <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. (default: nil)</p>
+</li><li>
+<p>:scoreBy : the procedure to calculate score of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> for the sorting. The procedure should receive one <a href="ParamSetStub.html"><code>ParamSetStub</code></a> and return a Float. If nil, use the default (scoreOf ()) method. If a Proc, call it with one <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. (default: nil)</p>
+</li><li>
+<p>:mutateBy : the procedure to generate a new <em>varied</em> (<em>paramSeed</em>) argument for newParamSet () by mutation. If nil, use the default (newSeedByMutate ()) method. If a Proc, call it with one <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. (default: nil)</p>
+</li><li>
+<p>:crossOverBy : the procedure to generate a new <em>varied</em> (<em>paramSeed</em>) argument for newParamSet () by cross over. If nil, use the default (newSeedByCrossOver ()) method. If a Proc, call it with one <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. (default: nil)</p>
+</li><li>
+<p>:mutateRange : the range information for the mutation. It specify amont to modify each parameter used in <a href="ConductorSimpleGa.html#method-i-newSeedByMutate"><code>newSeedByMutate</code></a> (). The format is the same as :scatterPolicy in <a href="ConductorRandom.html"><code>ConductorRandom</code></a>. (default: {})</p>
+</li></ul>
+
+<p>See below for syntax of each key:</p>
+
+<pre>&lt;Conf&gt; ::= { ...
+             :population =&gt; Integer,
+             :nofAlternation =&gt; Integer,
+             :ratioSurvive =&gt; &lt;Ratio&gt;,
+             :ratioMutate =&gt; &lt;Ratio&gt;,
+             :ratioCrossOver =&gt; &lt;Ratio&gt;,
+             :compareBy =&gt; &lt;MethodSpec&gt;,
+             :scoreBy =&gt; &lt;MethodSpec&gt;,
+             :scoreBy =&gt; &lt;MethodSpec&gt;,
+             :mutateBy =&gt; &lt;MethodSpec&gt;,
+             :crossOverBy =&gt; &lt;MethodSpec&gt;,
+             :mutateRange =&gt; &lt;ScatterPolicy&gt;,
+             ... }
+&lt;Ratio&gt; ::= a Float in the range [0,1].
+&lt;MethodSpec&gt; ::= nil | a Proc.
+&lt;ScatterPolicy&gt; ::= the same as :scatterPolicy for ConductorRandom.</pre>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-alterCount" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">alterCount</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the counter of alternation ;</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-alterHistory" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">alterHistory</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>a list of generations as a history.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-compareBy" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">compareBy</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the procedure to compare <a href="ParamSetStub.html"><code>ParamSetStub</code></a> for the sorting. It is specified in <em>conf</em> in new method by key <code>:compareBy</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-crossOverBy" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">crossOverBy</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the procedure to generate a new <em>varied</em> (<em>paramSeed</em>) argument for newParamSet () by cross over. It is specified in <em>conf</em> in new method by key <code>:crossOverBy</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-generation" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">generation</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>a list of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> in the current <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> ;</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-mutateBy" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">mutateBy</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the procedure to generate a new <em>varied</em> (<em>paramSeed</em>) argument for newParamSet () by mutation. It is specified in <em>conf</em> in new method by key <code>:mutateBy</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-mutateRange" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">mutateRange</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the range information to mutate. It is specified in <em>conf</em> in new method by key <code>:mutateRange</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-nofAlternation" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">nofAlternation</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the number of alternation in GA. It is specified in <em>conf</em> in new method by key <code>:nofAlternation</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-population" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">population</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> of <a href="ParamSetStub.html"><code>ParamSetStub</code></a> in one <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a>. It is specified in <em>conf</em> in new method by key <code>:population</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-ratioCrossOver" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ratioCrossOver</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the ratio to <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> to generate a new <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> by cross over. It is specified in <em>conf</em> in new method by key <code>:ratioCrossOver</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-ratioMutate" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ratioMutate</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the ratio to <a href="ConductorSimpleGa.html#attribute-i-population"><code>population</code></a> to generate a new <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> by mutation. It is specified in <em>conf</em> in new method by key <code>:ratioMutate</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-ratioSurvive" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ratioSurvive</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the ratio of survivers of <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. It is specified in <em>conf</em> in new method by key <code>:ratioSurvive</code>.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-scoreBy" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">scoreBy</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>the procedure to cauculate <a href="ParamSetStub.html"><code>ParamSetStub</code></a> for the sorting. It is specified in <em>conf</em> in new method by key <code>:scoreBy</code>.</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-alternateGeneration" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">alternateGeneration</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to alternate <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> It can be overrided by expanded classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="alternateGeneration-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">335</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration</span>()
+<span class="line-num">336</span>   <span class="ruby-comment"># sort.</span>
+<span class="line-num">337</span>   <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">sort!</span>(<span class="ruby-operator">&amp;</span><span class="ruby-ivar">@compareBy</span>) ;
+<span class="line-num">338</span> 
+<span class="line-num">339</span>   <span class="ruby-comment"># switch to new generation</span>
+<span class="line-num">340</span>   <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@generation</span>) ;
+<span class="line-num">341</span>   <span class="ruby-ivar">@oldGeneration</span> = <span class="ruby-ivar">@generation</span> ;
+<span class="line-num">342</span>   <span class="ruby-ivar">@generation</span> = [] ;
+<span class="line-num">343</span> 
+<span class="line-num">344</span>   <span class="ruby-comment"># survive</span>
+<span class="line-num">345</span>   <span class="ruby-identifier">alternateGeneration_Survive</span>()
+<span class="line-num">346</span>   <span class="ruby-comment"># mutate</span>
+<span class="line-num">347</span>   <span class="ruby-identifier">alternateGeneration_Mutate</span>()
+<span class="line-num">348</span>   <span class="ruby-comment"># cross-over</span>
+<span class="line-num">349</span>   <span class="ruby-identifier">alternateGeneration_CrossOver</span>()
+<span class="line-num">350</span>   <span class="ruby-comment"># fill by random seed.</span>
+<span class="line-num">351</span>   <span class="ruby-identifier">fillRunningParamSetList</span>() ;
+<span class="line-num">352</span>   
+<span class="line-num">353</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:newGeneration</span>) ;
+<span class="line-num">354</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-alternateGeneration_CrossOver" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">alternateGeneration_CrossOver</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to alternate <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> (cross over)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="alternateGeneration_CrossOver-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">387</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_CrossOver</span>()
+<span class="line-num">388</span>   <span class="ruby-identifier">_nofCrossOver</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioCrossOver</span>).<span class="ruby-identifier">ceil</span> ;
+<span class="line-num">389</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:crossOver</span>, <span class="ruby-identifier">_nofCrossOver</span>) ;
+<span class="line-num">390</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_nofCrossOver</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">391</span>     <span class="ruby-keyword">begin</span>
+<span class="line-num">392</span>       <span class="ruby-identifier">_j</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">393</span>       <span class="ruby-identifier">_k</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">394</span>     <span class="ruby-keyword">end</span> <span class="ruby-keyword">while</span>(<span class="ruby-identifier">_j</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_k</span>) ;
+<span class="line-num">395</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:crossOver1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_j</span>,<span class="ruby-identifier">_k</span>]) ;
+<span class="line-num">396</span>     <span class="ruby-identifier">_childSeed</span> = <span class="ruby-ivar">@crossOverBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_j</span>],
+<span class="line-num">397</span>                                    <span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_k</span>]) ;
+<span class="line-num">398</span>     <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_childSeed</span>) ;
+<span class="line-num">399</span>   }
+<span class="line-num">400</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-alternateGeneration_Mutate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">alternateGeneration_Mutate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to alternate <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> (mutate)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="alternateGeneration_Mutate-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">373</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_Mutate</span>()
+<span class="line-num">374</span>   <span class="ruby-identifier">_nofMutation</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioMutate</span>).<span class="ruby-identifier">ceil</span> ;
+<span class="line-num">375</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:mutate</span>, <span class="ruby-identifier">_nofMutation</span>) ;
+<span class="line-num">376</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_nofMutation</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">377</span>     <span class="ruby-identifier">_j</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">378</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:murate1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_j</span>]) ;
+<span class="line-num">379</span>     <span class="ruby-identifier">_mutantSeed</span> = <span class="ruby-ivar">@mutateBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_j</span>]) ;
+<span class="line-num">380</span>     <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_mutantSeed</span>) ;
+<span class="line-num">381</span>   }
+<span class="line-num">382</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-alternateGeneration_Survive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">alternateGeneration_Survive</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to alternate <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> (survive)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="alternateGeneration_Survive-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">359</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_Survive</span>()
+<span class="line-num">360</span>   <span class="ruby-ivar">@nofSurviver</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioSurvive</span>).<span class="ruby-identifier">ceil</span> ;
+<span class="line-num">361</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:survive</span>, <span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">362</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@nofSurviver</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span> 
+<span class="line-num">363</span>     <span class="ruby-identifier">_surviver</span> = <span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_i</span>] ;
+<span class="line-num">364</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:survive1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_i</span>]) ;
+<span class="line-num">365</span>     <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">366</span>     <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">367</span>   }
+<span class="line-num">368</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-compare-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compare?</span><span
+            class="method-args">(_psStub0, _psStub1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to compare two <a href="ParamSetStub.html"><code>ParamSetStub</code></a>.</p>
+<dl class="rdoc-list note-list"><dt><em>psStub0</em>, <em>psStub1</em> 
+<dd>
+<p><a href="ParamSetStub.html"><code>ParamSetStub</code></a> to compare.</p>
+</dd><dt><strong>return</strong> 
+<dd>
+<p>-1 if scoreOf(_psStub0) &gt; scoreOf(_psStub1), 1 if scoreOf(_psStub0) &lt; scoreOf(_psStub1), and 0 otherwise.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="compare-3F-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">410</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">compare?</span>(<span class="ruby-identifier">_psStub0</span>, <span class="ruby-identifier">_psStub1</span>)
+<span class="line-num">411</span>   <span class="ruby-keyword">return</span> (<span class="ruby-ivar">@scoreBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub1</span>) <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-ivar">@scoreBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub0</span>)) ;
+<span class="line-num">412</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-cycleBody" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cycleBody</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to check a <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a> is over and alternate <a href="ConductorSimpleGa.html#attribute-i-generation"><code>generation</code></a>. It can be overrided by expanded classes.</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Conductor.html#method-i-cycleBody"><code>ItkOacis::Conductor#cycleBody</code></a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="cycleBody-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">299</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
+<span class="line-num">300</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">301</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">nofRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">302</span>     <span class="ruby-comment"># do alternation.</span>
+<span class="line-num">303</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:alter</span>, <span class="ruby-ivar">@alterCount</span>) ;
+<span class="line-num">304</span>     <span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
+<span class="line-num">305</span>     <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@nofAlternation</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">306</span>       <span class="ruby-identifier">alternateGeneration</span>() ;          
+<span class="line-num">307</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">308</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">309</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-getNofInitParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">getNofInitParamSet</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to get the number of initial ParamSet. It just return @population.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>the number of ParamSet.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="getNofInitParamSet-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">291</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
+<span class="line-num">292</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@population</span> ;
+<span class="line-num">293</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-newSeedByCrossOver" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">newSeedByCrossOver</span><span
+            class="method-args">(_parent0, _parent1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to generate a new seed of ParamSet in cross-over. It can be overrided in sub-classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="newSeedByCrossOver-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">447</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newSeedByCrossOver</span>(<span class="ruby-identifier">_parent0</span>, <span class="ruby-identifier">_parent1</span>)
+<span class="line-num">448</span>   <span class="ruby-identifier">_childSeed</span> = {} ;
+<span class="line-num">449</span>   <span class="ruby-identifier">_parentInput0</span> = <span class="ruby-identifier">_parent0</span>.<span class="ruby-identifier">getInputTable</span>()
+<span class="line-num">450</span>   <span class="ruby-identifier">_parentInput1</span> = <span class="ruby-identifier">_parent1</span>.<span class="ruby-identifier">getInputTable</span>()
+<span class="line-num">451</span>   <span class="ruby-identifier">_parentInput0</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value0</span><span class="ruby-operator">|</span>
+<span class="line-num">452</span>     <span class="ruby-identifier">_value1</span> = <span class="ruby-identifier">_parentInput1</span>[<span class="ruby-identifier">_key</span>] ;
+<span class="line-num">453</span>     <span class="ruby-identifier">_r</span> = <span class="ruby-identifier">rand</span>() ;
+<span class="line-num">454</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_value0</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Float</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">455</span>       <span class="ruby-identifier">_value</span> = (<span class="ruby-identifier">_r</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">_value0</span>) <span class="ruby-operator">+</span> ((<span class="ruby-value">1.0</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">_r</span>) <span class="ruby-operator">*</span> <span class="ruby-identifier">_value1</span>) ;
+<span class="line-num">456</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">457</span>       <span class="ruby-identifier">_value</span> = ((<span class="ruby-identifier">_r</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0.5</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">_value0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">_value1</span>) ;
+<span class="line-num">458</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">459</span>     <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> ;
+<span class="line-num">460</span>   }
+<span class="line-num">461</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:newSeedByCrossOver</span>, <span class="ruby-identifier">_childSeed</span>,
+<span class="line-num">462</span>           <span class="ruby-value">:from</span>, [<span class="ruby-identifier">_parentInput0</span>, <span class="ruby-identifier">_parentInput1</span>]) ;
+<span class="line-num">463</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_childSeed</span> ;
+<span class="line-num">464</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-newSeedByMutate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">newSeedByMutate</span><span
+            class="method-args">(_parent)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to generate a new seed of ParamSet in mutation. It can be overrided in sub-classes.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="newSeedByMutate-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">426</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newSeedByMutate</span>(<span class="ruby-identifier">_parent</span>)
+<span class="line-num">427</span>   <span class="ruby-identifier">_childSeed</span> = {} ;
+<span class="line-num">428</span>   <span class="ruby-identifier">_parentInput</span> = <span class="ruby-identifier">_parent</span>.<span class="ruby-identifier">getInputTable</span>() ;
+<span class="line-num">429</span>   <span class="ruby-identifier">_parentInput</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span>
+<span class="line-num">430</span>     <span class="ruby-identifier">_policy</span> = <span class="ruby-ivar">@mutateRange</span>[<span class="ruby-identifier">_key</span>] ;
+<span class="line-num">431</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_policy</span>.<span class="ruby-identifier">nil?</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">432</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> ;
+<span class="line-num">433</span>     <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_policy</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:list</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_policy</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:value</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">434</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">getValueByPolicy</span>(<span class="ruby-identifier">_policy</span>) ;
+<span class="line-num">435</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">436</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">getValueByPolicy</span>(<span class="ruby-identifier">_policy</span>) ;
+<span class="line-num">437</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">438</span>   }
+<span class="line-num">439</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:newSeedByMutate</span>, <span class="ruby-identifier">_childSeed</span>, <span class="ruby-value">:from</span>, <span class="ruby-identifier">_parentInput</span>) ;
+<span class="line-num">440</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_childSeed</span> ;
+<span class="line-num">441</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-prepareProc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">prepareProc</span><span
+            class="method-args">(_procSpec)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to prepare procedure.</p>
+<dl class="rdoc-list note-list"><dt><em>procSpec</em> 
+<dd>
+<p>a Proc or a Symbol. If a Symbol, it should be the name of an instance method.</p>
+</dd><dt><strong>return</strong> 
+<dd>
+<p>a Proc instance.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="prepareProc-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">274</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepareProc</span>(<span class="ruby-identifier">_procSpec</span>)
+<span class="line-num">275</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_procSpec</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">276</span>     <span class="ruby-keyword">return</span> <span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span>(){<span class="ruby-operator">|</span><span class="ruby-operator">*</span><span class="ruby-identifier">_argv</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">_procSpec</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">_argv</span>)} ;
+<span class="line-num">277</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_porcSpec</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">278</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_procSpec</span> ;
+<span class="line-num">279</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">280</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;illegal procedure specification: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_procSpec</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">281</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">282</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-scoreOf" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scoreOf</span><span
+            class="method-args">(_psStub)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to calculate scalar score of a given <a href="ParamSetStub.html"><code>ParamSetStub</code></a>. By default everyone is the same.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="scoreOf-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">418</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">scoreOf</span>(<span class="ruby-identifier">_psStub</span>)
+<span class="line-num">419</span>   <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> ;
+<span class="line-num">420</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setup</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to <a href="ConductorSimpleGa.html#method-i-setup"><code>setup</code></a> configulations.</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="ConductorRandom.html#method-i-setup"><code>ItkOacis::ConductorRandom#setup</code></a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="setup-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">238</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setup</span>()
+<span class="line-num">239</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">240</span>   <span class="ruby-identifier">setupGaPolicy</span>() ;
+<span class="line-num">241</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setupGaPolicy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setupGaPolicy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to set policies of genetic algorithm.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="setupGaPolicy-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">246</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupGaPolicy</span>()
+<span class="line-num">247</span>   <span class="ruby-ivar">@population</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:population</span>) ;
+<span class="line-num">248</span>   <span class="ruby-ivar">@nofAlternation</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:nofAlternation</span>) ;
+<span class="line-num">249</span>   
+<span class="line-num">250</span>   <span class="ruby-ivar">@ratioSurvive</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:ratioSurvive</span>) ;
+<span class="line-num">251</span>   <span class="ruby-ivar">@ratioCrossOver</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:ratioCrossOver</span>) ;
+<span class="line-num">252</span>   <span class="ruby-ivar">@ratioMutate</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:ratioMutate</span>) ;
+<span class="line-num">253</span>   
+<span class="line-num">254</span>   <span class="ruby-ivar">@compareBy</span> = <span class="ruby-identifier">prepareProc</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:compareBy</span>) <span class="ruby-operator">||</span> <span class="ruby-value">:compare?</span>) ;
+<span class="line-num">255</span>   <span class="ruby-ivar">@scoreBy</span> = <span class="ruby-identifier">prepareProc</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:scoreBy</span>) <span class="ruby-operator">||</span> <span class="ruby-value">:scoreOf</span>) ;
+<span class="line-num">256</span> 
+<span class="line-num">257</span>   <span class="ruby-ivar">@mutateBy</span> = <span class="ruby-identifier">prepareProc</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:mutateBy</span>) <span class="ruby-operator">||</span> <span class="ruby-value">:newSeedByMutate</span>) ;
+<span class="line-num">258</span>   <span class="ruby-ivar">@crossOverBy</span> = <span class="ruby-identifier">prepareProc</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:crossOverBy</span>) <span class="ruby-operator">||</span> <span class="ruby-value">:newSeedByCrossOver</span>) ;
+<span class="line-num">259</span> 
+<span class="line-num">260</span>   <span class="ruby-ivar">@mutateRange</span> = <span class="ruby-identifier">convertScatterPolicy</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:mutateRange</span>)) ;
+<span class="line-num">261</span> 
+<span class="line-num">262</span>   <span class="ruby-ivar">@alterCount</span> = <span class="ruby-value">0</span> ;
+<span class="line-num">263</span>   <span class="ruby-ivar">@generation</span> = [] ;
+<span class="line-num">264</span>   <span class="ruby-ivar">@alterHistory</span> = [] ;
+<span class="line-num">265</span> 
+<span class="line-num">266</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-spawnParamSet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">spawnParamSet</span><span
+            class="method-args">(_paramSeed = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to spawn a <a href="ParamSetStub.html"><code>ParamSetStub</code></a> and push to a running list.</p>
+<dl class="rdoc-list note-list"><dt><em>paramSeed</em>
+<dd>
+<p>a Hash of paramter set. Can be partial.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>a <a href="ParamSetStub.html"><code>ParamSetStub</code></a>.</p>
+</dd></dl>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Conductor.html#method-i-spawnParamSet"><code>ItkOacis::Conductor#spawnParamSet</code></a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="spawnParamSet-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">324</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">spawnParamSet</span>(<span class="ruby-identifier">_paramSeed</span> = <span class="ruby-keyword">nil</span>)
+<span class="line-num">325</span>   <span class="ruby-identifier">_psStub</span> = <span class="ruby-keyword">super</span>(<span class="ruby-identifier">_paramSeed</span>) ;
+<span class="line-num">326</span>   <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">327</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_psStub</span> ;
+<span class="line-num">328</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-terminate-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">terminate?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to check the alter count reaches @nofAlternation.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>true when the conditions to terminate are satisfied.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="terminate-3F-source">
+            <pre>    <span class="ruby-comment"># File ConductorSimpleGa.rb</span>
+<span class="line-num">315</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
+<span class="line-num">316</span>   <span class="ruby-keyword">return</span> (<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofAlternation</span>) ;
+<span class="line-num">317</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
