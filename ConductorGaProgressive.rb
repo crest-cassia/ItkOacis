@@ -1,7 +1,7 @@
 #! /usr/bin/env ../../,Work/oacis_current/bin/oacis_ruby
 #! /usr/bin/env ../../oacis/bin/oacis_ruby
 ## -*- mode: ruby -*-
-## = Itk Oacis Conductor for progressive GA using tounament 4.
+## = Itk Oacis Conductor for progressive GA using tournament 4.
 ## Author:: Itsuki Noda
 ## Version:: 0.0 2020/02/14 I.Noda
 ##
@@ -36,9 +36,9 @@ module ItkOacis
   ## Compared with ConductorGaSimple, 
   ## ConductorGaProgressive alternate the next generation
   ## when a part of generation have done the calculation.
-  ## In default, it use tounament4 () to alter the partial generation.
+  ## In default, it use tournament4 () to alter the partial generation.
   ##
-  ## In the tounament4 (), the trigger to start the next generation
+  ## In the tournament4 (), the trigger to start the next generation
   ## when 4 ParamSet are completed.
   ## The 4 ParamSet are sorted and generate the next 4 ParamSet and submit them.
   ## (See tournament4 () for more detail.)
@@ -86,20 +86,20 @@ module ItkOacis
     ## It should be a Hash. It overrides Conductor::DefaultConf.
     ## See below for meaning of each key:
     ## (See also {ItkOacis::ConductorGaSimple::DefaultConf}[ConductorGaSimple.html#DefaultConf])
-    ## - :tounamentBy : the procedure to partial tournament.
-    ##   If nil, use the default (tounament4 ()) method.
+    ## - :tournamentBy : the procedure to partial tournament.
+    ##   If nil, use the default (tournament4 ()) method.
     ##   If a Proc, call it with 4 ParamSetStub.
     ##   (default: nil)
     ##
     ## See below for syntax of each key:
     ##     <Conf> ::= { ...
-    ##                  :tounamentBy => <MethodSpec>,
+    ##                  :tournamentBy => <MethodSpec>,
     ##                  :nofPlayer => 4,
     ##                  ... }
     ##     <MethodSpec> ::= nil | a Proc.
     ##
     DefaultConf = {
-      :tounamentBy => nil,
+      :tournamentBy => nil,
       :nofPlayer => 4,
       nil => nil } ;
 
@@ -229,6 +229,13 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## to alternate generation by tournament4.
+    ## It takes _playerList_ whose length is 4 (or more).
+    ## It sorts the list and generates new 4 as follow. 
+    ## - a surviver who is first in the sorted list.
+    ## - a mutant who is mutated from the surviver.
+    ## - a crossover whose parents are
+    ##   the surviver and the second one in the list.
+    ## - a random one who is generated in the same way of initial population.
     ## It can be overrided by expanded classes.
     def tournament4(_playerList)
       # sort.
@@ -250,7 +257,7 @@ module ItkOacis
       # rest, random.
       _restList = fillRunningParamSetList() ;
 
-      # prepare pending and waiting.
+      # setup pending and waiting.
       @runningParamSetList.delete(_surviver) ;
       _waitList = [_mutant, _cross] + _restList ;
       _pendingInfo = { :wait => _waitList, 
