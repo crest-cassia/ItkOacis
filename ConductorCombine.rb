@@ -54,7 +54,7 @@ module ItkOacis
   ##    ## override cycleCheck().
   ##    def cycleBody()
   ##      super() ;
-  ##      eachDoneParamSet(){|_psStub| pp [:done, _psStub.toJson()] };
+  ##      eachDoneInCycle(){|_psStub| pp [:done, _psStub.toJson()] };
   ##    end
   ##  end
   ##  

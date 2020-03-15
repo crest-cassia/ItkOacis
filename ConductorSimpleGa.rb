@@ -302,7 +302,8 @@ module ItkOacis
         # do alternation.
         logging(:info, :alter, @alterCount) ;
         @alterCount += 1 ;
-        if(@alterCount < @nofAlternation) then
+        @alterHistory.push(@generation) ;
+        if(!terminate?()) then
           alternateGeneration() ;          
         end
       end
@@ -327,6 +328,19 @@ module ItkOacis
       return _psStub ;
     end
     
+    #--------------------------------------------------------------
+    #++
+    ## generate Json list of results.
+    ## *return* :: an Array of Json Objects (Hash or Array).
+    def prepareResultAsJsonList()
+      _jsonList = [] ;
+      @alterHistory.each{|_generation|
+        _genJson = _generation.map{|_psStub| _psStub.toJson(:whole, :all) ; } ;
+        _jsonList.push(_genJson) ;
+      }
+      return _jsonList ;
+    end
+    
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
@@ -337,7 +351,6 @@ module ItkOacis
       @generation.sort!(&@compareBy) ;
 
       # switch to new generation
-      @alterHistory.push(@generation) ;
       @oldGeneration = @generation ;
       @generation = [] ;
 
@@ -564,8 +577,10 @@ if($0 == __FILE__) then
     #++
     ## test ConductorRandom.
     def test_a()
-      _conductor = FooConductor.new({:population => 100,
-                                     :nofAlternation => 100}) ;
+#      _conductor = FooConductor.new({:population => 100,
+#                                     :nofAlternation => 100}) ;
+      _conductor = FooConductor.new({:population => 10,
+                                     :nofAlternation => 10}) ;
       pp [:test_a, _conductor] ;
       _conductor.run() ;
     end

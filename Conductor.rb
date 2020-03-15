@@ -41,8 +41,8 @@ module ItkOacis
   ##      :hostName => "localhost",   # registered name on Oacis.
   ##    } ;
   ##    
-  ##    ## override runInit().
-  ##    def runInit()
+  ##    ## override runInitPrepareParamSetList().
+  ##    def runInitPrepareParamSetList()
   ##      fillRunningParamSetList(){|_seed, _i|
   ##        _x = rand() ;
   ##        _z = rand() ;
@@ -53,7 +53,7 @@ module ItkOacis
   ##    ## override cycleCheck().
   ##    def cycleBody()
   ##      super() ;
-  ##      eachDoneParamSet(){|_psStub| pp [:done, _psStub.toJson()] ; }
+  ##      eachDoneInCycle(){|_psStub| pp [:done, _psStub.toJson()] ; }
   ##    end
   ##
   ##    ## override terminate?(). (use default in this sample).
@@ -88,6 +88,12 @@ module ItkOacis
     ## - :logger : logger and setupLogger (). (default: :stderr)
     ## - :logLevel : one of :debug, :info, :warn, :error, and :fatal.
     ##   (default: :info)
+    ## - :configFile : filename to save configuiation.
+    ##   If nil, do not save.
+    ##   (default: "~/tmp/itkOacisConductor.config.json")
+    ## - :resultFile : filename to save results.
+    ##   If nil, do not save.
+    ##   (default: "~/tmp/itkOacisConductor.result.json")
     ##
     DefaultConf = {
       :simulatorName => "foo00",  ## hogehoge
@@ -98,8 +104,10 @@ module ItkOacis
       :defaultVariedParam => {},
       :nofInitParamSet => nil,
       :interval => 1,  # sleep interval in run in sec.
-      :logger => :stderr,
+      :logger => [:stderr],
       :logLevel => :info,
+      :configFile => "~/tmp/itkOacisConductor.config.json",
+      :resultFile => "~/tmp/itkOacisConductor.result.json",
       nil => nil } ;
 
     ## a table of LogLevel that maps from Symbol to Logger's LogLevel
@@ -154,6 +162,8 @@ module ItkOacis
     attr_reader :runningParamSetList ;
     ## list of finished or failed ParamSet.
     attr_reader :doneParamSetList ;
+    ## list of finished or failed ParamSet in the current cycle.
+    attr_reader :doneInCycleList ;
 
     ## an Array of Loggers.
     ## The definition of each elements are specified in _conf_ in new method
@@ -191,6 +201,7 @@ module ItkOacis
       
       @nWholeParamSet = 0 ;
       @runningParamSetList = [] ;
+      @doneParamSetList = [] ;
       @interval = getConf(:interval) ;
 
       setupLogger() ;
@@ -317,11 +328,19 @@ module ItkOacis
 
     #--------------------------------------------------------------
     #++
+    ## to prepare to start main run-loop.
+    ## It call saveConfig () and runInitPrepareParamSetList()
+    def runInit()
+      saveConfig(getConf(:configFile)) ;
+      runInitPrepareParamSetList() ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
     ## to generate initial set of ParamSets.
-    ## In fillRunningParamSetList(),
     ## the size of initial set equals to getNofInitParamSet().
     ## It can be overrided by expanded classes.
-    def runInit()
+    def runInitPrepareParamSetList()
       fillRunningParamSetList() ;
     end
     
@@ -339,15 +358,19 @@ module ItkOacis
     #++
     ## to update all status.
     ## If some ParamSets are done,
-    ## they move from @runningParamSetList to @doneParamSetList.
+    ## they move from @runningParamSetList to @doneInCycleList.
+    ## They also push to @doneParamSetListInCycle.
     def checkRunning() 
       syncAll() ;
       
-      @doneParamSetList = [] ;
-      eachRunningParamSet(){|_psStub|
-        @doneParamSetList.push(_psStub) if(_psStub.done?()) ;
+      @doneInCycleList = [] ;
+      eachRunning(){|_psStub|
+        if(_psStub.done?()) then
+          @doneInCycleList.push(_psStub) ;
+          @doneParamSetList.push(_psStub) ;
+        end
       }
-      eachDoneParamSet(){|_psStub|
+      @doneInCycleList.each(){|_psStub|
         @runningParamSetList.delete(_psStub) ;
       }
       
@@ -358,7 +381,7 @@ module ItkOacis
     ## to update all status.
     def syncAll()
       @simulator.syncAll() ;
-      eachRunningParamSet(){|_psStub|
+      eachRunning(){|_psStub|
         _psStub.sync() ;
       }
     end
@@ -370,7 +393,8 @@ module ItkOacis
     ## It can be overrided by expanded classes.
     def cycleBody() 
       logging(:info, :cycle, @cycleCount,
-              [getNofInitParamSet(), nofRunning(), nofDone()].inspect) ; 
+              [getNofInitParamSet(), nofRunning(),
+               nofDoneInCycle(), nofDone()].inspect) ; 
     end
     
     #--------------------------------------------------------------
@@ -379,7 +403,7 @@ module ItkOacis
     ## In default, do nothing.
     ## It can be overrided by expanded classes.
     def runFinal()
-      # do nothing.
+      saveResult(getConf(:resultFile)) ;
     end
 
     #--------------------------------------------------------------
@@ -411,9 +435,17 @@ module ItkOacis
     
     #--------------------------------------------------------------
     #++
+    ## to get number of done ParamSet in the current cycle.
+    ## *return*:: the number of ParamSet in @doneInCycleList.
+    def nofDoneInCycle()
+      return @doneInCycleList.size ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
     ## to call block for each running ParamSet.
     ## _block_:: a procedure to call with each running ParamSet.
-    def eachRunningParamSet(&_block) # :yield: _psStub
+    def eachRunning(&_block) # :yield: _psStub
       @runningParamSetList.each{|_psStub|
         _block.call(_psStub) ;
       }
@@ -423,8 +455,18 @@ module ItkOacis
     #++
     ## to call block for each done ParamSet.
     ## _block_:: a procedure to call with each done ParamSet.
-    def eachDoneParamSet(&_block) # :yield: _psStub
+    def eachDone(&_block) # :yield: _psStub
       @doneParamSetList.each{|_psStub|
+        _block.call(_psStub) ;
+      }
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## to call block for each done ParamSet in the current cycle.
+    ## _block_:: a procedure to call with each done ParamSet.
+    def eachDoneInCycle(&_block) # :yield: _psStub
+      @doneInCycleList.each{|_psStub|
         _block.call(_psStub) ;
       }
     end
@@ -545,6 +587,54 @@ module ItkOacis
     end
 
     #--////////////////////////////////////////////////////////////
+    ## File IO.
+    #--------------------------------------------------------------
+    #++
+    ## save configulation to a file.
+    ## _filename_ :: filename to save configulation.
+    def saveConfig(_filename)
+      if(_filename) then
+        open(File::expand_path(_filename), "w"){|_strm|
+          _strm << JSON.pretty_generate(@conf) << "\n" ;
+        }
+      end
+    end
+            
+    #--------------------------------------------------------------
+    #++
+    ## save results to a file.
+    ## _filename_ :: filename to save results.
+    def saveResult(_filename)
+      if(_filename) then
+        _jsonList = prepareResultAsJsonList() ;
+        open(File::expand_path(_filename), "w"){|_strm|
+          _indent = "  " ;
+          _sep = "\n" ;
+          _strm << "[" ;
+          _c = 0 ;
+          _jsonList.each{|_json|
+            _strm << "," if(_c > 0) ;
+            _c += 1 ;
+            _strm << _sep << _indent << JSON.generate(_json) ;
+          }
+          _strm << _sep << "]" << _sep ;
+        }
+      end
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## generate Json list of results.
+    ## *return* :: an Array of Json Objects (Hash or Array).
+    def prepareResultAsJsonList()
+      _jsonList = [] ;
+      @doneParamSetList.each{|_psStub|
+        _jsonList.push(_psStub.toJson(:whole, :all)) ;
+      }
+      return _jsonList ;
+    end
+    
+    #--////////////////////////////////////////////////////////////
     #--============================================================
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -575,8 +665,8 @@ if($0 == __FILE__) then
     
     #----------------------------------------------------
     #++
-    ## override runInit().
-    def runInit()
+    ## override runInitPrepareParamSetList().
+    def runInitPrepareParamSetList()
       fillRunningParamSetList(){|_seed, _i|
         _x = rand() ;
         _z = rand() ;
@@ -590,7 +680,7 @@ if($0 == __FILE__) then
     ## override cycleCheck().
     def cycleBody()
       super() ;
-      eachDoneParamSet(){|_psStub|
+      eachDoneInCycle(){|_psStub|
         pp [:all, _psStub.toJson(:whole, :all)] ;
         pp [:ave, _psStub.toJson(:whole, :average)] ;
         pp [:first, _psStub.toJson(:whole, :first)] ;
