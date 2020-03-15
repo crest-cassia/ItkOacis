@@ -1,7 +1,7 @@
 #! /usr/bin/env ../../,Work/oacis_current/bin/oacis_ruby
 #! /usr/bin/env ../../oacis/bin/oacis_ruby
 ## -*- mode: ruby -*-
-## = Itk Oacis Conductor for Random Search.
+## = Itk Oacis Conductor for Simple GA.
 ## Author:: Itsuki Noda
 ## Version:: 0.0 2020/02/14 I.Noda
 ##
@@ -49,7 +49,7 @@ module ItkOacis
   ##
   ## === Usage
   ##
-  ##  class FooConductor < ItkOacis::ConductorSimpleGa
+  ##  class FooConductor < ItkOacis::ConductorGaSimple
   ##    ## default configulation for initialization.
   ##    DefaultConf = {
   ##      :simulatorName => "foo00",
@@ -86,7 +86,7 @@ module ItkOacis
   ##  conductor = FooConductor.new({:nofAlternation => 100}) ;
   ##  conductor.run() ;
   ##  
-  class ConductorSimpleGa < ConductorRandom
+  class ConductorGaSimple < ConductorRandom
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default values of _conf_ in new method.
@@ -495,7 +495,7 @@ if($0 == __FILE__) then
   #++
   # :nodoc: all
   ## test conductor
-  class FooConductor < ItkOacis::ConductorSimpleGa
+  class FooConductor < ItkOacis::ConductorGaSimple
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default configulation for initialization.
