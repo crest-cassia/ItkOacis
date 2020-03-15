@@ -21,6 +21,7 @@ $LOAD_PATH.addIfNeed(File.dirname(__FILE__) + "/itkLib");
 
 require 'WithConfParam.rb' ;
 
+require 'ItkOacis.rb' ;
 
 #--======================================================================
 module ItkOacis
@@ -55,6 +56,58 @@ module ItkOacis
       else
         return ::Simulator.find_by_name(_name) ;
       end
+    end
+    
+    #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    #++
+    ## Simulator template for 
+    SimulatorConf = {
+      :name => nil,
+      :print_version_command => nil,
+      :pre_process_script => nil,
+      :command => nil,
+      :parameter_definitions => [
+        # {:key => "x", :type => "Integer", :default => 0,
+        #  :description => "" },
+        # {:key => "y", :type => "Float", :default => 0.0,
+        #  :description => "" },
+      ],
+      :support_input_json => true,
+      :support_mpi => false,
+      :support_omp => false,
+      :executable_on_ids => [],
+    } ;
+
+    #--============================================================
+    #--------------------------------------------------------------
+    #++
+    ## to register a Simulator entry to OACIS.
+    ## _conf_:: the configulation of the Simulator.
+    ## _checkExistsP_:: If true, check the same name is registered,
+    ##                  and output warning if exists.
+    ##                  If false, cause Exception if exists.
+    ## *return*:: a Simulator object.
+    def self.registerSimulator(_conf = {}, _checkExistsP = true)
+      _simConf = SimulatorConf.dup.update(_conf) ;
+      
+      if(_simConf[:name].nil? ||  _simConf[:command].nil?) then
+        raise ("Simulator configulation lacks mandatory information to register: " +
+               _conf.inspect) ;
+      end
+
+      if(_checkExistsP &&
+         _sim = self.getSimulatorByName(_simConf[:name], true)) then
+        puts ("Warning: a Simulator already registered with the same name: " +
+              _conf.inspect) ;
+        return _sim ;
+      end
+
+      _simConf = ItkOacis::symbolizeKeys(_simConf, true) ;
+
+      _sim = Simulator.new(_simConf) ;
+      _sim.save! ;
+
+      return _sim ;
     end
     
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -227,8 +280,28 @@ if($0 ==  __FILE__) then
     #++
     ## Singleton of this Class.
     Singleton = self.new() ;
-    ## test data
-    TestData = nil ;
+    
+    ## simulator configuration for foo00.
+    SimulatorConf_Foo00 = {
+      :name => "foo00",
+      :command => "/home/noda/work/iss/Oacis/contrib/ItkOacis/forTest/sample/foo00/foo",
+      :parameter_definitions => [
+        { :key => "x", :type => "Float", :default => 0.0 },
+        { :key => "y", :type => "Float", :default => 0.0 },
+        { :key => "z", :type => "Float", :default => 0.0 },
+      ],
+    } ;
+
+    SimulatorConf_Foo00a = {
+      :name => "foo00a",
+      :command => File.expand_path("./forTest/sample/foo00/foo",
+                                   File.dirname(__FILE__)),
+      :parameter_definitions => [
+        { :key => "x", :type => "Float", :default => 0.0 },
+        { :key => "y", :type => "Float", :default => 1.0 },
+        { :key => "z", :type => "Float", :default => 0.2 },
+      ],
+    } ;
 
     #--==================================================
     #----------------------------------------------------
@@ -316,6 +389,14 @@ if($0 ==  __FILE__) then
       pp [:defaultParamSet, _sim.genParamSetHash({"y" => 2.0}) ]
     end
     
+    #----------------------------------------------------
+    #++
+    ## gen param set hash.
+    def test_e()
+      _conf = SimulatorConf_Foo00a ;
+      _sim = ItkOacis::SimulatorStub.registerSimulator(_conf, true) ;
+      pp [:sim, _sim] ;
+    end
 
   end # class ItkTest
 

@@ -20,6 +20,8 @@ $LOAD_PATH.addIfNeed(File.dirname(__FILE__) + "/itkLib");
 
 require "WithConfParam.rb" ;
 
+require 'ItkOacis.rb' ;
+
 #--======================================================================
 module ItkOacis
   #--======================================================================
@@ -154,6 +156,55 @@ module ItkOacis
       end
     end
     
+    #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    #++
+    ## Host template
+    HostConf = {
+      :name => nil,
+      :work_base_dir => "~/var/oacis_work",
+      :mounted_work_base_dir => nil,
+      :max_num_jobs => 1,
+      :polling_interval	=> 5,
+      :min_mpi_procs => 1,
+      :max_mpi_procs => 1,
+      :min_omp_threads => 1,
+      :max_omp_threads => 1,
+    } ;
+
+    #--============================================================
+    #--------------------------------------------------------------
+    #++
+    ## to register a Simulator entry to OACIS.
+    ## _conf_:: the configulation of the Simulator.
+    ## _checkExistsP_:: If true, check the same name is registered,
+    ##                  and output warning if exists.
+    ##                  If false, cause Exception if exists.
+    ## *return*:: a Simulator object.
+    def self.registerHost(_conf = {}, _checkExistsP = true)
+      _hostConf = HostConf.dup.update(_conf) ;
+      
+      if(_hostConf[:name].nil?) then
+        raise ("Hostr configulation lacks mandatory information to register: " +
+               _conf.inspect) ;
+      end
+
+      if(_checkExistsP &&
+         _host = self.getHostByName(_hostConf[:name], true)) then
+        puts ("Warning: a Simulator already registered with the same name: " +
+              _conf.inspect) ;
+        return _host ;
+      end
+
+      _hostConf = ItkOacis::symbolizeKeys(_hostConf, true) ;
+
+      pp [:hostConf, _hostConf] ;
+
+      _host = Host.new(_hostConf) ;
+      _host.save! ;
+
+      return _host ;
+    end
+
     #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
     ## default configulation.
@@ -298,8 +349,12 @@ if($0 ==  __FILE__) then
     #++
     ## Singleton of this Class.
     Singleton = self.new() ;
+    
     ## test data
-    TestData = nil ;
+    HostConf_localhost = {
+      :name => "localhost",
+      :max_num_jobs => 8,
+    } ;
 
     #--==================================================
     #----------------------------------------------------
@@ -403,6 +458,19 @@ if($0 ==  __FILE__) then
       _host = ItkOacis::HostStub.new("local_group") ;
       pp [:test_h2, _host] ;
       _host.eachHost(){|_h| pp _h} ;
+    end
+
+    #----------------------------------------------------
+    #++
+    ## register host
+    def test_i()
+      _conf = {
+        :name => "oak",
+        :max_num_jobs => 8,
+      } ;
+
+      _host = ItkOacis::HostStub.registerHost(_conf, true) ;
+      pp [:test_i, _host] ;
     end
 
 
