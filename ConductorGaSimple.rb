@@ -282,7 +282,6 @@ module ItkOacis
     end
     
 
-    #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
     ## to get the number of initial ParamSet.
@@ -292,13 +291,14 @@ module ItkOacis
       return @population ;
     end
 
+    #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
     ## to check a generation is over and alternate generation.
     ## It can be overrided by expanded classes.
     def cycleBody()
       super() ;
-      if(nofRunning() == 0) then
+      if((nofRunning() == 0)) then
         # do alternation.
         logging(:info, :alter, @alterCount) ;
         @alterCount += 1 ;
@@ -307,6 +307,14 @@ module ItkOacis
           alternateGeneration() ;          
         end
       end
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## to check the trigger condition of alter procedure.
+    ## *return*:: true when the conditions of alternation are satisfied.
+    def triggerAlter?()
+      return (nofRunning() == 0) ;
     end
 
     #--------------------------------------------------------------

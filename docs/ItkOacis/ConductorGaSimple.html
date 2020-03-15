@@ -107,6 +107,8 @@
     
     <li ><a href="#method-i-terminate-3F">#terminate?</a>
     
+    <li ><a href="#method-i-triggerAlter-3F">#triggerAlter?</a>
+    
   </ul>
 </div>
 
@@ -440,25 +442,25 @@
           
           <div class="method-source-code" id="alternateGeneration-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">349</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration</span>()
-<span class="line-num">350</span>   <span class="ruby-comment"># sort.</span>
-<span class="line-num">351</span>   <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">sort!</span>(<span class="ruby-operator">&amp;</span><span class="ruby-ivar">@compareBy</span>) ;
-<span class="line-num">352</span> 
-<span class="line-num">353</span>   <span class="ruby-comment"># switch to new generation</span>
-<span class="line-num">354</span>   <span class="ruby-ivar">@oldGeneration</span> = <span class="ruby-ivar">@generation</span> ;
-<span class="line-num">355</span>   <span class="ruby-ivar">@generation</span> = [] ;
-<span class="line-num">356</span> 
-<span class="line-num">357</span>   <span class="ruby-comment"># survive</span>
-<span class="line-num">358</span>   <span class="ruby-identifier">alternateGeneration_Survive</span>()
-<span class="line-num">359</span>   <span class="ruby-comment"># mutate</span>
-<span class="line-num">360</span>   <span class="ruby-identifier">alternateGeneration_Mutate</span>()
-<span class="line-num">361</span>   <span class="ruby-comment"># cross-over</span>
-<span class="line-num">362</span>   <span class="ruby-identifier">alternateGeneration_CrossOver</span>()
-<span class="line-num">363</span>   <span class="ruby-comment"># fill by random seed.</span>
-<span class="line-num">364</span>   <span class="ruby-identifier">fillRunningParamSetList</span>() ;
-<span class="line-num">365</span>   
-<span class="line-num">366</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:newGeneration</span>, <span class="ruby-ivar">@alterCount</span>) ;
-<span class="line-num">367</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">357</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration</span>()
+<span class="line-num">358</span>   <span class="ruby-comment"># sort.</span>
+<span class="line-num">359</span>   <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">sort!</span>(<span class="ruby-operator">&amp;</span><span class="ruby-ivar">@compareBy</span>) ;
+<span class="line-num">360</span> 
+<span class="line-num">361</span>   <span class="ruby-comment"># switch to new generation</span>
+<span class="line-num">362</span>   <span class="ruby-ivar">@oldGeneration</span> = <span class="ruby-ivar">@generation</span> ;
+<span class="line-num">363</span>   <span class="ruby-ivar">@generation</span> = [] ;
+<span class="line-num">364</span> 
+<span class="line-num">365</span>   <span class="ruby-comment"># survive</span>
+<span class="line-num">366</span>   <span class="ruby-identifier">alternateGeneration_Survive</span>()
+<span class="line-num">367</span>   <span class="ruby-comment"># mutate</span>
+<span class="line-num">368</span>   <span class="ruby-identifier">alternateGeneration_Mutate</span>()
+<span class="line-num">369</span>   <span class="ruby-comment"># cross-over</span>
+<span class="line-num">370</span>   <span class="ruby-identifier">alternateGeneration_CrossOver</span>()
+<span class="line-num">371</span>   <span class="ruby-comment"># fill by random seed.</span>
+<span class="line-num">372</span>   <span class="ruby-identifier">fillRunningParamSetList</span>() ;
+<span class="line-num">373</span>   
+<span class="line-num">374</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:newGeneration</span>, <span class="ruby-ivar">@alterCount</span>) ;
+<span class="line-num">375</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -489,20 +491,20 @@
           
           <div class="method-source-code" id="alternateGeneration_CrossOver-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">400</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_CrossOver</span>()
-<span class="line-num">401</span>   <span class="ruby-identifier">_nofCrossOver</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioCrossOver</span>).<span class="ruby-identifier">ceil</span> ;
-<span class="line-num">402</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:crossOver</span>, <span class="ruby-identifier">_nofCrossOver</span>) ;
-<span class="line-num">403</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_nofCrossOver</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
-<span class="line-num">404</span>     <span class="ruby-keyword">begin</span>
-<span class="line-num">405</span>       <span class="ruby-identifier">_j</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
-<span class="line-num">406</span>       <span class="ruby-identifier">_k</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
-<span class="line-num">407</span>     <span class="ruby-keyword">end</span> <span class="ruby-keyword">while</span>(<span class="ruby-identifier">_j</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_k</span>) ;
-<span class="line-num">408</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:crossOver1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_j</span>,<span class="ruby-identifier">_k</span>]) ;
-<span class="line-num">409</span>     <span class="ruby-identifier">_childSeed</span> = <span class="ruby-ivar">@crossOverBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_j</span>],
-<span class="line-num">410</span>                                    <span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_k</span>]) ;
-<span class="line-num">411</span>     <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_childSeed</span>) ;
-<span class="line-num">412</span>   }
-<span class="line-num">413</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">408</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_CrossOver</span>()
+<span class="line-num">409</span>   <span class="ruby-identifier">_nofCrossOver</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioCrossOver</span>).<span class="ruby-identifier">ceil</span> ;
+<span class="line-num">410</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:crossOver</span>, <span class="ruby-identifier">_nofCrossOver</span>) ;
+<span class="line-num">411</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_nofCrossOver</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">412</span>     <span class="ruby-keyword">begin</span>
+<span class="line-num">413</span>       <span class="ruby-identifier">_j</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">414</span>       <span class="ruby-identifier">_k</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">415</span>     <span class="ruby-keyword">end</span> <span class="ruby-keyword">while</span>(<span class="ruby-identifier">_j</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_k</span>) ;
+<span class="line-num">416</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:crossOver1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_j</span>,<span class="ruby-identifier">_k</span>]) ;
+<span class="line-num">417</span>     <span class="ruby-identifier">_childSeed</span> = <span class="ruby-ivar">@crossOverBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_j</span>],
+<span class="line-num">418</span>                                    <span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_k</span>]) ;
+<span class="line-num">419</span>     <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_childSeed</span>) ;
+<span class="line-num">420</span>   }
+<span class="line-num">421</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -533,16 +535,16 @@
           
           <div class="method-source-code" id="alternateGeneration_Mutate-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">386</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_Mutate</span>()
-<span class="line-num">387</span>   <span class="ruby-identifier">_nofMutation</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioMutate</span>).<span class="ruby-identifier">ceil</span> ;
-<span class="line-num">388</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:mutate</span>, <span class="ruby-identifier">_nofMutation</span>) ;
-<span class="line-num">389</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_nofMutation</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
-<span class="line-num">390</span>     <span class="ruby-identifier">_j</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
-<span class="line-num">391</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:murate1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_j</span>]) ;
-<span class="line-num">392</span>     <span class="ruby-identifier">_mutantSeed</span> = <span class="ruby-ivar">@mutateBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_j</span>]) ;
-<span class="line-num">393</span>     <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_mutantSeed</span>) ;
-<span class="line-num">394</span>   }
-<span class="line-num">395</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">394</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_Mutate</span>()
+<span class="line-num">395</span>   <span class="ruby-identifier">_nofMutation</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioMutate</span>).<span class="ruby-identifier">ceil</span> ;
+<span class="line-num">396</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:mutate</span>, <span class="ruby-identifier">_nofMutation</span>) ;
+<span class="line-num">397</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">_nofMutation</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">398</span>     <span class="ruby-identifier">_j</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">399</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:murate1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_j</span>]) ;
+<span class="line-num">400</span>     <span class="ruby-identifier">_mutantSeed</span> = <span class="ruby-ivar">@mutateBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_j</span>]) ;
+<span class="line-num">401</span>     <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_mutantSeed</span>) ;
+<span class="line-num">402</span>   }
+<span class="line-num">403</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -573,16 +575,16 @@
           
           <div class="method-source-code" id="alternateGeneration_Survive-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">372</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_Survive</span>()
-<span class="line-num">373</span>   <span class="ruby-ivar">@nofSurviver</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioSurvive</span>).<span class="ruby-identifier">ceil</span> ;
-<span class="line-num">374</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:survive</span>, <span class="ruby-ivar">@nofSurviver</span>) ;
-<span class="line-num">375</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@nofSurviver</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span> 
-<span class="line-num">376</span>     <span class="ruby-identifier">_surviver</span> = <span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_i</span>] ;
-<span class="line-num">377</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:survive1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_i</span>]) ;
-<span class="line-num">378</span>     <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
-<span class="line-num">379</span>     <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
-<span class="line-num">380</span>   }
-<span class="line-num">381</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">380</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateGeneration_Survive</span>()
+<span class="line-num">381</span>   <span class="ruby-ivar">@nofSurviver</span> = (<span class="ruby-ivar">@population</span> <span class="ruby-operator">*</span> <span class="ruby-ivar">@ratioSurvive</span>).<span class="ruby-identifier">ceil</span> ;
+<span class="line-num">382</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:survive</span>, <span class="ruby-ivar">@nofSurviver</span>) ;
+<span class="line-num">383</span>   (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@nofSurviver</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span> 
+<span class="line-num">384</span>     <span class="ruby-identifier">_surviver</span> = <span class="ruby-ivar">@oldGeneration</span>[<span class="ruby-identifier">_i</span>] ;
+<span class="line-num">385</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:survive1</span>, <span class="ruby-value">:pickup</span>, [<span class="ruby-identifier">_i</span>]) ;
+<span class="line-num">386</span>     <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">387</span>     <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">388</span>   }
+<span class="line-num">389</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -620,9 +622,9 @@
           
           <div class="method-source-code" id="compare-3F-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">423</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">compare?</span>(<span class="ruby-identifier">_psStub0</span>, <span class="ruby-identifier">_psStub1</span>)
-<span class="line-num">424</span>   <span class="ruby-keyword">return</span> (<span class="ruby-ivar">@scoreBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub1</span>) <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-ivar">@scoreBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub0</span>)) ;
-<span class="line-num">425</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">431</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">compare?</span>(<span class="ruby-identifier">_psStub0</span>, <span class="ruby-identifier">_psStub1</span>)
+<span class="line-num">432</span>   <span class="ruby-keyword">return</span> (<span class="ruby-ivar">@scoreBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub1</span>) <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-ivar">@scoreBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_psStub0</span>)) ;
+<span class="line-num">433</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -660,7 +662,7 @@
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
 <span class="line-num">299</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
 <span class="line-num">300</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">301</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">nofRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">301</span>   <span class="ruby-keyword">if</span>((<span class="ruby-identifier">nofRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)) <span class="ruby-keyword">then</span>
 <span class="line-num">302</span>     <span class="ruby-comment"># do alternation.</span>
 <span class="line-num">303</span>     <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:alter</span>, <span class="ruby-ivar">@alterCount</span>) ;
 <span class="line-num">304</span>     <span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
@@ -704,9 +706,9 @@
           
           <div class="method-source-code" id="getNofInitParamSet-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">291</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
-<span class="line-num">292</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@population</span> ;
-<span class="line-num">293</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">290</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
+<span class="line-num">291</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@population</span> ;
+<span class="line-num">292</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -737,24 +739,24 @@
           
           <div class="method-source-code" id="newSeedByCrossOver-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">460</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newSeedByCrossOver</span>(<span class="ruby-identifier">_parent0</span>, <span class="ruby-identifier">_parent1</span>)
-<span class="line-num">461</span>   <span class="ruby-identifier">_childSeed</span> = {} ;
-<span class="line-num">462</span>   <span class="ruby-identifier">_parentInput0</span> = <span class="ruby-identifier">_parent0</span>.<span class="ruby-identifier">getInputTable</span>()
-<span class="line-num">463</span>   <span class="ruby-identifier">_parentInput1</span> = <span class="ruby-identifier">_parent1</span>.<span class="ruby-identifier">getInputTable</span>()
-<span class="line-num">464</span>   <span class="ruby-identifier">_parentInput0</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value0</span><span class="ruby-operator">|</span>
-<span class="line-num">465</span>     <span class="ruby-identifier">_value1</span> = <span class="ruby-identifier">_parentInput1</span>[<span class="ruby-identifier">_key</span>] ;
-<span class="line-num">466</span>     <span class="ruby-identifier">_r</span> = <span class="ruby-identifier">rand</span>() ;
-<span class="line-num">467</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_value0</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Float</span>)) <span class="ruby-keyword">then</span>
-<span class="line-num">468</span>       <span class="ruby-identifier">_value</span> = (<span class="ruby-identifier">_r</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">_value0</span>) <span class="ruby-operator">+</span> ((<span class="ruby-value">1.0</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">_r</span>) <span class="ruby-operator">*</span> <span class="ruby-identifier">_value1</span>) ;
-<span class="line-num">469</span>     <span class="ruby-keyword">else</span>
-<span class="line-num">470</span>       <span class="ruby-identifier">_value</span> = ((<span class="ruby-identifier">_r</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0.5</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">_value0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">_value1</span>) ;
-<span class="line-num">471</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">472</span>     <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> ;
-<span class="line-num">473</span>   }
-<span class="line-num">474</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:newSeedByCrossOver</span>, <span class="ruby-identifier">_childSeed</span>,
-<span class="line-num">475</span>           <span class="ruby-value">:from</span>, [<span class="ruby-identifier">_parentInput0</span>, <span class="ruby-identifier">_parentInput1</span>]) ;
-<span class="line-num">476</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_childSeed</span> ;
-<span class="line-num">477</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">468</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newSeedByCrossOver</span>(<span class="ruby-identifier">_parent0</span>, <span class="ruby-identifier">_parent1</span>)
+<span class="line-num">469</span>   <span class="ruby-identifier">_childSeed</span> = {} ;
+<span class="line-num">470</span>   <span class="ruby-identifier">_parentInput0</span> = <span class="ruby-identifier">_parent0</span>.<span class="ruby-identifier">getInputTable</span>()
+<span class="line-num">471</span>   <span class="ruby-identifier">_parentInput1</span> = <span class="ruby-identifier">_parent1</span>.<span class="ruby-identifier">getInputTable</span>()
+<span class="line-num">472</span>   <span class="ruby-identifier">_parentInput0</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value0</span><span class="ruby-operator">|</span>
+<span class="line-num">473</span>     <span class="ruby-identifier">_value1</span> = <span class="ruby-identifier">_parentInput1</span>[<span class="ruby-identifier">_key</span>] ;
+<span class="line-num">474</span>     <span class="ruby-identifier">_r</span> = <span class="ruby-identifier">rand</span>() ;
+<span class="line-num">475</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_value0</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Float</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">476</span>       <span class="ruby-identifier">_value</span> = (<span class="ruby-identifier">_r</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">_value0</span>) <span class="ruby-operator">+</span> ((<span class="ruby-value">1.0</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">_r</span>) <span class="ruby-operator">*</span> <span class="ruby-identifier">_value1</span>) ;
+<span class="line-num">477</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">478</span>       <span class="ruby-identifier">_value</span> = ((<span class="ruby-identifier">_r</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0.5</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">_value0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">_value1</span>) ;
+<span class="line-num">479</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">480</span>     <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> ;
+<span class="line-num">481</span>   }
+<span class="line-num">482</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:newSeedByCrossOver</span>, <span class="ruby-identifier">_childSeed</span>,
+<span class="line-num">483</span>           <span class="ruby-value">:from</span>, [<span class="ruby-identifier">_parentInput0</span>, <span class="ruby-identifier">_parentInput1</span>]) ;
+<span class="line-num">484</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_childSeed</span> ;
+<span class="line-num">485</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -785,22 +787,22 @@
           
           <div class="method-source-code" id="newSeedByMutate-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">439</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newSeedByMutate</span>(<span class="ruby-identifier">_parent</span>)
-<span class="line-num">440</span>   <span class="ruby-identifier">_childSeed</span> = {} ;
-<span class="line-num">441</span>   <span class="ruby-identifier">_parentInput</span> = <span class="ruby-identifier">_parent</span>.<span class="ruby-identifier">getInputTable</span>() ;
-<span class="line-num">442</span>   <span class="ruby-identifier">_parentInput</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span>
-<span class="line-num">443</span>     <span class="ruby-identifier">_policy</span> = <span class="ruby-ivar">@mutateRange</span>[<span class="ruby-identifier">_key</span>] ;
-<span class="line-num">444</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_policy</span>.<span class="ruby-identifier">nil?</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">445</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> ;
-<span class="line-num">446</span>     <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_policy</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:list</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_policy</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:value</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">447</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">getValueByPolicy</span>(<span class="ruby-identifier">_policy</span>) ;
-<span class="line-num">448</span>     <span class="ruby-keyword">else</span>
-<span class="line-num">449</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">getValueByPolicy</span>(<span class="ruby-identifier">_policy</span>) ;
-<span class="line-num">450</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">451</span>   }
-<span class="line-num">452</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:newSeedByMutate</span>, <span class="ruby-identifier">_childSeed</span>, <span class="ruby-value">:from</span>, <span class="ruby-identifier">_parentInput</span>) ;
-<span class="line-num">453</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_childSeed</span> ;
-<span class="line-num">454</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">447</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newSeedByMutate</span>(<span class="ruby-identifier">_parent</span>)
+<span class="line-num">448</span>   <span class="ruby-identifier">_childSeed</span> = {} ;
+<span class="line-num">449</span>   <span class="ruby-identifier">_parentInput</span> = <span class="ruby-identifier">_parent</span>.<span class="ruby-identifier">getInputTable</span>() ;
+<span class="line-num">450</span>   <span class="ruby-identifier">_parentInput</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span>
+<span class="line-num">451</span>     <span class="ruby-identifier">_policy</span> = <span class="ruby-ivar">@mutateRange</span>[<span class="ruby-identifier">_key</span>] ;
+<span class="line-num">452</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_policy</span>.<span class="ruby-identifier">nil?</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">453</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> ;
+<span class="line-num">454</span>     <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_policy</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:list</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_policy</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:value</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">455</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">getValueByPolicy</span>(<span class="ruby-identifier">_policy</span>) ;
+<span class="line-num">456</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">457</span>       <span class="ruby-identifier">_childSeed</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">getValueByPolicy</span>(<span class="ruby-identifier">_policy</span>) ;
+<span class="line-num">458</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">459</span>   }
+<span class="line-num">460</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:newSeedByMutate</span>, <span class="ruby-identifier">_childSeed</span>, <span class="ruby-value">:from</span>, <span class="ruby-identifier">_parentInput</span>) ;
+<span class="line-num">461</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_childSeed</span> ;
+<span class="line-num">462</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -881,14 +883,14 @@
           
           <div class="method-source-code" id="prepareResultAsJsonList-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">335</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepareResultAsJsonList</span>()
-<span class="line-num">336</span>   <span class="ruby-identifier">_jsonList</span> = [] ;
-<span class="line-num">337</span>   <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_generation</span><span class="ruby-operator">|</span>
-<span class="line-num">338</span>     <span class="ruby-identifier">_genJson</span> = <span class="ruby-identifier">_generation</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:all</span>) ; } ;
-<span class="line-num">339</span>     <span class="ruby-identifier">_jsonList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_genJson</span>) ;
-<span class="line-num">340</span>   }
-<span class="line-num">341</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_jsonList</span> ;
-<span class="line-num">342</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">343</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepareResultAsJsonList</span>()
+<span class="line-num">344</span>   <span class="ruby-identifier">_jsonList</span> = [] ;
+<span class="line-num">345</span>   <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_generation</span><span class="ruby-operator">|</span>
+<span class="line-num">346</span>     <span class="ruby-identifier">_genJson</span> = <span class="ruby-identifier">_generation</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:all</span>) ; } ;
+<span class="line-num">347</span>     <span class="ruby-identifier">_jsonList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_genJson</span>) ;
+<span class="line-num">348</span>   }
+<span class="line-num">349</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_jsonList</span> ;
+<span class="line-num">350</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -919,9 +921,9 @@
           
           <div class="method-source-code" id="scoreOf-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">431</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">scoreOf</span>(<span class="ruby-identifier">_psStub</span>)
-<span class="line-num">432</span>   <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> ;
-<span class="line-num">433</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">439</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">scoreOf</span>(<span class="ruby-identifier">_psStub</span>)
+<span class="line-num">440</span>   <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> ;
+<span class="line-num">441</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1054,11 +1056,11 @@
           
           <div class="method-source-code" id="spawnParamSet-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">325</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">spawnParamSet</span>(<span class="ruby-identifier">_paramSeed</span> = <span class="ruby-keyword">nil</span>)
-<span class="line-num">326</span>   <span class="ruby-identifier">_psStub</span> = <span class="ruby-keyword">super</span>(<span class="ruby-identifier">_paramSeed</span>) ;
-<span class="line-num">327</span>   <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
-<span class="line-num">328</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_psStub</span> ;
-<span class="line-num">329</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">333</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">spawnParamSet</span>(<span class="ruby-identifier">_paramSeed</span> = <span class="ruby-keyword">nil</span>)
+<span class="line-num">334</span>   <span class="ruby-identifier">_psStub</span> = <span class="ruby-keyword">super</span>(<span class="ruby-identifier">_paramSeed</span>) ;
+<span class="line-num">335</span>   <span class="ruby-ivar">@generation</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">336</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_psStub</span> ;
+<span class="line-num">337</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1093,8 +1095,45 @@
           
           <div class="method-source-code" id="terminate-3F-source">
             <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
-<span class="line-num">316</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
-<span class="line-num">317</span>   <span class="ruby-keyword">return</span> (<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofAlternation</span>) ;
+<span class="line-num">324</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
+<span class="line-num">325</span>   <span class="ruby-keyword">return</span> (<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofAlternation</span>) ;
+<span class="line-num">326</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-triggerAlter-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">triggerAlter?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to check the trigger condition of alter procedure.</p>
+<dl class="rdoc-list note-list"><dt><strong>return</strong>
+<dd>
+<p>true when the conditions of alternation are satisfied.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="triggerAlter-3F-source">
+            <pre>    <span class="ruby-comment"># File ConductorGaSimple.rb</span>
+<span class="line-num">316</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">triggerAlter?</span>()
+<span class="line-num">317</span>   <span class="ruby-keyword">return</span> (<span class="ruby-identifier">nofRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) ;
 <span class="line-num">318</span> <span class="ruby-keyword">end</span></pre>
           </div>
           

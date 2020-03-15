@@ -11,7 +11,7 @@
 RDOC_FILES = docItkOacis.rb ItkOacis.rb \
 		Conductor.rb \
 		ConductorRandom.rb ConductorCombine.rb \
-		ConductorGaSimple.rb \
+		ConductorGaSimple.rb ConductorGaProgressive.rb \
 		HostStub.rb SimulatorStub.rb ParamSetStub.rb
 
 top : rdoc

@@ -539,8 +539,9 @@ module ItkOacis
                                 &_block) # :yield: _paramSeed_, _i_
       _max = getNofInitParamSet() if(_max.nil?) ;
       _n = _max - nofRunning() ;
-      spawnParamSetN(_n, _paramSeed, &_block) ;
+      _list = spawnParamSetN(_n, _paramSeed, &_block) ;
       logging(:debug, :fillRunningParamSetList, _n) ;
+      return _list ;
     end
       
     #--////////////////////////////////////////////////////////////

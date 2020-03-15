@@ -559,9 +559,9 @@
           
           <div class="method-source-code" id="createPs-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">576</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createPs</span>(<span class="ruby-identifier">_param</span>)
-<span class="line-num">577</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">simulator</span>().<span class="ruby-identifier">createPs</span>(<span class="ruby-identifier">_param</span>) ;
-<span class="line-num">578</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">577</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createPs</span>(<span class="ruby-identifier">_param</span>)
+<span class="line-num">578</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">simulator</span>().<span class="ruby-identifier">createPs</span>(<span class="ruby-identifier">_param</span>) ;
+<span class="line-num">579</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -833,9 +833,10 @@
 <span class="line-num">539</span>                             <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>) <span class="ruby-comment"># :yield: _paramSeed_, _i_</span>
 <span class="line-num">540</span>   <span class="ruby-identifier">_max</span> = <span class="ruby-identifier">getNofInitParamSet</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_max</span>.<span class="ruby-identifier">nil?</span>) ;
 <span class="line-num">541</span>   <span class="ruby-identifier">_n</span> = <span class="ruby-identifier">_max</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">nofRunning</span>() ;
-<span class="line-num">542</span>   <span class="ruby-identifier">spawnParamSetN</span>(<span class="ruby-identifier">_n</span>, <span class="ruby-identifier">_paramSeed</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>) ;
+<span class="line-num">542</span>   <span class="ruby-identifier">_list</span> = <span class="ruby-identifier">spawnParamSetN</span>(<span class="ruby-identifier">_n</span>, <span class="ruby-identifier">_paramSeed</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>) ;
 <span class="line-num">543</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:debug</span>, <span class="ruby-value">:fillRunningParamSetList</span>, <span class="ruby-identifier">_n</span>) ;
-<span class="line-num">544</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">544</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_list</span> ;
+<span class="line-num">545</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -955,11 +956,11 @@
           
           <div class="method-source-code" id="newParamSet-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">554</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newParamSet</span>(<span class="ruby-identifier">_varied</span> = <span class="ruby-ivar">@defaultVariedParam</span>, <span class="ruby-identifier">_nofRun</span> = <span class="ruby-ivar">@nofRun</span>)
-<span class="line-num">555</span>   <span class="ruby-identifier">_param</span> = <span class="ruby-identifier">setupNewParam</span>(<span class="ruby-identifier">_varied</span>) ;
-<span class="line-num">556</span>   <span class="ruby-identifier">_psStub</span> = <span class="ruby-ivar">@paramSetClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_param</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">_nofRun</span>) ;
-<span class="line-num">557</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_psStub</span> ;
-<span class="line-num">558</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">555</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">newParamSet</span>(<span class="ruby-identifier">_varied</span> = <span class="ruby-ivar">@defaultVariedParam</span>, <span class="ruby-identifier">_nofRun</span> = <span class="ruby-ivar">@nofRun</span>)
+<span class="line-num">556</span>   <span class="ruby-identifier">_param</span> = <span class="ruby-identifier">setupNewParam</span>(<span class="ruby-identifier">_varied</span>) ;
+<span class="line-num">557</span>   <span class="ruby-identifier">_psStub</span> = <span class="ruby-ivar">@paramSetClass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_param</span>, <span class="ruby-keyword">self</span>, <span class="ruby-identifier">_nofRun</span>) ;
+<span class="line-num">558</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_psStub</span> ;
+<span class="line-num">559</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1105,13 +1106,13 @@
           
           <div class="method-source-code" id="prepareResultAsJsonList-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">629</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepareResultAsJsonList</span>()
-<span class="line-num">630</span>   <span class="ruby-identifier">_jsonList</span> = [] ;
-<span class="line-num">631</span>   <span class="ruby-ivar">@doneParamSetList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
-<span class="line-num">632</span>     <span class="ruby-identifier">_jsonList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:all</span>)) ;
-<span class="line-num">633</span>   }
-<span class="line-num">634</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_jsonList</span> ;
-<span class="line-num">635</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">630</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">prepareResultAsJsonList</span>()
+<span class="line-num">631</span>   <span class="ruby-identifier">_jsonList</span> = [] ;
+<span class="line-num">632</span>   <span class="ruby-ivar">@doneParamSetList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">633</span>     <span class="ruby-identifier">_jsonList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>(<span class="ruby-value">:whole</span>, <span class="ruby-value">:all</span>)) ;
+<span class="line-num">634</span>   }
+<span class="line-num">635</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_jsonList</span> ;
+<span class="line-num">636</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1294,9 +1295,9 @@
           
           <div class="method-source-code" id="runParamSet-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">585</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runParamSet</span>(<span class="ruby-identifier">_psStub</span>, <span class="ruby-identifier">_nofRun</span>)
-<span class="line-num">586</span>   <span class="ruby-identifier">host</span>().<span class="ruby-identifier">createRuns</span>(<span class="ruby-identifier">_psStub</span>, <span class="ruby-identifier">_nofRun</span>) ;
-<span class="line-num">587</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">586</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runParamSet</span>(<span class="ruby-identifier">_psStub</span>, <span class="ruby-identifier">_nofRun</span>)
+<span class="line-num">587</span>   <span class="ruby-identifier">host</span>().<span class="ruby-identifier">createRuns</span>(<span class="ruby-identifier">_psStub</span>, <span class="ruby-identifier">_nofRun</span>) ;
+<span class="line-num">588</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1331,13 +1332,13 @@
           
           <div class="method-source-code" id="saveConfig-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">595</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">saveConfig</span>(<span class="ruby-identifier">_filename</span>)
-<span class="line-num">596</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_filename</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">597</span>     <span class="ruby-identifier">open</span>(<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">_filename</span>), <span class="ruby-string">&quot;w&quot;</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_strm</span><span class="ruby-operator">|</span>
-<span class="line-num">598</span>       <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">pretty_generate</span>(<span class="ruby-ivar">@conf</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span> ;
-<span class="line-num">599</span>     }
-<span class="line-num">600</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">601</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">596</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">saveConfig</span>(<span class="ruby-identifier">_filename</span>)
+<span class="line-num">597</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_filename</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">598</span>     <span class="ruby-identifier">open</span>(<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">_filename</span>), <span class="ruby-string">&quot;w&quot;</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_strm</span><span class="ruby-operator">|</span>
+<span class="line-num">599</span>       <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">pretty_generate</span>(<span class="ruby-ivar">@conf</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span> ;
+<span class="line-num">600</span>     }
+<span class="line-num">601</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">602</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1372,23 +1373,23 @@
           
           <div class="method-source-code" id="saveResult-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">607</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">saveResult</span>(<span class="ruby-identifier">_filename</span>)
-<span class="line-num">608</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_filename</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">609</span>     <span class="ruby-identifier">_jsonList</span> = <span class="ruby-identifier">prepareResultAsJsonList</span>() ;
-<span class="line-num">610</span>     <span class="ruby-identifier">open</span>(<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">_filename</span>), <span class="ruby-string">&quot;w&quot;</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_strm</span><span class="ruby-operator">|</span>
-<span class="line-num">611</span>       <span class="ruby-identifier">_indent</span> = <span class="ruby-string">&quot;  &quot;</span> ;
-<span class="line-num">612</span>       <span class="ruby-identifier">_sep</span> = <span class="ruby-string">&quot;\n&quot;</span> ;
-<span class="line-num">613</span>       <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;[&quot;</span> ;
-<span class="line-num">614</span>       <span class="ruby-identifier">_c</span> = <span class="ruby-value">0</span> ;
-<span class="line-num">615</span>       <span class="ruby-identifier">_jsonList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_json</span><span class="ruby-operator">|</span>
-<span class="line-num">616</span>         <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;,&quot;</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_c</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) ;
-<span class="line-num">617</span>         <span class="ruby-identifier">_c</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
-<span class="line-num">618</span>         <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_sep</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_indent</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">generate</span>(<span class="ruby-identifier">_json</span>) ;
-<span class="line-num">619</span>       }
-<span class="line-num">620</span>       <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_sep</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;]&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_sep</span> ;
-<span class="line-num">621</span>     }
-<span class="line-num">622</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">623</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">608</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">saveResult</span>(<span class="ruby-identifier">_filename</span>)
+<span class="line-num">609</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_filename</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">610</span>     <span class="ruby-identifier">_jsonList</span> = <span class="ruby-identifier">prepareResultAsJsonList</span>() ;
+<span class="line-num">611</span>     <span class="ruby-identifier">open</span>(<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">_filename</span>), <span class="ruby-string">&quot;w&quot;</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_strm</span><span class="ruby-operator">|</span>
+<span class="line-num">612</span>       <span class="ruby-identifier">_indent</span> = <span class="ruby-string">&quot;  &quot;</span> ;
+<span class="line-num">613</span>       <span class="ruby-identifier">_sep</span> = <span class="ruby-string">&quot;\n&quot;</span> ;
+<span class="line-num">614</span>       <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;[&quot;</span> ;
+<span class="line-num">615</span>       <span class="ruby-identifier">_c</span> = <span class="ruby-value">0</span> ;
+<span class="line-num">616</span>       <span class="ruby-identifier">_jsonList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_json</span><span class="ruby-operator">|</span>
+<span class="line-num">617</span>         <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;,&quot;</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_c</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) ;
+<span class="line-num">618</span>         <span class="ruby-identifier">_c</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
+<span class="line-num">619</span>         <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_sep</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_indent</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">generate</span>(<span class="ruby-identifier">_json</span>) ;
+<span class="line-num">620</span>       }
+<span class="line-num">621</span>       <span class="ruby-identifier">_strm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_sep</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;]&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_sep</span> ;
+<span class="line-num">622</span>     }
+<span class="line-num">623</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">624</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1671,9 +1672,9 @@
           
           <div class="method-source-code" id="setupNewParam-source">
             <pre>    <span class="ruby-comment"># File Conductor.rb</span>
-<span class="line-num">567</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupNewParam</span>(<span class="ruby-identifier">_varied</span>)
-<span class="line-num">568</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_varied</span> ;
-<span class="line-num">569</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">568</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupNewParam</span>(<span class="ruby-identifier">_varied</span>)
+<span class="line-num">569</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_varied</span> ;
+<span class="line-num">570</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

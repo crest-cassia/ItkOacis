@@ -1,10 +1,11 @@
-Mon, 16 Mar 2020 02:28:50 +0900
-docItkOacis.rb	Mon, 16 Mar 2020 02:27:35 +0900
+Mon, 16 Mar 2020 04:18:18 +0900
+docItkOacis.rb	Mon, 16 Mar 2020 02:29:27 +0900
 ItkOacis.rb	Mon, 16 Mar 2020 00:05:36 +0900
-Conductor.rb	Mon, 16 Mar 2020 02:11:14 +0900
+Conductor.rb	Mon, 16 Mar 2020 03:52:10 +0900
 ConductorRandom.rb	Mon, 16 Mar 2020 00:05:36 +0900
 ConductorCombine.rb	Mon, 16 Mar 2020 02:11:14 +0900
-ConductorGaSimple.rb	Mon, 16 Mar 2020 02:19:52 +0900
+ConductorGaSimple.rb	Mon, 16 Mar 2020 04:14:04 +0900
+ConductorGaProgressive.rb	Mon, 16 Mar 2020 04:14:30 +0900
 HostStub.rb	Mon, 16 Mar 2020 00:05:36 +0900
 SimulatorStub.rb	Mon, 16 Mar 2020 00:05:36 +0900
 ParamSetStub.rb	Mon, 16 Mar 2020 00:05:36 +0900
