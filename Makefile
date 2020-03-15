@@ -8,7 +8,7 @@
 ## * [2020/03/10]: Create This File.
 
 
-RDOC_FILES = docItkOacis.rb \
+RDOC_FILES = docItkOacis.rb ItkOacis.rb \
 		Conductor.rb \
 		ConductorRandom.rb ConductorCombine.rb \
 		ConductorSimpleGa.rb \

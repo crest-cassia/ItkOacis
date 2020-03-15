@@ -73,7 +73,17 @@
     
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-symbolizeKeys-21">#symbolizeKeys!</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -84,6 +94,8 @@
 
   <section class="description">
     
+<p>a collection of utilities for <a href="ItkOacis.html"><code>ItkOacis</code></a>.</p>
+
 <h1 id="module-ItkOacis-label-Itk-27s+Oacis+Utilities">Itk&#39;s Oacis Utilities<span><a href="#module-ItkOacis-label-Itk-27s+Oacis+Utilities">&para;</a> <a href="#top">&uarr;</a></span></h1>
 <ul><li>
 <p>Author:: Itsuki Noda <a href="mailto:noda50@gmail.com">noda50@gmail.com</a></p>
@@ -134,6 +146,77 @@
     
 
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-symbolizeKeys-21" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">symbolizeKeys!</span><span
+            class="method-args">(_value, _reverseP = false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>convert String to Symbol of keys in Hash.</p>
+<dl class="rdoc-list note-list"><dt><em>value</em> 
+<dd>
+<p>any data includes Array and Hash.</p>
+</dd><dt><em>reverseP</em> 
+<dd>
+<p>if true, do reversed conversion.</p>
+</dd><dt><strong>return</strong> 
+<dd>
+<p>converted value.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="symbolizeKeys-21-source">
+            <pre>   <span class="ruby-comment"># File ItkOacis.rb</span>
+<span class="line-num">36</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">symbolizeKeys!</span>(<span class="ruby-identifier">_value</span>, <span class="ruby-identifier">_reverseP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">37</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">38</span>     <span class="ruby-identifier">_value</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_val</span><span class="ruby-operator">|</span> <span class="ruby-identifier">symbolizeKeys!</span>(<span class="ruby-identifier">_val</span>, <span class="ruby-identifier">_reverseP</span>) ; } ;
+<span class="line-num">39</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">40</span>     <span class="ruby-identifier">_value</span>.<span class="ruby-identifier">keys</span>().<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span><span class="ruby-operator">|</span>
+<span class="line-num">41</span>       <span class="ruby-identifier">_val</span> = <span class="ruby-identifier">_value</span>[<span class="ruby-identifier">_key</span>] ;
+<span class="line-num">42</span>       <span class="ruby-identifier">_newKey</span> = <span class="ruby-identifier">_key</span> ;
+<span class="line-num">43</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_reverseP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">44</span>         <span class="ruby-identifier">_newKey</span> = <span class="ruby-identifier">_key</span>.<span class="ruby-identifier">to_s</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_key</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Symbol</span>)) ;
+<span class="line-num">45</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">46</span>         <span class="ruby-identifier">_newKey</span> = <span class="ruby-identifier">_key</span>.<span class="ruby-identifier">intern</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_key</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)) ;
+<span class="line-num">47</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">48</span>       <span class="ruby-identifier">symbolizeKeys!</span>(<span class="ruby-identifier">_val</span>, <span class="ruby-identifier">_reverseP</span>) ;
+<span class="line-num">49</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_newKey</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">_key</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">50</span>         <span class="ruby-identifier">_value</span>[<span class="ruby-identifier">_newKey</span>] = <span class="ruby-identifier">_val</span> ;
+<span class="line-num">51</span>         <span class="ruby-identifier">_value</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_key</span>) ;
+<span class="line-num">52</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">53</span>     }
+<span class="line-num">54</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">55</span>     <span class="ruby-comment"># do nothing.</span>
+<span class="line-num">56</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">57</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_value</span> ;
+<span class="line-num">58</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 
 </main>

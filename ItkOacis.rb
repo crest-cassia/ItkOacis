@@ -22,7 +22,7 @@ require 'pp' ;
 
 #--======================================================================
 #++
-## :doc:
+#:doc:
 ## a collection of utilities for ItkOacis.
 module ItkOacis
   extend ItkOacis ;

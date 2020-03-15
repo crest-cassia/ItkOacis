@@ -69,7 +69,17 @@
 
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-test_a">#test_a</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -80,6 +90,8 @@
 
   <section class="description">
     
+<p>unit test for this file.</p>
+
   </section>
 
   
@@ -89,10 +101,73 @@
     
 
     
-
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="TestData0">TestData0
+        
+        <dd><p>desc. for TestData</p>
+        
+      
+        <dt id="TestData1">TestData1
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
     
 
     
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-test_a" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_a</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>about <a href="ItkTest.html#method-i-test_a"><code>test_a</code></a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="test_a-source">
+            <pre>    <span class="ruby-comment"># File ItkOacis.rb</span>
+<span class="line-num">179</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">test_a</span>
+<span class="line-num">180</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:before</span>, <span class="ruby-constant">TestData0</span>, <span class="ruby-constant">TestData1</span>] ;
+<span class="line-num">181</span>   <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolizeKeys!</span>(<span class="ruby-constant">TestData0</span>) ;
+<span class="line-num">182</span>   <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolizeKeys!</span>(<span class="ruby-constant">TestData1</span>, <span class="ruby-keyword">true</span>) ;
+<span class="line-num">183</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:after</span>, <span class="ruby-constant">TestData0</span>, <span class="ruby-constant">TestData1</span>] ;
+<span class="line-num">184</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 
 </main>
