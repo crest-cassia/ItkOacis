@@ -485,6 +485,33 @@ if($0 == __FILE__) then
     #++
     ## default configulation for initialization.
     DefaultConf = {
+      :simulatorName => "foo01",
+      :hostName => "localhost",
+      :scatterPolicy => { "x" => { :type => :uniform,
+                                   :min => -1.0, :max => 1.0 },
+                          "y" => { :type => :gaussian,
+                                   :ave => 1.0, :std => 1.0 },
+                          "z" => { :type => :uniform,
+                                   :min => -0.01, :max => 0.01 },
+                        },
+
+#      :population => 50,
+      :population => 10,      
+      :nofAlternation => 10,
+      :ratioSurvive => 0.3,
+      :ratioCrossOver => 0.3,
+      :ratioMutate => 0.3,
+      :mutateRange => { "x" => { :type => :gaussian,
+                                 :ave => 0.0, :std => 0.1 },
+                        "y" => { :type => :gaussian,
+                                 :ave => 0.0, :std => 0.1 },
+                        "z" => { :type => :gaussian,
+                                 :ave => 0.0, :std => 0.1 },
+                      },
+      :logLevel => :debug,
+    } ;
+    
+    DefaultConf0 = {
       :simulatorName => "foo00",
       :hostName => "localhost",
       :scatterPolicy => { "x" => { :type => :uniform,
@@ -575,7 +602,8 @@ if($0 == __FILE__) then
     #++
     ## test ConductorRandom.
     def test_a()
-      _conductor = FooConductor.new({:nofAlternation => 100}) ;
+      _conductor = FooConductor.new({:population => 100,
+                                     :nofAlternation => 100}) ;
       pp [:test_a, _conductor] ;
       _conductor.run() ;
     end

@@ -1,0 +1,135 @@
+#! /usr/bin/env ruby
+## -*- mode: ruby -*-
+## = sample simulator for Oacis test
+## Author:: Itsuki Noda
+## Version:: 0.0 2020/02/01 I.Noda
+##
+## === History
+## * [2020/02/01]: Create This File.
+## * [YYYY/MM/DD]: add more
+## == Usage
+## just run
+##    $ ./foo
+## This read "_input.json" for parameter and write "_output.json" as a result.
+## ...
+
+def $LOAD_PATH.addIfNeed(path)
+  self.unshift(path) if(!self.include?(path)) ;
+end
+
+# $LOAD_PATH.addIfNeed("~/lib/ruby");
+# $LOAD_PATH.addIfNeed(File.dirname(__FILE__));
+
+require 'optparse' ;
+require 'pp' ;
+require 'json' ;
+
+#------------------------------------------------------------------------
+#++
+$conf = {
+  :inFile => "_input.json",
+  :outFile => "_output.json",
+} ;
+
+#----------------------------------------------------------------------
+#++
+## help
+def help(raiseOrExit=true)
+  puts($op) ;
+  puts("Defaults:") ;
+  pp $conf ;
+  if(raiseOrExit.is_a?(Exception)||raiseOrExit.is_a?(String)) then
+    puts('-' * 20) ;
+    raise raiseOrExit ;
+  elsif(raiseOrExit) then
+    exit(1) ;
+  end
+end
+
+#------------------------------------------------------------------------
+#++
+$op = OptionParser.new() {|op|
+  op.banner = <<_END_
+  Usage: #{$0} [Options]*
+    This reads '_input.json' as a input parameter and
+    writes '_output.json' as a result of simulation.
+_END_
+
+  op.separator("Options:") ;
+  op.set_summary_indent("") ;
+  op.set_summary_width(60) ;
+  sep = "\n\t\t" ;
+
+  op.on("--version", sep + "show version.") { 
+    puts "0.0" ;
+    exit(0) ;
+  }
+  op.on_tail("--help", sep + "show this message.") { 
+    help() ;
+  }
+}
+
+begin
+  $op.parse!(ARGV) ;
+rescue => ex
+  help(ex) ;
+end
+
+$restArg = ARGV ;
+p [:rest, ARGV], [:conf,$conf] ; 
+
+########################################################################
+########################################################################
+########################################################################
+
+##--------------------------------------------------
+def ans(x, y, z, x0, y0, z0, bx, by, bz)
+  dx = x - x0 ;
+  dy = y - y0 ;
+  dz = z - z0 ;
+
+  r = Math::sqrt(dx * dx + dy * dy + dz * dz) ;
+  a = 1.0 / (1.0 + r) ;
+
+  cx = Math::cos(bx * x) ;
+  cy = Math::cos(by * y) ;
+  cz = Math::cos(bz * z) ;
+
+  rnd = 0.1 ;
+
+  ret = a * (cx + cy + cz) + rnd * rand() ;
+
+  return ret ;
+end
+
+##--------------------------------------------------
+##--------------------------------------------------
+param = nil ;
+
+open($conf[:inFile],"r"){ |istrm|
+  param = JSON.parse(istrm.read, { symbolize_names: true })
+}
+
+x = param[:x] ;
+y = param[:y] ;
+z = param[:z] ;
+seed = param[:_seed] ;
+srand(seed) if(seed) ;
+
+u = ans(x, y, z, 0, 0,  0,      10, 20, 40) ;
+v = ans(x, y, z, 0, 1, -1,      30, 30, 30) ;
+w = ans(x, y, z, 0.1, 0.1, 0.1, 200, 150, 100) ;
+
+result = {
+  :u => u,
+  :v => v,
+  :w => w
+} ;
+
+pp ({:param => param, :result => result}) ;
+
+open($conf[:outFile],"w"){ |ostrm|
+  ostrm << JSON.pretty_generate(result) << "\n" ;
+}
+
+

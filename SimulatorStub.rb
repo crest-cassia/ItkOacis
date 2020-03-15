@@ -303,6 +303,17 @@ if($0 ==  __FILE__) then
       ],
     } ;
 
+    SimulatorConf_Foo01 = {
+      :name => "foo01",
+      :command => File.expand_path("./forTest/sample/foo01/foo",
+                                   File.dirname(__FILE__)),
+      :parameter_definitions => [
+        { :key => "x", :type => "Float", :default => 0.0 },
+        { :key => "y", :type => "Float", :default => 0.0 },
+        { :key => "z", :type => "Float", :default => 0.0 },
+      ],
+    } ;
+
     #--==================================================
     #----------------------------------------------------
     #++
@@ -393,7 +404,8 @@ if($0 ==  __FILE__) then
     #++
     ## gen param set hash.
     def test_e()
-      _conf = SimulatorConf_Foo00a ;
+      #_conf = SimulatorConf_Foo00a ;
+      _conf = SimulatorConf_Foo01 ;
       _sim = ItkOacis::SimulatorStub.registerSimulator(_conf, true) ;
       pp [:sim, _sim] ;
     end
