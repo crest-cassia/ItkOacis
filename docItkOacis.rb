@@ -46,6 +46,7 @@ please check followings:
 * class ItkOacis::Conductor
 * class ItkOacis::ConductorCombine
 * class ItkOacis::ConductorRandom
+* class ItkOacis::ConductorGaSimple
 
 =end
 

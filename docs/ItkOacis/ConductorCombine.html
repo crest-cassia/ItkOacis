@@ -119,7 +119,7 @@
   <span class="ruby-comment">## override cycleCheck().</span>
   <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
     <span class="ruby-keyword">super</span>() ;
-    <span class="ruby-identifier">eachDoneParamSet</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pp</span> [<span class="ruby-value">:done</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>()] };
+    <span class="ruby-identifier">eachDoneInCycle</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pp</span> [<span class="ruby-value">:done</span>, <span class="ruby-identifier">_psStub</span>.<span class="ruby-identifier">toJson</span>()] };
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span>
 
