@@ -81,6 +81,8 @@
     
     <li ><a href="#method-c-new">::new</a>
     
+    <li ><a href="#method-c-registerSimulator">::registerSimulator</a>
+    
     <li ><a href="#method-i-createPs">#createPs</a>
     
     <li ><a href="#method-i-createPsAndRun">#createPsAndRun</a>
@@ -138,6 +140,11 @@
         <dt id="DefaultConf">DefaultConf
         
         <dd><p>description of DefaultOptsions.</p>
+        
+      
+        <dt id="SimulatorConf">SimulatorConf
+        
+        <dd><p>Simulator template for</p>
         
       
       </dl>
@@ -217,17 +224,17 @@
           
           <div class="method-source-code" id="getSimulatorByName-source">
             <pre>   <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">48</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getSimulatorByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">49</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">50</span>     <span class="ruby-keyword">begin</span>
-<span class="line-num">51</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getSimulatorByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
-<span class="line-num">52</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
-<span class="line-num">53</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">54</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">55</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">56</span>     <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Simulator</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">_name</span>) ;
-<span class="line-num">57</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">58</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">49</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getSimulatorByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">50</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">51</span>     <span class="ruby-keyword">begin</span>
+<span class="line-num">52</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getSimulatorByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
+<span class="line-num">53</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
+<span class="line-num">54</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">55</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">56</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">57</span>     <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Simulator</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">_name</span>) ;
+<span class="line-num">58</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">59</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -262,9 +269,9 @@
           
           <div class="method-source-code" id="getSimulatorNameList-source">
             <pre>   <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">36</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getSimulatorNameList</span>()
-<span class="line-num">37</span>   <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Simulator</span>.<span class="ruby-identifier">asc</span>().<span class="ruby-identifier">all</span>.<span class="ruby-identifier">as_json</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_sim</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_sim</span>[<span class="ruby-string">&quot;name&quot;</span>]} ;
-<span class="line-num">38</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">37</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getSimulatorNameList</span>()
+<span class="line-num">38</span>   <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Simulator</span>.<span class="ruby-identifier">asc</span>().<span class="ruby-identifier">all</span>.<span class="ruby-identifier">as_json</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_sim</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_sim</span>[<span class="ruby-string">&quot;name&quot;</span>]} ;
+<span class="line-num">39</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -298,10 +305,72 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre>   <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">77</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_name</span> = <span class="ruby-keyword">nil</span>)
-<span class="line-num">78</span>   <span class="ruby-identifier">setEntityByName</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_name</span>) ;
-<span class="line-num">79</span> <span class="ruby-keyword">end</span></pre>
+            <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
+<span class="line-num">130</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_name</span> = <span class="ruby-keyword">nil</span>)
+<span class="line-num">131</span>   <span class="ruby-identifier">setEntityByName</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_name</span>) ;
+<span class="line-num">132</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-registerSimulator" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">registerSimulator</span><span
+            class="method-args">(_conf = {}, _checkExistsP = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to register a Simulator entry to OACIS.</p>
+<dl class="rdoc-list note-list"><dt><em>conf</em>
+<dd>
+<p>the configulation of the Simulator.</p>
+</dd><dt><em>checkExistsP</em>
+<dd>
+<p>If true, check the same <a href="SimulatorStub.html#attribute-i-name"><code>name</code></a> is registered, and output warning if exists. If false, cause Exception if exists.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>a Simulator object.</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="registerSimulator-source">
+            <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
+<span class="line-num"> 90</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">registerSimulator</span>(<span class="ruby-identifier">_conf</span> = {}, <span class="ruby-identifier">_checkExistsP</span> = <span class="ruby-keyword">true</span>)
+<span class="line-num"> 91</span>   <span class="ruby-identifier">_simConf</span> = <span class="ruby-constant">SimulatorConf</span>.<span class="ruby-identifier">dup</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">_conf</span>) ;
+<span class="line-num"> 92</span>   
+<span class="line-num"> 93</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_simConf</span>[<span class="ruby-value">:name</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span>  <span class="ruby-identifier">_simConf</span>[<span class="ruby-value">:command</span>].<span class="ruby-identifier">nil?</span>) <span class="ruby-keyword">then</span>
+<span class="line-num"> 94</span>     <span class="ruby-identifier">raise</span> (<span class="ruby-string">&quot;Simulator configulation lacks mandatory information to register: &quot;</span> <span class="ruby-operator">+</span>
+<span class="line-num"> 95</span>            <span class="ruby-identifier">_conf</span>.<span class="ruby-identifier">inspect</span>) ;
+<span class="line-num"> 96</span>   <span class="ruby-keyword">end</span>
+<span class="line-num"> 97</span> 
+<span class="line-num"> 98</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_checkExistsP</span> <span class="ruby-operator">&amp;&amp;</span>
+<span class="line-num"> 99</span>      <span class="ruby-identifier">_sim</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getSimulatorByName</span>(<span class="ruby-identifier">_simConf</span>[<span class="ruby-value">:name</span>], <span class="ruby-keyword">true</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">100</span>     <span class="ruby-identifier">puts</span> (<span class="ruby-string">&quot;Warning: a Simulator already registered with the same name: &quot;</span> <span class="ruby-operator">+</span>
+<span class="line-num">101</span>           <span class="ruby-identifier">_conf</span>.<span class="ruby-identifier">inspect</span>) ;
+<span class="line-num">102</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_sim</span> ;
+<span class="line-num">103</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">104</span> 
+<span class="line-num">105</span>   <span class="ruby-identifier">_simConf</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolizeKeys!</span>(<span class="ruby-identifier">_simConf</span>, <span class="ruby-keyword">true</span>) ;
+<span class="line-num">106</span> 
+<span class="line-num">107</span>   <span class="ruby-identifier">_sim</span> = <span class="ruby-constant">Simulator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_simConf</span>) ;
+<span class="line-num">108</span>   <span class="ruby-identifier">_sim</span>.<span class="ruby-identifier">save!</span> ;
+<span class="line-num">109</span> 
+<span class="line-num">110</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_sim</span> ;
+<span class="line-num">111</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -347,9 +416,9 @@
           
           <div class="method-source-code" id="createPs-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">135</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createPs</span>(<span class="ruby-identifier">_param</span>)
-<span class="line-num">136</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">find_or_create_parameter_set</span>(<span class="ruby-identifier">genParamSetHash</span>(<span class="ruby-identifier">_param</span>)) ;
-<span class="line-num">137</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">188</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createPs</span>(<span class="ruby-identifier">_param</span>)
+<span class="line-num">189</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">find_or_create_parameter_set</span>(<span class="ruby-identifier">genParamSetHash</span>(<span class="ruby-identifier">_param</span>)) ;
+<span class="line-num">190</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -393,11 +462,11 @@
           
           <div class="method-source-code" id="createPsAndRun-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">146</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createPsAndRun</span>(<span class="ruby-identifier">_param</span>,  <span class="ruby-identifier">_host</span>, <span class="ruby-identifier">_nofRun</span> = <span class="ruby-value">1</span>)
-<span class="line-num">147</span>   <span class="ruby-identifier">_ps</span> = <span class="ruby-identifier">createPs</span>(<span class="ruby-identifier">_param</span>) ;
-<span class="line-num">148</span>   <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">createRuns</span>(<span class="ruby-identifier">_ps</span>, <span class="ruby-identifier">_nofRun</span>) ;
-<span class="line-num">149</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_ps</span> ;
-<span class="line-num">150</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">199</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createPsAndRun</span>(<span class="ruby-identifier">_param</span>,  <span class="ruby-identifier">_host</span>, <span class="ruby-identifier">_nofRun</span> = <span class="ruby-value">1</span>)
+<span class="line-num">200</span>   <span class="ruby-identifier">_ps</span> = <span class="ruby-identifier">createPs</span>(<span class="ruby-identifier">_param</span>) ;
+<span class="line-num">201</span>   <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">createRuns</span>(<span class="ruby-identifier">_ps</span>, <span class="ruby-identifier">_nofRun</span>) ;
+<span class="line-num">202</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_ps</span> ;
+<span class="line-num">203</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -432,11 +501,11 @@
           
           <div class="method-source-code" id="eachPs-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">156</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachPs</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">body</span>)
-<span class="line-num">157</span>   <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">parameter_sets</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_ps</span><span class="ruby-operator">|</span>
-<span class="line-num">158</span>     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_ps</span>) ;
-<span class="line-num">159</span>   }
-<span class="line-num">160</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">209</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachPs</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">body</span>)
+<span class="line-num">210</span>   <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">parameter_sets</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_ps</span><span class="ruby-operator">|</span>
+<span class="line-num">211</span>     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_ps</span>) ;
+<span class="line-num">212</span>   }
+<span class="line-num">213</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -471,13 +540,13 @@
           
           <div class="method-source-code" id="eachRun-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">166</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachRun</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">body</span>)
-<span class="line-num">167</span>   <span class="ruby-identifier">eachPs</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_ps</span><span class="ruby-operator">|</span>
-<span class="line-num">168</span>     <span class="ruby-identifier">_ps</span>.<span class="ruby-identifier">runs</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
-<span class="line-num">169</span>       <span class="ruby-identifier">body</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_run</span>) ;
-<span class="line-num">170</span>     }
-<span class="line-num">171</span>   }
-<span class="line-num">172</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">219</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachRun</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">body</span>)
+<span class="line-num">220</span>   <span class="ruby-identifier">eachPs</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_ps</span><span class="ruby-operator">|</span>
+<span class="line-num">221</span>     <span class="ruby-identifier">_ps</span>.<span class="ruby-identifier">runs</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">222</span>       <span class="ruby-identifier">body</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_run</span>) ;
+<span class="line-num">223</span>     }
+<span class="line-num">224</span>   }
+<span class="line-num">225</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -515,15 +584,15 @@
           
           <div class="method-source-code" id="genParamSetHash-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">120</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">genParamSetHash</span>(<span class="ruby-identifier">_param</span> = {})
-<span class="line-num">121</span>   <span class="ruby-identifier">_paramSetHash</span> = {} ;
-<span class="line-num">122</span>   <span class="ruby-identifier">getParamDefList</span>().<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_paramDef</span><span class="ruby-operator">|</span>
-<span class="line-num">123</span>     <span class="ruby-identifier">_paramSetHash</span>[<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span>] = (<span class="ruby-identifier">_param</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span>) <span class="ruby-operator">?</span>
-<span class="line-num">124</span>                                       <span class="ruby-identifier">_param</span>[<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span>] <span class="ruby-operator">:</span>
-<span class="line-num">125</span>                                       <span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">default</span>) ;
-<span class="line-num">126</span>   }
-<span class="line-num">127</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_paramSetHash</span> ;
-<span class="line-num">128</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">173</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">genParamSetHash</span>(<span class="ruby-identifier">_param</span> = {})
+<span class="line-num">174</span>   <span class="ruby-identifier">_paramSetHash</span> = {} ;
+<span class="line-num">175</span>   <span class="ruby-identifier">getParamDefList</span>().<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_paramDef</span><span class="ruby-operator">|</span>
+<span class="line-num">176</span>     <span class="ruby-identifier">_paramSetHash</span>[<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span>] = (<span class="ruby-identifier">_param</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span>) <span class="ruby-operator">?</span>
+<span class="line-num">177</span>                                       <span class="ruby-identifier">_param</span>[<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span>] <span class="ruby-operator">:</span>
+<span class="line-num">178</span>                                       <span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">default</span>) ;
+<span class="line-num">179</span>   }
+<span class="line-num">180</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_paramSetHash</span> ;
+<span class="line-num">181</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -561,13 +630,13 @@
           
           <div class="method-source-code" id="getParamDef-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">107</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getParamDef</span>(<span class="ruby-identifier">_name</span>)
-<span class="line-num">108</span>   <span class="ruby-identifier">_nameStr</span> = <span class="ruby-identifier">_name</span>.<span class="ruby-identifier">to_s</span>() ;
-<span class="line-num">109</span>   <span class="ruby-identifier">getParamDefList</span>().<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_paramDef</span><span class="ruby-operator">|</span>
-<span class="line-num">110</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_paramDef</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_nameStr</span>) ;
-<span class="line-num">111</span>   }
-<span class="line-num">112</span>   <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown paramter definition with name: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_name</span>.<span class="ruby-identifier">inspect</span> ;
-<span class="line-num">113</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">160</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getParamDef</span>(<span class="ruby-identifier">_name</span>)
+<span class="line-num">161</span>   <span class="ruby-identifier">_nameStr</span> = <span class="ruby-identifier">_name</span>.<span class="ruby-identifier">to_s</span>() ;
+<span class="line-num">162</span>   <span class="ruby-identifier">getParamDefList</span>().<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_paramDef</span><span class="ruby-operator">|</span>
+<span class="line-num">163</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_paramDef</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramDef</span>.<span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_nameStr</span>) ;
+<span class="line-num">164</span>   }
+<span class="line-num">165</span>   <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown paramter definition with name: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_name</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">166</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -601,10 +670,10 @@
 
           
           <div class="method-source-code" id="getParamDefList-source">
-            <pre>   <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">97</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getParamDefList</span>()
-<span class="line-num">98</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">parameter_definitions</span> ;
-<span class="line-num">99</span> <span class="ruby-keyword">end</span></pre>
+            <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
+<span class="line-num">150</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getParamDefList</span>()
+<span class="line-num">151</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">parameter_definitions</span> ;
+<span class="line-num">152</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -641,12 +710,12 @@
 
           
           <div class="method-source-code" id="setEntityByName-source">
-            <pre>   <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">87</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setEntityByName</span>(<span class="ruby-identifier">_name</span>)
-<span class="line-num">88</span>   <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">_name</span> ;
-<span class="line-num">89</span>   <span class="ruby-ivar">@entity</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">getSimulatorByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
-<span class="line-num">90</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span> ;
-<span class="line-num">91</span> <span class="ruby-keyword">end</span></pre>
+            <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
+<span class="line-num">140</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setEntityByName</span>(<span class="ruby-identifier">_name</span>)
+<span class="line-num">141</span>   <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">_name</span> ;
+<span class="line-num">142</span>   <span class="ruby-ivar">@entity</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">getSimulatorByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
+<span class="line-num">143</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span> ;
+<span class="line-num">144</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -677,9 +746,9 @@
           
           <div class="method-source-code" id="sync-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">177</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sync</span>()
-<span class="line-num">178</span>   <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">reload</span>() ;
-<span class="line-num">179</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">230</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">sync</span>()
+<span class="line-num">231</span>   <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">reload</span>() ;
+<span class="line-num">232</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -710,9 +779,9 @@
           
           <div class="method-source-code" id="syncAll-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">204</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAll</span>()
-<span class="line-num">205</span>   <span class="ruby-identifier">syncAllRun</span>() ;
-<span class="line-num">206</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">257</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAll</span>()
+<span class="line-num">258</span>   <span class="ruby-identifier">syncAllRun</span>() ;
+<span class="line-num">259</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -743,12 +812,12 @@
           
           <div class="method-source-code" id="syncAllPs-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">184</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAllPs</span>()
-<span class="line-num">185</span>   <span class="ruby-identifier">sync</span>() ;
-<span class="line-num">186</span>   <span class="ruby-identifier">eachPs</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_ps</span><span class="ruby-operator">|</span>
-<span class="line-num">187</span>     <span class="ruby-identifier">_ps</span>.<span class="ruby-identifier">reload</span>() ;
-<span class="line-num">188</span>   }
-<span class="line-num">189</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">237</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAllPs</span>()
+<span class="line-num">238</span>   <span class="ruby-identifier">sync</span>() ;
+<span class="line-num">239</span>   <span class="ruby-identifier">eachPs</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_ps</span><span class="ruby-operator">|</span>
+<span class="line-num">240</span>     <span class="ruby-identifier">_ps</span>.<span class="ruby-identifier">reload</span>() ;
+<span class="line-num">241</span>   }
+<span class="line-num">242</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -779,12 +848,12 @@
           
           <div class="method-source-code" id="syncAllRun-source">
             <pre>    <span class="ruby-comment"># File SimulatorStub.rb</span>
-<span class="line-num">194</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAllRun</span>()
-<span class="line-num">195</span>   <span class="ruby-identifier">syncAllPs</span>() ;
-<span class="line-num">196</span>   <span class="ruby-identifier">eachRun</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
-<span class="line-num">197</span>     <span class="ruby-identifier">_run</span>.<span class="ruby-identifier">reload</span>() ;
-<span class="line-num">198</span>   }
-<span class="line-num">199</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">247</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">syncAllRun</span>()
+<span class="line-num">248</span>   <span class="ruby-identifier">syncAllPs</span>() ;
+<span class="line-num">249</span>   <span class="ruby-identifier">eachRun</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
+<span class="line-num">250</span>     <span class="ruby-identifier">_run</span>.<span class="ruby-identifier">reload</span>() ;
+<span class="line-num">251</span>   }
+<span class="line-num">252</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

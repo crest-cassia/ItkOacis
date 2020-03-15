@@ -557,6 +557,8 @@ end # module ItkOacis
 ########################################################################
 if($0 == __FILE__) then
 
+  require "ItkOacis.rb" ;
+
   #--============================================================
   #++
   # :nodoc: all
@@ -605,53 +607,13 @@ if($0 == __FILE__) then
   # :nodoc: all
   ## unit test for this file.
   class ItkTest
+    extend ItkOacis::ItkTestModule ;
 
     #--::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
-    ## Singleton of this Class.
-    Singleton = self.new() ;
     ## test data
     TestData = nil ;
 
-    #--==================================================
-    #----------------------------------------------------
-    #++
-    ## list-up test methods.
-    def self.listTestMethods()
-      _r = [] ;
-      Singleton.methods(true).each{|_method|
-        _r.push(_method.to_s) if(_method.to_s =~ /^test_/) ;
-      }
-      return _r ;
-    end
-
-    #--==================================================
-    #----------------------------------------------------
-    #++
-    ## run
-    def self.run(_argv = [])
-      _methodList = ((_argv.size == 0) ?
-                       self.listTestMethods() :
-                       _argv) ;
-      _methodList.each{|_method|
-        self.callTest(_method) ;
-      }
-    end
-    
-    #--==================================================
-    #----------------------------------------------------
-    #++
-    ## call method of Singleton.
-    def self.callTest(_method)
-      if(self.listTestMethods.member?(_method)) then
-        pp [:call, _method] ;
-        Singleton.send(_method) ;
-      else
-        puts "Warning!!" ;
-        pp [:no_test_method, _method] ;
-      end
-    end
-    
     #----------------------------------------------------
     #++
     ## host name list.

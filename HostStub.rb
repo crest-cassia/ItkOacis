@@ -180,6 +180,14 @@ module ItkOacis
     ##                  and output warning if exists.
     ##                  If false, cause Exception if exists.
     ## *return*:: a Simulator object.
+    ##
+    ## ==== Usage
+    ##      conf = {
+    ##        :name => "localhost",
+    ##        :max_num_jobs => 8,
+    ##      } ;
+    ##      host = ItkOacis::HostStub.registerHost(conf, true) ;
+    ##
     def self.registerHost(_conf = {}, _checkExistsP = true)
       _hostConf = HostConf.dup.update(_conf) ;
       
@@ -195,7 +203,7 @@ module ItkOacis
         return _host ;
       end
 
-      _hostConf = ItkOacis::symbolizeKeys(_hostConf, true) ;
+      _hostConf = ItkOacis::symbolizeKeys!(_hostConf, true) ;
 
       pp [:hostConf, _hostConf] ;
 
@@ -339,62 +347,23 @@ end # module ItkOacis
 ########################################################################
 if($0 ==  __FILE__) then
 
+  require "ItkOacis.rb" ;
+  
   #--============================================================
   #++
   # :nodoc: all
   ## unit test for this file.
   class ItkTest
+    extend ItkOacis::ItkTestModule ;
 
     #--::::::::::::::::::::::::::::::::::::::::::::::::::
     #++
-    ## Singleton of this Class.
-    Singleton = self.new() ;
-    
     ## test data
     HostConf_localhost = {
       :name => "localhost",
       :max_num_jobs => 8,
     } ;
 
-    #--==================================================
-    #----------------------------------------------------
-    #++
-    ## list-up test methods.
-    def self.listTestMethods()
-      _r = [] ;
-      Singleton.methods(true).each{|_method|
-        _r.push(_method.to_s) if(_method.to_s =~ /^test_/) ;
-      }
-      return _r ;
-    end
-
-    #--==================================================
-    #----------------------------------------------------
-    #++
-    ## run
-    def self.run(_argv = [])
-      _methodList = ((_argv.size == 0) ?
-                       self.listTestMethods() :
-                       _argv) ;
-      _methodList.each{|_method|
-        self.callTest(_method) ;
-      }
-    end
-    
-    #--==================================================
-    #----------------------------------------------------
-    #++
-    ## call method of Singleton.
-    def self.callTest(_method)
-      if(self.listTestMethods.member?(_method)) then
-        pp [:call, _method] ;
-        Singleton.send(_method) ;
-      else
-        puts "Warning!!" ;
-        pp [:no_test_method, _method] ;
-      end
-    end
-    
     #----------------------------------------------------
     #++
     ## host name list.

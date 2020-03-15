@@ -93,6 +93,8 @@
     
     <li class="calls-super" ><a href="#method-c-new">::new</a>
     
+    <li ><a href="#method-c-registerHost">::registerHost</a>
+    
     <li ><a href="#method-i-createRuns">#createRuns</a>
     
     <li ><a href="#method-i-eachHost">#eachHost</a>
@@ -140,6 +142,11 @@
         <dt id="DefaultConf">DefaultConf
         
         <dd><p>default configulation.</p>
+        
+      
+        <dt id="HostConf">HostConf
+        
+        <dd><p>Host template</p>
         
       
       </dl>
@@ -232,18 +239,18 @@
           
           <div class="method-source-code" id="getHostAndGroupByName-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">144</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostAndGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">145</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">146</span>     <span class="ruby-keyword">begin</span>
-<span class="line-num">147</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostAndGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
-<span class="line-num">148</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
-<span class="line-num">149</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">150</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">151</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">152</span>     <span class="ruby-keyword">return</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">true</span>) <span class="ruby-operator">||</span>
-<span class="line-num">153</span>             <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>)) ;
-<span class="line-num">154</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">155</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">146</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostAndGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">147</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">148</span>     <span class="ruby-keyword">begin</span>
+<span class="line-num">149</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostAndGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
+<span class="line-num">150</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
+<span class="line-num">151</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">152</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">153</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">154</span>     <span class="ruby-keyword">return</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">true</span>) <span class="ruby-operator">||</span>
+<span class="line-num">155</span>             <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>)) ;
+<span class="line-num">156</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">157</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -278,14 +285,14 @@
           
           <div class="method-source-code" id="getHostAndGroupNameList-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">127</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostAndGroupNameList</span>()
-<span class="line-num">128</span>   <span class="ruby-identifier">_list</span> = [] ;
-<span class="line-num">129</span>   
-<span class="line-num">130</span>   <span class="ruby-identifier">_list</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostNameList</span>()) ;
-<span class="line-num">131</span>   <span class="ruby-identifier">_list</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupNameList</span>()) ;
-<span class="line-num">132</span>   
-<span class="line-num">133</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_list</span> ;
-<span class="line-num">134</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">129</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostAndGroupNameList</span>()
+<span class="line-num">130</span>   <span class="ruby-identifier">_list</span> = [] ;
+<span class="line-num">131</span>   
+<span class="line-num">132</span>   <span class="ruby-identifier">_list</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostNameList</span>()) ;
+<span class="line-num">133</span>   <span class="ruby-identifier">_list</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupNameList</span>()) ;
+<span class="line-num">134</span>   
+<span class="line-num">135</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_list</span> ;
+<span class="line-num">136</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -326,17 +333,17 @@
           
           <div class="method-source-code" id="getHostByName-source">
             <pre>   <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">46</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">47</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">48</span>     <span class="ruby-keyword">begin</span>
-<span class="line-num">49</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
-<span class="line-num">50</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
-<span class="line-num">51</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">52</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">53</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">54</span>     <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Host</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">_name</span>) ;
-<span class="line-num">55</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">56</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">48</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">49</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">50</span>     <span class="ruby-keyword">begin</span>
+<span class="line-num">51</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
+<span class="line-num">52</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
+<span class="line-num">53</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">54</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">55</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">56</span>     <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Host</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">_name</span>) ;
+<span class="line-num">57</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">58</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -377,17 +384,17 @@
           
           <div class="method-source-code" id="getHostGroupByName-source">
             <pre>   <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">75</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">76</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">77</span>     <span class="ruby-keyword">begin</span>
-<span class="line-num">78</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
-<span class="line-num">79</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
-<span class="line-num">80</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">81</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">82</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">83</span>     <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">HostGroup</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">_name</span>) ;
-<span class="line-num">84</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">85</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">77</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">78</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_safeP</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">79</span>     <span class="ruby-keyword">begin</span>
+<span class="line-num">80</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-keyword">false</span>) ;
+<span class="line-num">81</span>     <span class="ruby-keyword">rescue</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_ex</span>
+<span class="line-num">82</span>       <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">83</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">84</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">85</span>     <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">HostGroup</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">_name</span>) ;
+<span class="line-num">86</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">87</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -422,9 +429,9 @@
           
           <div class="method-source-code" id="getHostGroupNameList-source">
             <pre>   <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">63</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostGroupNameList</span>()
-<span class="line-num">64</span>   <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">HostGroup</span>.<span class="ruby-identifier">asc</span>().<span class="ruby-identifier">all</span>.<span class="ruby-identifier">as_json</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_group</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_group</span>[<span class="ruby-string">&quot;name&quot;</span>]} ;
-<span class="line-num">65</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">65</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostGroupNameList</span>()
+<span class="line-num">66</span>   <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">HostGroup</span>.<span class="ruby-identifier">asc</span>().<span class="ruby-identifier">all</span>.<span class="ruby-identifier">as_json</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_group</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_group</span>[<span class="ruby-string">&quot;name&quot;</span>]} ;
+<span class="line-num">67</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -465,16 +472,16 @@
           
           <div class="method-source-code" id="getHostListInGroup-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num"> 95</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostListInGroup</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num"> 96</span>   <span class="ruby-identifier">_group</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span>) ;
-<span class="line-num"> 97</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_group</span>) <span class="ruby-keyword">then</span>
-<span class="line-num"> 98</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_group</span>.<span class="ruby-identifier">host_ids</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_objId</span><span class="ruby-operator">|</span>
-<span class="line-num"> 99</span>       <span class="ruby-operator">::</span><span class="ruby-constant">Host</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">_objId</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">first</span> ;
-<span class="line-num">100</span>     }
-<span class="line-num">101</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">102</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">103</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">104</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num"> 97</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostListInGroup</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num"> 98</span>   <span class="ruby-identifier">_group</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span>) ;
+<span class="line-num"> 99</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_group</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">100</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_group</span>.<span class="ruby-identifier">host_ids</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_objId</span><span class="ruby-operator">|</span>
+<span class="line-num">101</span>       <span class="ruby-operator">::</span><span class="ruby-constant">Host</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">_objId</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">first</span> ;
+<span class="line-num">102</span>     }
+<span class="line-num">103</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">104</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">105</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">106</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -509,9 +516,9 @@
           
           <div class="method-source-code" id="getHostNameList-source">
             <pre>   <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">34</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostNameList</span>()
-<span class="line-num">35</span>   <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Host</span>.<span class="ruby-identifier">asc</span>().<span class="ruby-identifier">all</span>.<span class="ruby-identifier">as_json</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_host</span>[<span class="ruby-string">&quot;name&quot;</span>]} ;
-<span class="line-num">36</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">36</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostNameList</span>()
+<span class="line-num">37</span>   <span class="ruby-keyword">return</span> <span class="ruby-operator">::</span><span class="ruby-constant">Host</span>.<span class="ruby-identifier">asc</span>().<span class="ruby-identifier">all</span>.<span class="ruby-identifier">as_json</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_host</span>[<span class="ruby-string">&quot;name&quot;</span>]} ;
+<span class="line-num">38</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -552,14 +559,14 @@
           
           <div class="method-source-code" id="getHostNameListInGroup-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">113</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostNameListInGroup</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">114</span>   <span class="ruby-identifier">_hostList</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostListInGroup</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span>) ;
-<span class="line-num">115</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_hostList</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">116</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_hostList</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">name</span>} ;
-<span class="line-num">117</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">118</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">119</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">120</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">115</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">getHostNameListInGroup</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">116</span>   <span class="ruby-identifier">_hostList</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostListInGroup</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span>) ;
+<span class="line-num">117</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_hostList</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">118</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_hostList</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">name</span>} ;
+<span class="line-num">119</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">120</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">121</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">122</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -599,10 +606,83 @@
           
           <div class="method-source-code" id="new-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">177</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_name</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_conf</span> = {})
-<span class="line-num">178</span>   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">_conf</span>)
-<span class="line-num">179</span>   <span class="ruby-identifier">setEntityByName</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_name</span>) ;
-<span class="line-num">180</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">236</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">_name</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_conf</span> = {})
+<span class="line-num">237</span>   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">_conf</span>)
+<span class="line-num">238</span>   <span class="ruby-identifier">setEntityByName</span>(<span class="ruby-identifier">_name</span>) <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_name</span>) ;
+<span class="line-num">239</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-registerHost" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">registerHost</span><span
+            class="method-args">(_conf = {}, _checkExistsP = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>to register a Simulator entry to OACIS.</p>
+<dl class="rdoc-list note-list"><dt><em>conf</em>
+<dd>
+<p>the configulation of the Simulator.</p>
+</dd><dt><em>checkExistsP</em>
+<dd>
+<p>If true, check the same <a href="HostStub.html#attribute-i-name"><code>name</code></a> is registered, and output warning if exists. If false, cause Exception if exists.</p>
+</dd><dt><strong>return</strong>
+<dd>
+<p>a Simulator object.</p>
+</dd></dl>
+
+<h4 id="method-c-registerHost-label-Usage">Usage<span><a href="#method-c-registerHost-label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<pre class="ruby"><span class="ruby-identifier">conf</span> = {
+  <span class="ruby-value">:name</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;localhost&quot;</span>,
+  <span class="ruby-value">:max_num_jobs</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-value">8</span>,
+} ;
+<span class="ruby-identifier">host</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">HostStub</span>.<span class="ruby-identifier">registerHost</span>(<span class="ruby-identifier">conf</span>, <span class="ruby-keyword">true</span>) ;
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="registerHost-source">
+            <pre>    <span class="ruby-comment"># File HostStub.rb</span>
+<span class="line-num">191</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">registerHost</span>(<span class="ruby-identifier">_conf</span> = {}, <span class="ruby-identifier">_checkExistsP</span> = <span class="ruby-keyword">true</span>)
+<span class="line-num">192</span>   <span class="ruby-identifier">_hostConf</span> = <span class="ruby-constant">HostConf</span>.<span class="ruby-identifier">dup</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">_conf</span>) ;
+<span class="line-num">193</span>   
+<span class="line-num">194</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_hostConf</span>[<span class="ruby-value">:name</span>].<span class="ruby-identifier">nil?</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">195</span>     <span class="ruby-identifier">raise</span> (<span class="ruby-string">&quot;Hostr configulation lacks mandatory information to register: &quot;</span> <span class="ruby-operator">+</span>
+<span class="line-num">196</span>            <span class="ruby-identifier">_conf</span>.<span class="ruby-identifier">inspect</span>) ;
+<span class="line-num">197</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">198</span> 
+<span class="line-num">199</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_checkExistsP</span> <span class="ruby-operator">&amp;&amp;</span>
+<span class="line-num">200</span>      <span class="ruby-identifier">_host</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">getHostByName</span>(<span class="ruby-identifier">_hostConf</span>[<span class="ruby-value">:name</span>], <span class="ruby-keyword">true</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">201</span>     <span class="ruby-identifier">puts</span> (<span class="ruby-string">&quot;Warning: a Simulator already registered with the same name: &quot;</span> <span class="ruby-operator">+</span>
+<span class="line-num">202</span>           <span class="ruby-identifier">_conf</span>.<span class="ruby-identifier">inspect</span>) ;
+<span class="line-num">203</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_host</span> ;
+<span class="line-num">204</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">205</span> 
+<span class="line-num">206</span>   <span class="ruby-identifier">_hostConf</span> = <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolizeKeys!</span>(<span class="ruby-identifier">_hostConf</span>, <span class="ruby-keyword">true</span>) ;
+<span class="line-num">207</span> 
+<span class="line-num">208</span>   <span class="ruby-identifier">pp</span> [<span class="ruby-value">:hostConf</span>, <span class="ruby-identifier">_hostConf</span>] ;
+<span class="line-num">209</span> 
+<span class="line-num">210</span>   <span class="ruby-identifier">_host</span> = <span class="ruby-constant">Host</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_hostConf</span>) ;
+<span class="line-num">211</span>   <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">save!</span> ;
+<span class="line-num">212</span> 
+<span class="line-num">213</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_host</span> ;
+<span class="line-num">214</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -648,20 +728,20 @@
           
           <div class="method-source-code" id="createRuns-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">263</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createRuns</span>(<span class="ruby-identifier">_paramSet</span>, <span class="ruby-identifier">_nofRun</span> = <span class="ruby-value">1</span>)
-<span class="line-num">264</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">ParamSetStub</span>)) <span class="ruby-keyword">then</span>
-<span class="line-num">265</span>     <span class="ruby-identifier">createRuns</span>(<span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">entity</span>, <span class="ruby-identifier">_nofRun</span>) ;
-<span class="line-num">266</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">267</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">isHost</span>()) <span class="ruby-keyword">then</span>
-<span class="line-num">268</span>       <span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">find_or_create_runs_upto</span>(<span class="ruby-identifier">_nofRun</span>,
-<span class="line-num">269</span>                                          <span class="ruby-value">submitted_to:</span> <span class="ruby-ivar">@entity</span>,
-<span class="line-num">270</span>                                          <span class="ruby-value">host_param:</span> <span class="ruby-ivar">@hostParam</span>) ;
-<span class="line-num">271</span>     <span class="ruby-keyword">else</span>
-<span class="line-num">272</span>       <span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">find_or_create_runs_upto</span>(<span class="ruby-identifier">_nofRun</span>,
-<span class="line-num">273</span>                                          <span class="ruby-value">host_group:</span> <span class="ruby-ivar">@entity</span>) ;
-<span class="line-num">274</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">275</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">276</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">322</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">createRuns</span>(<span class="ruby-identifier">_paramSet</span>, <span class="ruby-identifier">_nofRun</span> = <span class="ruby-value">1</span>)
+<span class="line-num">323</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">ParamSetStub</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">324</span>     <span class="ruby-identifier">createRuns</span>(<span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">entity</span>, <span class="ruby-identifier">_nofRun</span>) ;
+<span class="line-num">325</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">326</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">isHost</span>()) <span class="ruby-keyword">then</span>
+<span class="line-num">327</span>       <span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">find_or_create_runs_upto</span>(<span class="ruby-identifier">_nofRun</span>,
+<span class="line-num">328</span>                                          <span class="ruby-value">submitted_to:</span> <span class="ruby-ivar">@entity</span>,
+<span class="line-num">329</span>                                          <span class="ruby-value">host_param:</span> <span class="ruby-ivar">@hostParam</span>) ;
+<span class="line-num">330</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">331</span>       <span class="ruby-identifier">_paramSet</span>.<span class="ruby-identifier">find_or_create_runs_upto</span>(<span class="ruby-identifier">_nofRun</span>,
+<span class="line-num">332</span>                                          <span class="ruby-value">host_group:</span> <span class="ruby-ivar">@entity</span>) ;
+<span class="line-num">333</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">334</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">335</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -699,17 +779,17 @@
           
           <div class="method-source-code" id="eachHost-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">234</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachHost</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
-<span class="line-num">235</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">isHost</span>()) <span class="ruby-keyword">then</span>
-<span class="line-num">236</span>     <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@entity</span>) ;
-<span class="line-num">237</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">isHostGroup</span>()) <span class="ruby-keyword">then</span>
-<span class="line-num">238</span>     <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">hosts</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span>
-<span class="line-num">239</span>       <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_host</span>) ;
-<span class="line-num">240</span>     }
-<span class="line-num">241</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">242</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;The @entity is not Host or HostGroup:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">inspect</span> ;
-<span class="line-num">243</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">244</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">293</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">eachHost</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">_block</span>)
+<span class="line-num">294</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">isHost</span>()) <span class="ruby-keyword">then</span>
+<span class="line-num">295</span>     <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@entity</span>) ;
+<span class="line-num">296</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">isHostGroup</span>()) <span class="ruby-keyword">then</span>
+<span class="line-num">297</span>     <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">hosts</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span>
+<span class="line-num">298</span>       <span class="ruby-identifier">_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_host</span>) ;
+<span class="line-num">299</span>     }
+<span class="line-num">300</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">301</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;The @entity is not Host or HostGroup:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">302</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">303</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -744,15 +824,15 @@
           
           <div class="method-source-code" id="getHostParamTable-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">215</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getHostParamTable</span>()
-<span class="line-num">216</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">isHost</span>()) <span class="ruby-keyword">then</span>
-<span class="line-num">217</span>     <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">default_host_parameters</span>() ;
-<span class="line-num">218</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">isHostGroup</span>()) <span class="ruby-keyword">then</span>
-<span class="line-num">219</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">220</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">221</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;@entity is not a Host or a HostGroup:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">inspect</span> ;
-<span class="line-num">222</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">223</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">274</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getHostParamTable</span>()
+<span class="line-num">275</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">isHost</span>()) <span class="ruby-keyword">then</span>
+<span class="line-num">276</span>     <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">default_host_parameters</span>() ;
+<span class="line-num">277</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">isHostGroup</span>()) <span class="ruby-keyword">then</span>
+<span class="line-num">278</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">279</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">280</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;@entity is not a Host or a HostGroup:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">281</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">282</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -787,9 +867,9 @@
           
           <div class="method-source-code" id="isHost-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">198</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">isHost</span>()
-<span class="line-num">199</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Host</span>) ;
-<span class="line-num">200</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">257</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">isHost</span>()
+<span class="line-num">258</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Host</span>) ;
+<span class="line-num">259</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -824,9 +904,9 @@
           
           <div class="method-source-code" id="isHostGroup-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">206</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">isHostGroup</span>()
-<span class="line-num">207</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">HostGroup</span>) ;
-<span class="line-num">208</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">265</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">isHostGroup</span>()
+<span class="line-num">266</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@entity</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">HostGroup</span>) ;
+<span class="line-num">267</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -861,13 +941,13 @@
           
           <div class="method-source-code" id="maxJobN-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">250</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">maxJobN</span>()
-<span class="line-num">251</span>   <span class="ruby-identifier">_jobN</span> = <span class="ruby-value">0</span> ;
-<span class="line-num">252</span>   <span class="ruby-identifier">eachHost</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span>
-<span class="line-num">253</span>     <span class="ruby-identifier">_jobN</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">max_num_jobs</span> ;
-<span class="line-num">254</span>   }
-<span class="line-num">255</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_jobN</span> ;
-<span class="line-num">256</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">309</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">maxJobN</span>()
+<span class="line-num">310</span>   <span class="ruby-identifier">_jobN</span> = <span class="ruby-value">0</span> ;
+<span class="line-num">311</span>   <span class="ruby-identifier">eachHost</span>(){<span class="ruby-operator">|</span><span class="ruby-identifier">_host</span><span class="ruby-operator">|</span>
+<span class="line-num">312</span>     <span class="ruby-identifier">_jobN</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">_host</span>.<span class="ruby-identifier">max_num_jobs</span> ;
+<span class="line-num">313</span>   }
+<span class="line-num">314</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_jobN</span> ;
+<span class="line-num">315</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -905,11 +985,11 @@
           
           <div class="method-source-code" id="setEntityByName-source">
             <pre>    <span class="ruby-comment"># File HostStub.rb</span>
-<span class="line-num">188</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setEntityByName</span>(<span class="ruby-identifier">_name</span> = <span class="ruby-ivar">@name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">189</span>   <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">_name</span> ;
-<span class="line-num">190</span>   <span class="ruby-ivar">@entity</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">getHostAndGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span>) ;
-<span class="line-num">191</span>   <span class="ruby-ivar">@hostParam</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:hostParam</span>) ;
-<span class="line-num">192</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">247</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setEntityByName</span>(<span class="ruby-identifier">_name</span> = <span class="ruby-ivar">@name</span>, <span class="ruby-identifier">_safeP</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">248</span>   <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">_name</span> ;
+<span class="line-num">249</span>   <span class="ruby-ivar">@entity</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">getHostAndGroupByName</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_safeP</span>) ;
+<span class="line-num">250</span>   <span class="ruby-ivar">@hostParam</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:hostParam</span>) ;
+<span class="line-num">251</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
