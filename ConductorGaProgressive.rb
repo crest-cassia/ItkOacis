@@ -345,8 +345,10 @@ if($0 == __FILE__) then
     #++
     ## test ConductorRandom.
     def test_a()
-      _conductor = FooConductor.new({:population => 10,
-                                     :nofAlternation => 10}) ;
+#      _conductor = FooConductor.new({:population => 10,
+#                                     :nofAlternation => 10}) ;
+      _conductor = FooConductor.new({:population => 50,
+                                     :nofAlternation => 10000}) ;
       pp [:test_a, _conductor] ;
       _conductor.run() ;
     end
