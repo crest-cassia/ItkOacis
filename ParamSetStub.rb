@@ -252,7 +252,9 @@ module ItkOacis
       if(done?(_sync, _nthForLoop)) then
         _resultList = [] ;
         doWithNthRun(_nthForLoop){|_run|
-          _resultList.push(_run.result) ;
+          if(_run.status == :finished) then
+            _resultList.push(_run.result) ;
+          end
         }
         if(_nth == :all) then
           return _resultList ;
