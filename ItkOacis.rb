@@ -47,8 +47,8 @@ module ItkOacis
         end
         symbolizeKeys!(_val, _reverseP) ;
         if(_newKey != _key) then
-          _value[_newKey] = _val ;
           _value.delete(_key) ;
+          _value[_newKey] = _val ;
         end
       }
     else
