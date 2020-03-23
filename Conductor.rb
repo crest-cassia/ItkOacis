@@ -379,8 +379,13 @@ module ItkOacis
     #--------------------------------------------------------------
     #++
     ## to update all status.
-    def syncAll()
-      @simulator.syncAll() ;
+    ## _wholeP_ :: if true, sync whole Runs and ParamSets
+    def syncAll(_wholeP = false)
+      if(_wholeP) then
+        @simulator.syncAll() ;
+      else
+        @simulator.sync() ;
+      end
       eachRunning(){|_psStub|
         _psStub.sync() ;
       }
