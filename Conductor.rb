@@ -192,6 +192,8 @@ module ItkOacis
     #++
     ## to setup configulations.
     def setup()
+      setupLogger() ;
+      
       setSimulator(getConf(:simulatorName)) ;
       setHost(getConf(:hostName), getConf(:hostParam)) ;
 
@@ -204,8 +206,7 @@ module ItkOacis
       @doneParamSetList = [] ;
       @interval = getConf(:interval) ;
 
-      setupLogger() ;
-
+      loggingInfo(:setup, :done) ;
     end
 
     #--------------------------------------------------------------
@@ -215,6 +216,7 @@ module ItkOacis
     ## *return*:: the SimulatorStub.
     def setSimulator(_simName)
       @simulator = SimulatorStub.new(_simName) ;
+      loggingInfo(:setSimulator, _simName) ;
       return @simulator ;
     end
 
@@ -226,6 +228,7 @@ module ItkOacis
     ## *return*:: the HostStub.
     def setHost(_hostName, _hostParam = nil)
       @host = HostStub.new(_hostName, { :hostParam => _hostParam }) ;
+      loggingInfo(:setHost, _hostName, _hostParam) ;
       return @host ;
     end
 
@@ -260,6 +263,7 @@ module ItkOacis
       if(getConf(:logger)) then
         setupLoggerBody(getConf(:logger)) ;
       end
+      loggingInfo(:setupLogger, :done) ;
       return @loggerList ;
     end
 
@@ -287,7 +291,10 @@ module ItkOacis
       if(_logdev) then
         _logger = Logger.new(_logdev,
                              level: LogLevelTable[getConf(:logLevel)],
-                             datetime_format: "%Y-%m-%d_%H:%M:%S") ;
+                             formatter: proc{|severity, datetime, progname, msg|
+                               ("[#{datetime.strftime("%Y-%m-%d_%H:%M:%S")}] " +
+                                severity + " " +
+                                msg + "\n") }) ;
         @loggerList.push(_logger) ;
       end
 
@@ -306,11 +313,82 @@ module ItkOacis
       }
     end
 
+    #--------------------------------------------------------------
+    #++
+    ## to logging information.
+    ## _level_:: log level.
+    ## _label_:: label for the log message.
+    ## _values_:: values to output. Each of them are inspected for the message. 
+    def loggingInspected(_level, _label, *_values)
+      _logP = false ;
+      _logLevel = LogLevelTable[_level] ;
+      @loggerList.each{|_logger|
+        if(_logLevel >= _logger.level) then
+          _logP = true ;
+          break ;
+        end
+      }
+      if(_logP) then
+        _fullMessage = _label.to_s + ": " ;
+        _fullMessage +=
+          _values.map{|_val| _val.inspect}.join(", ") ;
+        @loggerList.each{|_logger|
+          _logger.log(_logLevel, _fullMessage) ;
+        }
+      end
+    end
+      
+    #--------------------------------------------------------------
+    #++
+    ## to logging information in DEBUG level.
+    ## _label_:: label for the log message.
+    ## _values_:: values to output. Each of them are inspected for the message. 
+    def loggingDebug(_label, *_values)
+      loggingInspected(:debug, _label, *_values) ;
+    end      
+
+    #--------------------------------------------------------------
+    #++
+    ## to logging information in INFO level.
+    ## _label_:: label for the log message.
+    ## _values_:: values to output. Each of them are inspected for the message. 
+    def loggingInfo(_label, *_values)
+      loggingInspected(:info, _label, *_values) ;
+    end      
+
+    #--------------------------------------------------------------
+    #++
+    ## to logging information in WARN level.
+    ## _label_:: label for the log message.
+    ## _values_:: values to output. Each of them are inspected for the message. 
+    def loggingWarn(_label, *_values)
+      loggingInspected(:warn, _label, *_values) ;
+    end      
+
+    #--------------------------------------------------------------
+    #++
+    ## to logging information in ERROR level.
+    ## _label_:: label for the log message.
+    ## _values_:: values to output. Each of them are inspected for the message. 
+    def loggingError(_label, *_values)
+      loggingInspected(:error, _label, *_values) ;
+    end
+    
+    #--------------------------------------------------------------
+    #++
+    ## to logging information in FATAL level.
+    ## _label_:: label for the log message.
+    ## _values_:: values to output. Each of them are inspected for the message. 
+    def loggingFatal(_label, *_values)
+      loggingInspected(:fatal, _label, *_values) ;
+    end      
+
     #--////////////////////////////////////////////////////////////
     #--------------------------------------------------------------
     #++
     ## run loop
     def run()
+      loggingInfo("run()") ;
       runInit() ;
 
       @cycleCount = 0 ;
@@ -331,6 +409,7 @@ module ItkOacis
     ## to prepare to start main run-loop.
     ## It call saveConfig () and runInitPrepareParamSetList()
     def runInit()
+      loggingInfo("runInit()") ;
       saveConfig(getConf(:configFile)) ;
       runInitPrepareParamSetList() ;
     end
@@ -341,6 +420,7 @@ module ItkOacis
     ## the size of initial set equals to getNofInitParamSet().
     ## It can be overrided by expanded classes.
     def runInitPrepareParamSetList()
+      loggingInfo("runInitPrepareParamSetList()") ;
       fillRunningParamSetList() ;
     end
     
@@ -397,9 +477,9 @@ module ItkOacis
     ## In default, do nothing.
     ## It can be overrided by expanded classes.
     def cycleBody() 
-      logging(:info, :cycle, @cycleCount,
-              [getNofInitParamSet(), nofRunning(),
-               nofDoneInCycle(), nofDone()].inspect) ; 
+      loggingInfo(:cycle, @cycleCount,
+                  [getNofInitParamSet(), nofRunning(),
+                   nofDoneInCycle(), nofDone()]) ;
     end
     
     #--------------------------------------------------------------
@@ -542,10 +622,11 @@ module ItkOacis
     ##     fillRunningParamSetList(_n, _paramSetSeed)){|_paramSeed, _i| ... }
     def fillRunningParamSetList(_max = nil, _paramSeed = nil,
                                 &_block) # :yield: _paramSeed_, _i_
+      loggingInfo(:fillRunningParamSetList, [_max, _paramSeed]) ;
       _max = getNofInitParamSet() if(_max.nil?) ;
       _n = _max - nofRunning() ;
       _list = spawnParamSetN(_n, _paramSeed, &_block) ;
-      logging(:debug, :fillRunningParamSetList, _n) ;
+      loggingInfo(:fillRunningParamSetList, _n, :done) ;
       return _list ;
     end
       

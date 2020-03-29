@@ -175,11 +175,11 @@ module ItkOacis
         end
       }
 
-      logging(:info, :cycle, @cycleCount,
-              [getNofInitParamSet(), nofRunning(),
-               nofDoneInCycle(), nofDone()].inspect,
-              [@readyPool.size(), @pendingPool.size,
-               @waitTable.size, @alterHistory.size].inspect) ;
+      loggingInfo(:cycle, @cycleCount,
+                  [getNofInitParamSet(), nofRunning(),
+                  nofDoneInCycle(), nofDone()],
+                  [@readyPool.size(), @pendingPool.size,
+                   @waitTable.size, @alterHistory.size]) ;
 
       # do tournament if necessary.
       while(@readyPool.size >= @nofPlayer)
@@ -222,7 +222,7 @@ module ItkOacis
     ## It can be overrided by expanded classes.
     def alternateByTournament(_playerList)
       _newList = @tournamentBy.call(_playerList) ;
-      logging(:info, :alterByTournament, @alterCount) ;
+      loggingInfo(:alterByTournament, @alterCount) ;
       return _newList ;
     end
 

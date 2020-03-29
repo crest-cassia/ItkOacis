@@ -300,7 +300,7 @@ module ItkOacis
       super() ;
       if((nofRunning() == 0)) then
         # do alternation.
-        logging(:info, :alter, @alterCount) ;
+        loggingInfo(:alter, @alterCount) ;
         @alterCount += 1 ;
         @alterHistory.push(@generation) ;
         if(!terminate?()) then
@@ -371,7 +371,7 @@ module ItkOacis
       # fill by random seed.
       fillRunningParamSetList() ;
       
-      logging(:info, :newGeneration, @alterCount) ;
+      loggingInfo(:newGeneration, @alterCount) ;
     end
     
     #--------------------------------------------------------------
@@ -379,10 +379,10 @@ module ItkOacis
     ## to alternate generation (survive)
     def alternateGeneration_Survive()
       @nofSurviver = (@population * @ratioSurvive).ceil ;
-      logging(:debug, :survive, @nofSurviver) ;
+      loggingDebug(:survive, @nofSurviver) ;
       (0...@nofSurviver).each{|_i| 
         _surviver = @oldGeneration[_i] ;
-        logging(:debug, :survive1, :pickup, [_i]) ;
+        loggingDebug(:survive1, :pickup, [_i]) ;
         @runningParamSetList.push(_surviver) ;
         @generation.push(_surviver) ;
       }
@@ -393,10 +393,10 @@ module ItkOacis
     ## to alternate generation (mutate)
     def alternateGeneration_Mutate()
       _nofMutation = (@population * @ratioMutate).ceil ;
-      logging(:debug, :mutate, _nofMutation) ;
+      loggingDebug(:mutate, _nofMutation) ;
       (0..._nofMutation).each{|_i|
         _j = rand(@nofSurviver) ;
-        logging(:debug, :murate1, :pickup, [_j]) ;
+        loggingDebug(:murate1, :pickup, [_j]) ;
         _mutantSeed = @mutateBy.call(@oldGeneration[_j]) ;
         spawnParamSet(_mutantSeed) ;
       }
@@ -407,13 +407,13 @@ module ItkOacis
     ## to alternate generation (cross over)
     def alternateGeneration_CrossOver()
       _nofCrossOver = (@population * @ratioCrossOver).ceil ;
-      logging(:debug, :crossOver, _nofCrossOver) ;
+      loggingDebug(:crossOver, _nofCrossOver) ;
       (0..._nofCrossOver).each{|_i|
         begin
           _j = rand(@nofSurviver) ;
           _k = rand(@nofSurviver) ;
         end while(_j == _k) ;
-        logging(:debug, :crossOver1, :pickup, [_j,_k]) ;
+        loggingDebug(:crossOver1, :pickup, [_j,_k]) ;
         _childSeed = @crossOverBy.call(@oldGeneration[_j],
                                        @oldGeneration[_k]) ;
         spawnParamSet(_childSeed) ;
@@ -457,7 +457,7 @@ module ItkOacis
           _childSeed[_key] = _value + getValueByPolicy(_policy) ;
         end
       }
-      logging(:debug, :newSeedByMutate, _childSeed, :from, _parentInput) ;
+      loggingDebug(:newSeedByMutate, _childSeed, :from, _parentInput) ;
       return _childSeed ;
     end
 
@@ -479,8 +479,8 @@ module ItkOacis
         end
         _childSeed[_key] = _value ;
       }
-      logging(:debug, :newSeedByCrossOver, _childSeed,
-              :from, [_parentInput0, _parentInput1]) ;
+      loggingDebug( :newSeedByCrossOver, _childSeed,
+                    :from, [_parentInput0, _parentInput1]) ;
       return _childSeed ;
     end
       
