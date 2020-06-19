@@ -247,7 +247,27 @@ module ItkOacis
     def setEntityByName(_name = @name, _safeP = false)
       @name = _name ;
       @entity = self.class.getHostAndGroupByName(_name, _safeP) ;
-      @hostParam = getConf(:hostParam) ;
+      @hostParam = getHostParamTable() || {} ;
+      setHostParam(getConf(:hostParam)) ;
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## set host parameter
+    ## _param_:: a Hash of host parameters.
+    def setHostParam(_param)
+      if(_param) then
+        @hostParam.update(_param) ;
+      end
+    end
+
+    #--------------------------------------------------------------
+    #++
+    ## set key-value pair in host parameter.
+    ## _key_:: key of the parameter. a String.
+    ## _value_:: value of the parameter. a String, Interger, or Double
+    def setHostParamValue(_key, _value)
+      @hostParam[_key] = _value ;
     end
 
     #--------------------------------------------------------------
@@ -327,6 +347,7 @@ module ItkOacis
           _paramSet.find_or_create_runs_upto(_nofRun,
                                              submitted_to: @entity,
                                              host_param: @hostParam) ;
+#          p [:hostParam, @hostParam] ;
         else
           _paramSet.find_or_create_runs_upto(_nofRun,
                                              host_group: @entity) ;
