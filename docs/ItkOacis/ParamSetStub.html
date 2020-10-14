@@ -784,16 +784,16 @@
           
           <div class="method-source-code" id="getResult-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">289</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getResult</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_sync</span> = <span class="ruby-keyword">false</span>)
-<span class="line-num">290</span>   <span class="ruby-identifier">_resultTab</span> = <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_nth</span>, <span class="ruby-identifier">_sync</span>) ;
-<span class="line-num">291</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_resultTab</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)) <span class="ruby-keyword">then</span>
-<span class="line-num">292</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_tab</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_tab</span>[<span class="ruby-identifier">_name</span>]} ;
-<span class="line-num">293</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_resultTab</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">294</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>[<span class="ruby-identifier">_name</span>] ;
-<span class="line-num">295</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">296</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">297</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">298</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">291</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getResult</span>(<span class="ruby-identifier">_name</span>, <span class="ruby-identifier">_nth</span> = <span class="ruby-value">:all</span>, <span class="ruby-identifier">_sync</span> = <span class="ruby-keyword">false</span>)
+<span class="line-num">292</span>   <span class="ruby-identifier">_resultTab</span> = <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_nth</span>, <span class="ruby-identifier">_sync</span>) ;
+<span class="line-num">293</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_resultTab</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)) <span class="ruby-keyword">then</span>
+<span class="line-num">294</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_tab</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_tab</span>[<span class="ruby-identifier">_name</span>]} ;
+<span class="line-num">295</span>   <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_resultTab</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">296</span>     <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultTab</span>[<span class="ruby-identifier">_name</span>] ;
+<span class="line-num">297</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">298</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">299</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">300</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -839,32 +839,34 @@
 <span class="line-num">252</span>   <span class="ruby-keyword">if</span>(<span class="ruby-identifier">done?</span>(<span class="ruby-identifier">_sync</span>, <span class="ruby-identifier">_nthForLoop</span>)) <span class="ruby-keyword">then</span>
 <span class="line-num">253</span>     <span class="ruby-identifier">_resultList</span> = [] ;
 <span class="line-num">254</span>     <span class="ruby-identifier">doWithNthRun</span>(<span class="ruby-identifier">_nthForLoop</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">_run</span><span class="ruby-operator">|</span>
-<span class="line-num">255</span>       <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_run</span>.<span class="ruby-identifier">result</span>) ;
-<span class="line-num">256</span>     }
-<span class="line-num">257</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:all</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">258</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultList</span> ;
-<span class="line-num">259</span>     <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stat</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">260</span>       <span class="ruby-identifier">_stat</span> = {} ;
-<span class="line-num">261</span>       <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_result</span><span class="ruby-operator">|</span>
-<span class="line-num">262</span>         <span class="ruby-identifier">_result</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span>
-<span class="line-num">263</span>           <span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-constant">Stat</span><span class="ruby-operator">::</span><span class="ruby-constant">StatInfo</span>.<span class="ruby-identifier">new</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>].<span class="ruby-identifier">nil?</span>) ;
-<span class="line-num">264</span>           <span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>].<span class="ruby-identifier">put</span>(<span class="ruby-identifier">_value</span>) ;
-<span class="line-num">265</span>         }
-<span class="line-num">266</span>       }
-<span class="line-num">267</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">268</span>         <span class="ruby-identifier">_ave</span> = {} ;
-<span class="line-num">269</span>         <span class="ruby-identifier">_stat</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_ave</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span>.<span class="ruby-identifier">average</span>() ;}
-<span class="line-num">270</span>         <span class="ruby-keyword">return</span> <span class="ruby-identifier">_ave</span> ;
-<span class="line-num">271</span>       <span class="ruby-keyword">else</span>
-<span class="line-num">272</span>         <span class="ruby-keyword">return</span> <span class="ruby-identifier">_stat</span> ;
-<span class="line-num">273</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">274</span>     <span class="ruby-keyword">else</span>
-<span class="line-num">275</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">first</span> ;
-<span class="line-num">276</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">277</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">278</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
-<span class="line-num">279</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">280</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">255</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_run</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">:finished</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">256</span>         <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_run</span>.<span class="ruby-identifier">result</span>) ;
+<span class="line-num">257</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">258</span>     }
+<span class="line-num">259</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:all</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">260</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultList</span> ;
+<span class="line-num">261</span>     <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stat</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">262</span>       <span class="ruby-identifier">_stat</span> = {} ;
+<span class="line-num">263</span>       <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_result</span><span class="ruby-operator">|</span>
+<span class="line-num">264</span>         <span class="ruby-identifier">_result</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span>
+<span class="line-num">265</span>           <span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-constant">Stat</span><span class="ruby-operator">::</span><span class="ruby-constant">StatInfo</span>.<span class="ruby-identifier">new</span>() <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>].<span class="ruby-identifier">nil?</span>) ;
+<span class="line-num">266</span>           <span class="ruby-identifier">_stat</span>[<span class="ruby-identifier">_key</span>].<span class="ruby-identifier">put</span>(<span class="ruby-identifier">_value</span>) ;
+<span class="line-num">267</span>         }
+<span class="line-num">268</span>       }
+<span class="line-num">269</span>       <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_nth</span> <span class="ruby-operator">==</span> <span class="ruby-value">:average</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">270</span>         <span class="ruby-identifier">_ave</span> = {} ;
+<span class="line-num">271</span>         <span class="ruby-identifier">_stat</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">_value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_ave</span>[<span class="ruby-identifier">_key</span>] = <span class="ruby-identifier">_value</span>.<span class="ruby-identifier">average</span>() ;}
+<span class="line-num">272</span>         <span class="ruby-keyword">return</span> <span class="ruby-identifier">_ave</span> ;
+<span class="line-num">273</span>       <span class="ruby-keyword">else</span>
+<span class="line-num">274</span>         <span class="ruby-keyword">return</span> <span class="ruby-identifier">_stat</span> ;
+<span class="line-num">275</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">276</span>     <span class="ruby-keyword">else</span>
+<span class="line-num">277</span>       <span class="ruby-keyword">return</span> <span class="ruby-identifier">_resultList</span>.<span class="ruby-identifier">first</span> ;
+<span class="line-num">278</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">279</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">280</span>     <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> ;
+<span class="line-num">281</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">282</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -1065,31 +1067,31 @@
           
           <div class="method-source-code" id="toJson-source">
             <pre>    <span class="ruby-comment"># File ParamSetStub.rb</span>
-<span class="line-num">310</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">toJson</span>(<span class="ruby-identifier">_mode</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_runs</span> = <span class="ruby-value">:all</span>)
-<span class="line-num">311</span>   <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:whole</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">nil?</span>) ;
-<span class="line-num">312</span>   
-<span class="line-num">313</span>   <span class="ruby-identifier">_json</span> = <span class="ruby-keyword">nil</span> ;
-<span class="line-num">314</span>   <span class="ruby-keyword">case</span>(<span class="ruby-identifier">_mode</span>)
-<span class="line-num">315</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:whole</span>)
-<span class="line-num">316</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
-<span class="line-num">317</span>               <span class="ruby-value">:seedParam</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@seedParam</span>,
-<span class="line-num">318</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
-<span class="line-num">319</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_runs</span>),
-<span class="line-num">320</span>             } ;
-<span class="line-num">321</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:result</span>)
-<span class="line-num">322</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
-<span class="line-num">323</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_runs</span>),
-<span class="line-num">324</span>             } ;
-<span class="line-num">325</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:input</span>)
-<span class="line-num">326</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
-<span class="line-num">327</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
-<span class="line-num">328</span>             } ;
-<span class="line-num">329</span>   <span class="ruby-keyword">else</span>
-<span class="line-num">330</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown conversion mode:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">inspect</span> ;
-<span class="line-num">331</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">332</span>   
-<span class="line-num">333</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_json</span> ;
-<span class="line-num">334</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">312</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">toJson</span>(<span class="ruby-identifier">_mode</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">_runs</span> = <span class="ruby-value">:all</span>)
+<span class="line-num">313</span>   <span class="ruby-identifier">_mode</span> = <span class="ruby-value">:whole</span> <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">nil?</span>) ;
+<span class="line-num">314</span>   
+<span class="line-num">315</span>   <span class="ruby-identifier">_json</span> = <span class="ruby-keyword">nil</span> ;
+<span class="line-num">316</span>   <span class="ruby-keyword">case</span>(<span class="ruby-identifier">_mode</span>)
+<span class="line-num">317</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:whole</span>)
+<span class="line-num">318</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
+<span class="line-num">319</span>               <span class="ruby-value">:seedParam</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@seedParam</span>,
+<span class="line-num">320</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
+<span class="line-num">321</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_runs</span>),
+<span class="line-num">322</span>             } ;
+<span class="line-num">323</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:result</span>)
+<span class="line-num">324</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
+<span class="line-num">325</span>               <span class="ruby-value">:result</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getResultTable</span>(<span class="ruby-identifier">_runs</span>),
+<span class="line-num">326</span>             } ;
+<span class="line-num">327</span>   <span class="ruby-keyword">when</span>(<span class="ruby-value">:input</span>)
+<span class="line-num">328</span>     <span class="ruby-identifier">_json</span> = { <span class="ruby-value">:id</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-ivar">@id</span>,
+<span class="line-num">329</span>               <span class="ruby-value">:input</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">getInputTable</span>(),
+<span class="line-num">330</span>             } ;
+<span class="line-num">331</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">332</span>     <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;unknown conversion mode:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_mode</span>.<span class="ruby-identifier">inspect</span> ;
+<span class="line-num">333</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">334</span>   
+<span class="line-num">335</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_json</span> ;
+<span class="line-num">336</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

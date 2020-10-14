@@ -34,6 +34,9 @@ module ItkOacis
   #++
   ## to control functionarities of OACIS via Oacis Watcher facility.
   ## === Usage
+  ##  ## add path for "Conductor.rb" to $LOAD_PATH.
+  ##  require 'Conductor.rb' ;
+  ##  
   ##  class FooConductor < ItkOacis::Conductor
   ##    ## Override DefaultConf
   ##    DefaultConf = {
@@ -90,10 +93,10 @@ module ItkOacis
     ##   (default: :info)
     ## - :configFile : filename to save configuiation.
     ##   If nil, do not save.
-    ##   (default: "~/tmp/itkOacisConductor.config.json")
+    ##   (default: "/tmp/itkOacisConductor.config.json")
     ## - :resultFile : filename to save results.
     ##   If nil, do not save.
-    ##   (default: "~/tmp/itkOacisConductor.result.json")
+    ##   (default: "/tmp/itkOacisConductor.result.json")
     ##
     DefaultConf = {
       :simulatorName => "foo00",  ## hogehoge
@@ -106,8 +109,10 @@ module ItkOacis
       :interval => 1,  # sleep interval in run in sec.
       :logger => [:stderr],
       :logLevel => :info,
-      :configFile => "~/tmp/itkOacisConductor.config.json",
-      :resultFile => "~/tmp/itkOacisConductor.result.json",
+#      :configFile => "~/tmp/itkOacisConductor.config.json",
+#      :resultFile => "~/tmp/itkOacisConductor.result.json",
+      :configFile => "/tmp/itkOacisConductor.config.json",
+      :resultFile => "/tmp/itkOacisConductor.result.json",
       nil => nil } ;
 
     ## a table of LogLevel that maps from Symbol to Logger's LogLevel

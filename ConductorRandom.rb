@@ -35,6 +35,9 @@ module ItkOacis
   ## in _conf_ parameter in new or DefaultConf constant defined in sub-classes.
   ## (See DefaultConf for the syntax of the specification.)
   ## === Usage
+  ##  ## add path for "Conductor.rb" to $LOAD_PATH.
+  ##  require 'ConductorRandom.rb' ;
+  ##  
   ##  class FooConductor < ItkOacis::ConductorRandom
   ##    ## override DefaultConf.
   ##    DefaultConf = {

@@ -49,6 +49,9 @@ module ItkOacis
   ##
   ## === Usage
   ##
+  ##  ## add path for "Conductor.rb" to $LOAD_PATH.
+  ##  require 'ConductorGaSimple.rb' ;
+  ##  
   ##  class FooConductor < ItkOacis::ConductorGaSimple
   ##    ## default configulation for initialization.
   ##    DefaultConf = {

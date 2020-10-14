@@ -110,7 +110,10 @@
 
 <h3 id="class-ItkOacis::ConductorGaProgressive-label-Usage">Usage<span><a href="#class-ItkOacis::ConductorGaProgressive-label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">FooConductor</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">ConductorGaProgressive</span>
+<pre class="ruby"><span class="ruby-comment">## add path for &quot;Conductor.rb&quot; to $LOAD_PATH.</span>
+<span class="ruby-identifier">require</span> <span class="ruby-string">&#39;ConductorGaProgressive.rb&#39;</span> ;
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">FooConductor</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ItkOacis</span><span class="ruby-operator">::</span><span class="ruby-constant">ConductorGaProgressive</span>
   <span class="ruby-comment">## default configulation for initialization.</span>
   <span class="ruby-constant">DefaultConf</span> = {
     <span class="ruby-value">:simulatorName</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-string">&quot;foo00&quot;</span>,
@@ -243,11 +246,11 @@
           
           <div class="method-source-code" id="alternateByTournament-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">223</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateByTournament</span>(<span class="ruby-identifier">_playerList</span>)
-<span class="line-num">224</span>   <span class="ruby-identifier">_newList</span> = <span class="ruby-ivar">@tournamentBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_playerList</span>) ;
-<span class="line-num">225</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:alterByTournament</span>, <span class="ruby-ivar">@alterCount</span>) ;
-<span class="line-num">226</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_newList</span> ;
-<span class="line-num">227</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">226</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">alternateByTournament</span>(<span class="ruby-identifier">_playerList</span>)
+<span class="line-num">227</span>   <span class="ruby-identifier">_newList</span> = <span class="ruby-ivar">@tournamentBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_playerList</span>) ;
+<span class="line-num">228</span>   <span class="ruby-identifier">loggingInfo</span>(<span class="ruby-value">:alterByTournament</span>, <span class="ruby-ivar">@alterCount</span>) ;
+<span class="line-num">229</span>   <span class="ruby-keyword">return</span> <span class="ruby-identifier">_newList</span> ;
+<span class="line-num">230</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -278,53 +281,53 @@
           
           <div class="method-source-code" id="cycleBody-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">154</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
-<span class="line-num">155</span>   <span class="ruby-comment"># update @readyPool, @pendingPool, and @waitTable.</span>
-<span class="line-num">156</span>   <span class="ruby-ivar">@doneInCycleList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
-<span class="line-num">157</span>     <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
-<span class="line-num">158</span>     <span class="ruby-identifier">_waitStub</span> = <span class="ruby-ivar">@waitTable</span>[<span class="ruby-identifier">_psStub</span>] ;
-<span class="line-num">159</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_waitStub</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">160</span>       <span class="ruby-identifier">_pendingInfo</span> = <span class="ruby-ivar">@pendingPool</span>[<span class="ruby-identifier">_waitStub</span>] ;
-<span class="line-num">161</span>       <span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:wait</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_psStub</span>) ;
-<span class="line-num">162</span>       <span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:done</span>].<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
-<span class="line-num">163</span>       <span class="ruby-ivar">@waitTable</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_psStub</span>) ;
-<span class="line-num">164</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">165</span>   }
-<span class="line-num">166</span> 
-<span class="line-num">167</span>   <span class="ruby-comment"># add unwaiting psStub in @pendingPool to @readyPool.</span>
-<span class="line-num">168</span>   <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_waitStub</span><span class="ruby-operator">|</span>
-<span class="line-num">169</span>     <span class="ruby-identifier">_pendingInfo</span> = <span class="ruby-ivar">@pendingPool</span>[<span class="ruby-identifier">_waitStub</span>] ;
-<span class="line-num">170</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:wait</span>].<span class="ruby-identifier">empty?</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">171</span>       <span class="ruby-keyword">if</span>((<span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:done</span>] <span class="ruby-operator">&amp;</span> <span class="ruby-ivar">@readyPool</span>).<span class="ruby-identifier">empty?</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">172</span>         <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_waitStub</span>) ;
-<span class="line-num">173</span>         <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_waitStub</span>) ;
-<span class="line-num">174</span>       <span class="ruby-keyword">end</span>
-<span class="line-num">175</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">176</span>   }
-<span class="line-num">177</span> 
-<span class="line-num">178</span>   <span class="ruby-identifier">logging</span>(<span class="ruby-value">:info</span>, <span class="ruby-value">:cycle</span>, <span class="ruby-ivar">@cycleCount</span>,
-<span class="line-num">179</span>           [<span class="ruby-identifier">getNofInitParamSet</span>(), <span class="ruby-identifier">nofRunning</span>(),
-<span class="line-num">180</span>            <span class="ruby-identifier">nofDoneInCycle</span>(), <span class="ruby-identifier">nofDone</span>()].<span class="ruby-identifier">inspect</span>,
-<span class="line-num">181</span>           [<span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">size</span>(), <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">size</span>,
-<span class="line-num">182</span>            <span class="ruby-ivar">@waitTable</span>.<span class="ruby-identifier">size</span>, <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">size</span>].<span class="ruby-identifier">inspect</span>) ;
-<span class="line-num">183</span> 
-<span class="line-num">184</span>   <span class="ruby-comment"># do tournament if necessary.</span>
-<span class="line-num">185</span>   <span class="ruby-keyword">while</span>(<span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofPlayer</span>)
-<span class="line-num">186</span>     <span class="ruby-identifier">_playerList</span> = [] ;
-<span class="line-num">187</span>     (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@nofPlayer</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
-<span class="line-num">188</span>       <span class="ruby-identifier">_player</span> = <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">sample</span>() ;
-<span class="line-num">189</span>       <span class="ruby-identifier">_playerList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_player</span>) ;
-<span class="line-num">190</span>       <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_player</span>) ;
-<span class="line-num">191</span>     }
-<span class="line-num">192</span>     
-<span class="line-num">193</span>     <span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
-<span class="line-num">194</span>     <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_playerList</span>) ;
+<span class="line-num">157</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">cycleBody</span>()
+<span class="line-num">158</span>   <span class="ruby-comment"># update @readyPool, @pendingPool, and @waitTable.</span>
+<span class="line-num">159</span>   <span class="ruby-ivar">@doneInCycleList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_psStub</span><span class="ruby-operator">|</span>
+<span class="line-num">160</span>     <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">161</span>     <span class="ruby-identifier">_waitStub</span> = <span class="ruby-ivar">@waitTable</span>[<span class="ruby-identifier">_psStub</span>] ;
+<span class="line-num">162</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_waitStub</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">163</span>       <span class="ruby-identifier">_pendingInfo</span> = <span class="ruby-ivar">@pendingPool</span>[<span class="ruby-identifier">_waitStub</span>] ;
+<span class="line-num">164</span>       <span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:wait</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">165</span>       <span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:done</span>].<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">166</span>       <span class="ruby-ivar">@waitTable</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_psStub</span>) ;
+<span class="line-num">167</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">168</span>   }
+<span class="line-num">169</span> 
+<span class="line-num">170</span>   <span class="ruby-comment"># add unwaiting psStub in @pendingPool to @readyPool.</span>
+<span class="line-num">171</span>   <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_waitStub</span><span class="ruby-operator">|</span>
+<span class="line-num">172</span>     <span class="ruby-identifier">_pendingInfo</span> = <span class="ruby-ivar">@pendingPool</span>[<span class="ruby-identifier">_waitStub</span>] ;
+<span class="line-num">173</span>     <span class="ruby-keyword">if</span>(<span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:wait</span>].<span class="ruby-identifier">empty?</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">174</span>       <span class="ruby-keyword">if</span>((<span class="ruby-identifier">_pendingInfo</span>[<span class="ruby-value">:done</span>] <span class="ruby-operator">&amp;</span> <span class="ruby-ivar">@readyPool</span>).<span class="ruby-identifier">empty?</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">175</span>         <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_waitStub</span>) ;
+<span class="line-num">176</span>         <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_waitStub</span>) ;
+<span class="line-num">177</span>       <span class="ruby-keyword">end</span>
+<span class="line-num">178</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">179</span>   }
+<span class="line-num">180</span> 
+<span class="line-num">181</span>   <span class="ruby-identifier">loggingInfo</span>(<span class="ruby-value">:cycle</span>, <span class="ruby-ivar">@cycleCount</span>,
+<span class="line-num">182</span>               [<span class="ruby-identifier">getNofInitParamSet</span>(), <span class="ruby-identifier">nofRunning</span>(),
+<span class="line-num">183</span>               <span class="ruby-identifier">nofDoneInCycle</span>(), <span class="ruby-identifier">nofDone</span>()],
+<span class="line-num">184</span>               [<span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">size</span>(), <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">size</span>,
+<span class="line-num">185</span>                <span class="ruby-ivar">@waitTable</span>.<span class="ruby-identifier">size</span>, <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">size</span>]) ;
+<span class="line-num">186</span> 
+<span class="line-num">187</span>   <span class="ruby-comment"># do tournament if necessary.</span>
+<span class="line-num">188</span>   <span class="ruby-keyword">while</span>(<span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofPlayer</span>)
+<span class="line-num">189</span>     <span class="ruby-identifier">_playerList</span> = [] ;
+<span class="line-num">190</span>     (<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@nofPlayer</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_i</span><span class="ruby-operator">|</span>
+<span class="line-num">191</span>       <span class="ruby-identifier">_player</span> = <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">sample</span>() ;
+<span class="line-num">192</span>       <span class="ruby-identifier">_playerList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_player</span>) ;
+<span class="line-num">193</span>       <span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_player</span>) ;
+<span class="line-num">194</span>     }
 <span class="line-num">195</span>     
-<span class="line-num">196</span>     <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@nofAlternation</span>) <span class="ruby-keyword">then</span>
-<span class="line-num">197</span>       <span class="ruby-identifier">alternateByTournament</span>(<span class="ruby-identifier">_playerList</span>) ;
-<span class="line-num">198</span>     <span class="ruby-keyword">end</span>
-<span class="line-num">199</span>   <span class="ruby-keyword">end</span>
-<span class="line-num">200</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">196</span>     <span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> ;
+<span class="line-num">197</span>     <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_playerList</span>) ;
+<span class="line-num">198</span>     
+<span class="line-num">199</span>     <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@nofAlternation</span>) <span class="ruby-keyword">then</span>
+<span class="line-num">200</span>       <span class="ruby-identifier">alternateByTournament</span>(<span class="ruby-identifier">_playerList</span>) ;
+<span class="line-num">201</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">202</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">203</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -359,9 +362,9 @@
           
           <div class="method-source-code" id="getNofInitParamSet-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">145</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
-<span class="line-num">146</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@population</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">size</span> ;
-<span class="line-num">147</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">148</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">getNofInitParamSet</span>()
+<span class="line-num">149</span>   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@population</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@pendingPool</span>.<span class="ruby-identifier">size</span> ;
+<span class="line-num">150</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -397,10 +400,10 @@
           
           <div class="method-source-code" id="runFinal-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">213</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runFinal</span>()
-<span class="line-num">214</span>   <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@readyPool</span>) <span class="ruby-keyword">if</span>(<span class="ruby-operator">!</span><span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">empty?</span>) ;
-<span class="line-num">215</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">216</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">216</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">runFinal</span>()
+<span class="line-num">217</span>   <span class="ruby-ivar">@alterHistory</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@readyPool</span>) <span class="ruby-keyword">if</span>(<span class="ruby-operator">!</span><span class="ruby-ivar">@readyPool</span>.<span class="ruby-identifier">empty?</span>) ;
+<span class="line-num">218</span>   <span class="ruby-keyword">super</span>() ;
+<span class="line-num">219</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -436,17 +439,17 @@
           
           <div class="method-source-code" id="setupGaPolicy-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">128</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupGaPolicy</span>()
-<span class="line-num">129</span>   <span class="ruby-keyword">super</span>() ;
-<span class="line-num">130</span> 
-<span class="line-num">131</span>   <span class="ruby-ivar">@tournamentBy</span> = <span class="ruby-identifier">prepareProc</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:tournamentBy</span>) <span class="ruby-operator">||</span> <span class="ruby-value">:tournament4</span>) ;
-<span class="line-num">132</span>   <span class="ruby-ivar">@nofPlayer</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:nofPlayer</span>) ;
+<span class="line-num">131</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">setupGaPolicy</span>()
+<span class="line-num">132</span>   <span class="ruby-keyword">super</span>() ;
 <span class="line-num">133</span> 
-<span class="line-num">134</span>   <span class="ruby-ivar">@pendingPool</span> = {} ;
-<span class="line-num">135</span>   <span class="ruby-ivar">@readyPool</span> = [] ;
-<span class="line-num">136</span>   <span class="ruby-ivar">@waitTable</span> = {} ;
-<span class="line-num">137</span> 
-<span class="line-num">138</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">134</span>   <span class="ruby-ivar">@tournamentBy</span> = <span class="ruby-identifier">prepareProc</span>(<span class="ruby-identifier">getConf</span>(<span class="ruby-value">:tournamentBy</span>) <span class="ruby-operator">||</span> <span class="ruby-value">:tournament4</span>) ;
+<span class="line-num">135</span>   <span class="ruby-ivar">@nofPlayer</span> = <span class="ruby-identifier">getConf</span>(<span class="ruby-value">:nofPlayer</span>) ;
+<span class="line-num">136</span> 
+<span class="line-num">137</span>   <span class="ruby-ivar">@pendingPool</span> = {} ;
+<span class="line-num">138</span>   <span class="ruby-ivar">@readyPool</span> = [] ;
+<span class="line-num">139</span>   <span class="ruby-ivar">@waitTable</span> = {} ;
+<span class="line-num">140</span> 
+<span class="line-num">141</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -481,9 +484,9 @@
           
           <div class="method-source-code" id="terminate-3F-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">206</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
-<span class="line-num">207</span>   <span class="ruby-keyword">return</span> ((<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofAlternation</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">nofRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)) ;
-<span class="line-num">208</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">209</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">terminate?</span>()
+<span class="line-num">210</span>   <span class="ruby-keyword">return</span> ((<span class="ruby-ivar">@alterCount</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@nofAlternation</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">nofRunning</span>() <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)) ;
+<span class="line-num">211</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -525,37 +528,37 @@
           
           <div class="method-source-code" id="tournament4-source">
             <pre>    <span class="ruby-comment"># File ConductorGaProgressive.rb</span>
-<span class="line-num">240</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">tournament4</span>(<span class="ruby-identifier">_playerList</span>)
-<span class="line-num">241</span>   <span class="ruby-comment"># sort.</span>
-<span class="line-num">242</span>   <span class="ruby-identifier">_playerList</span>.<span class="ruby-identifier">sort!</span>(<span class="ruby-operator">&amp;</span><span class="ruby-ivar">@compareBy</span>) ;
-<span class="line-num">243</span> 
-<span class="line-num">244</span>   <span class="ruby-comment"># survive</span>
-<span class="line-num">245</span>   <span class="ruby-identifier">_surviver</span> = <span class="ruby-identifier">_playerList</span>.<span class="ruby-identifier">first</span>() ;
-<span class="line-num">246</span>   <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
-<span class="line-num">247</span> 
-<span class="line-num">248</span>   <span class="ruby-comment"># mutate</span>
-<span class="line-num">249</span>   <span class="ruby-identifier">_mutantSeed</span> = <span class="ruby-ivar">@mutateBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_surviver</span>) ;
-<span class="line-num">250</span>   <span class="ruby-identifier">_mutant</span> = <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_mutantSeed</span>) ;
-<span class="line-num">251</span> 
-<span class="line-num">252</span>   <span class="ruby-comment"># crossOver</span>
-<span class="line-num">253</span>   <span class="ruby-identifier">_second</span> = <span class="ruby-identifier">_playerList</span>[<span class="ruby-value">1</span>] ;
-<span class="line-num">254</span>   <span class="ruby-identifier">_crossSeed</span> = <span class="ruby-ivar">@crossOverBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_surviver</span>, <span class="ruby-identifier">_second</span>) ;
-<span class="line-num">255</span>   <span class="ruby-identifier">_cross</span> = <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_crossSeed</span>) ;
-<span class="line-num">256</span> 
-<span class="line-num">257</span>   <span class="ruby-comment"># rest, random.</span>
-<span class="line-num">258</span>   <span class="ruby-identifier">_restList</span> = <span class="ruby-identifier">fillRunningParamSetList</span>() ;
+<span class="line-num">243</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">tournament4</span>(<span class="ruby-identifier">_playerList</span>)
+<span class="line-num">244</span>   <span class="ruby-comment"># sort.</span>
+<span class="line-num">245</span>   <span class="ruby-identifier">_playerList</span>.<span class="ruby-identifier">sort!</span>(<span class="ruby-operator">&amp;</span><span class="ruby-ivar">@compareBy</span>) ;
+<span class="line-num">246</span> 
+<span class="line-num">247</span>   <span class="ruby-comment"># survive</span>
+<span class="line-num">248</span>   <span class="ruby-identifier">_surviver</span> = <span class="ruby-identifier">_playerList</span>.<span class="ruby-identifier">first</span>() ;
+<span class="line-num">249</span>   <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">250</span> 
+<span class="line-num">251</span>   <span class="ruby-comment"># mutate</span>
+<span class="line-num">252</span>   <span class="ruby-identifier">_mutantSeed</span> = <span class="ruby-ivar">@mutateBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">253</span>   <span class="ruby-identifier">_mutant</span> = <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_mutantSeed</span>) ;
+<span class="line-num">254</span> 
+<span class="line-num">255</span>   <span class="ruby-comment"># crossOver</span>
+<span class="line-num">256</span>   <span class="ruby-identifier">_second</span> = <span class="ruby-identifier">_playerList</span>[<span class="ruby-value">1</span>] ;
+<span class="line-num">257</span>   <span class="ruby-identifier">_crossSeed</span> = <span class="ruby-ivar">@crossOverBy</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">_surviver</span>, <span class="ruby-identifier">_second</span>) ;
+<span class="line-num">258</span>   <span class="ruby-identifier">_cross</span> = <span class="ruby-identifier">spawnParamSet</span>(<span class="ruby-identifier">_crossSeed</span>) ;
 <span class="line-num">259</span> 
-<span class="line-num">260</span>   <span class="ruby-comment"># setup pending and waiting.</span>
-<span class="line-num">261</span>   <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_surviver</span>) ;
-<span class="line-num">262</span>   <span class="ruby-identifier">_waitList</span> = [<span class="ruby-identifier">_mutant</span>, <span class="ruby-identifier">_cross</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">_restList</span> ;
-<span class="line-num">263</span>   <span class="ruby-identifier">_pendingInfo</span> = { <span class="ruby-value">:wait</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_waitList</span>, 
-<span class="line-num">264</span>                    <span class="ruby-value">:done</span> <span class="ruby-operator">=&gt;</span> [] } ;
-<span class="line-num">265</span>   <span class="ruby-ivar">@pendingPool</span>[<span class="ruby-identifier">_surviver</span>] = <span class="ruby-identifier">_pendingInfo</span> ;
-<span class="line-num">266</span>   <span class="ruby-identifier">_waitList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_wait</span><span class="ruby-operator">|</span>
-<span class="line-num">267</span>     <span class="ruby-ivar">@waitTable</span>[<span class="ruby-identifier">_wait</span>] = <span class="ruby-identifier">_surviver</span> ;
-<span class="line-num">268</span>   }
-<span class="line-num">269</span>   
-<span class="line-num">270</span> <span class="ruby-keyword">end</span></pre>
+<span class="line-num">260</span>   <span class="ruby-comment"># rest, random.</span>
+<span class="line-num">261</span>   <span class="ruby-identifier">_restList</span> = <span class="ruby-identifier">fillRunningParamSetList</span>() ;
+<span class="line-num">262</span> 
+<span class="line-num">263</span>   <span class="ruby-comment"># setup pending and waiting.</span>
+<span class="line-num">264</span>   <span class="ruby-ivar">@runningParamSetList</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">_surviver</span>) ;
+<span class="line-num">265</span>   <span class="ruby-identifier">_waitList</span> = [<span class="ruby-identifier">_mutant</span>, <span class="ruby-identifier">_cross</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">_restList</span> ;
+<span class="line-num">266</span>   <span class="ruby-identifier">_pendingInfo</span> = { <span class="ruby-value">:wait</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">_waitList</span>, 
+<span class="line-num">267</span>                    <span class="ruby-value">:done</span> <span class="ruby-operator">=&gt;</span> [] } ;
+<span class="line-num">268</span>   <span class="ruby-ivar">@pendingPool</span>[<span class="ruby-identifier">_surviver</span>] = <span class="ruby-identifier">_pendingInfo</span> ;
+<span class="line-num">269</span>   <span class="ruby-identifier">_waitList</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">_wait</span><span class="ruby-operator">|</span>
+<span class="line-num">270</span>     <span class="ruby-ivar">@waitTable</span>[<span class="ruby-identifier">_wait</span>] = <span class="ruby-identifier">_surviver</span> ;
+<span class="line-num">271</span>   }
+<span class="line-num">272</span>   
+<span class="line-num">273</span> <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

@@ -45,6 +45,9 @@ module ItkOacis
   ## 
   ## === Usage
   ##
+  ##  ## add path for "Conductor.rb" to $LOAD_PATH.
+  ##  require 'ConductorGaProgressive.rb' ;
+  ##  
   ##  class FooConductor < ItkOacis::ConductorGaProgressive
   ##    ## default configulation for initialization.
   ##    DefaultConf = {

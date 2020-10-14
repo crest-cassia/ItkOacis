@@ -37,6 +37,9 @@ module ItkOacis
   ## (See DefaultConf for the syntax of the specification.)
   ##
   ## === Usage
+  ##  ## add path for "Conductor.rb" to $LOAD_PATH.
+  ##  require 'ConductorCombine.rb' ;
+  ##  
   ##  class FooConductor < ItkOacis::ConductorCombine
   ##    #--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   ##    #++
